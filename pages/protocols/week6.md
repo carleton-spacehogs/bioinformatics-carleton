@@ -1,0 +1,3 @@
+# Week 6: Mapping with Bowtie2
+
+To be created...

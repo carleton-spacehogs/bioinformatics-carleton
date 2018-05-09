@@ -1,0 +1,3 @@
+# Week 8: Classifying taxonomy of short reads with mothur
+
+To be created...
