@@ -176,11 +176,27 @@ If you go to the directory `bin_by_bin`, you will find a series of directories, 
 
 -information about single nucleotide variability in your bins-- the number of SNVs per kilobasepair. (i.e. `Bin_1-variability.txt`)
 
-## 17. What do I do with these bins?
+##  What do I do with these bins?
 
-*placeholder*
-have them look at:
--SNVs in bins
--genes in bins? (see summary)
--covg of bins? (see summary)
--compare gene content of bins???? (this one is harder)
+OK. You have some bins. Great, now what?
+
+Let's take a moment and appreciate what you did. The sequences you started with contained millions of tiny bits of DNA from a random hodgepodge of bacteria. You just pulled together nearly complete genomes out of that mess. **ISN'T THAT AMAZING??**
+
+Now that we've appreciated how cool that is, there are a few things we could continue to do with these genomes if we were scientists studying the oceans (like me!)
+
+#### 17. Look at their gene content
+
+We can see what types of genes were in these genomes simply by inspecting our summary page. After you click "generate static gene summary" on the anvi'o visualization page, a new page will pop up giving you lots of info about what types of genes are on those genomes. Take a look and see what you find. Different types of microbes have different types of abilities, and this is giving you a glimpse into their functional potential.
+
+
+#### 18. Look at the variation within the microbial populations
+
+We can also see how these populations are *evolving* over time by looking at how much variation there is within the population. It's sort of like Darwin's finches: some finch populations had beaks with all the same size and shape, and some populations had different beak shapes and sizes, probably because there were seeds of different shapes and sizes in that habitat. Our equivalent here is single nucleotide variants, or SNVs. You can look at the SNVs by examining the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/variability.txt`
+file that you generated when you made the sample summary page. It has tons of information about how many SNVs there were for each of your bins.
+
+Bins with lots of SNVs are probably highly variable, whereas bins with very few SNVs may have just bloomed in the environment, or may have just undergone an extinction event.
+
+
+
+#### 19. And so on
+There are a ton of other things you can do in anvi'o. A brand new features that just rolled out is that you can look at the actual structure of a protein and figure out where the SNVs are on that protein structure, so you can figure out if the SNV is somewhere important, like the active site of a protein, or somewhere less important. anvi'o is a pretty powerful piece of software that is continuing to change as bioinformatics methods change week by week. We're at the pioneering edge of biology, and while it can be overwhelming, it's always exciting.
