@@ -1,3 +1,3 @@
-# Week 7: Binning Genomes with Anvi’o
+# Week 7: Classifying taxonomy of short reads with mothur
 
 To be created...

@@ -15,7 +15,7 @@ BIOL338: Genomics & Bioinformatics @ Carleton College
    pages/protocols/week5.md
    pages/protocols/week6.md
    pages/protocols/week7.md
-   pages/protocols/week8.md
+   pages/protocols/comp_bio_workshop.md
 
 
 .. toctree::
