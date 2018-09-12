@@ -25,7 +25,7 @@ There is a lot of discussion in the field about which software packages are the 
 
 I am drawing a lot of information for this tutorial from the anvi'o website. If you'd like to learn more, see the link below.
 
-http://merenlab.org/2016/06/22/anvio-tutorial-v2/
+[anvi'o tutorial] (http://merenlab.org/2016/06/22/anvio-tutorial-v2/)
 
 ## Create a contigs database
 
@@ -33,13 +33,16 @@ http://merenlab.org/2016/06/22/anvio-tutorial-v2/
 Boot your computer as a Mac and open the Terminal. If you can't find it, use the magnifying glass in the top right corner.
 
 #### 2. Download data
-Make a new directory called “anvio” inside your project folder, then change into that directory.
+Navigate to the Desktop and make a new directory called `anvio`, then change into that directory.
 
-***Note for Rika: I need to figure out the best way to give them pre-cooked data. website?***
+```
+cd Desktop
+mkdir anvio
+cd anvio
+```
 
-Using a web browser, navigate to this website:
-*placeholder*
-
+Right-click on the following links (or Control-click) to download this data to your computer. Move it to the Desktop.
+[Link to data] (pages/data/ERR598995_assembly_formatted.fasta)
 
 And download the following data and put it in your new folder:
 *placeholder*
@@ -58,18 +61,15 @@ The first thing you have to do is make contigs database, which contains the sequ
 
 -`–o` provides the name of your new contigs database.
 
+--`--project-name` provides the name of your project. Obviously.
+
 
 ```
-anvi-gen-contigs-database -f [your formatted, assembled contigs] -o contigs.db
+anvi-gen-contigs-database -f [your formatted, assembled contigs] -o contigs.db --project-name myproject
 ```
 
-#### 5. Annotate genes on your contigs
- Anvi'o found the genes on your contigs, but it didn't annotate them-- that is, we don't know what kinds of genes they are. We can do that by asking anvi'o to compare your gene sequences with a well-known database called **Clusters of Orthologous Groups,** or the COG database. By comparing your sequences to the COG database, we can have a pretty good guess of what types of genes are on your contigs.
- ```
- anvi-run-ncbi-cogs -c contigs.db
- ```
 
-#### 6. Search for single copy universal genes
+#### 4. Search for single copy universal genes
 Now we will search our contigs for archaeal and bacterial single-copy core genes. This will be useful later on because when we try to disentangle genomes from this metagenome, these single-copy core genes can be good markers for how complete your disentangled genome is.
 
 This process is slow, so we're going to run it on 5 CPUs rather than just 1. You can run it on screen in the background while you move forward with step 6. It should take a little under 10 minutes.
@@ -79,7 +79,7 @@ screen
 anvi-run-hmms -c contigs.db -T 5
 ```
 
-#### 7. Determine taxonomy using Centrifuge
+#### 5. Determine taxonomy using Centrifuge
 Now we are going to figure out the taxonomy of our contigs using a program called centrifuge. Centrifuge is a program that compares your contigs to a sequence database in order to assign taxonomy to different sequences within your metagenome. We're going to use it first to classify your contigs.
 
 If you would like to know more, go here: http://merenlab.org/2016/06/22/anvio-tutorial-v2/ and here: http://www.ccb.jhu.edu/software/centrifuge/
@@ -89,12 +89,12 @@ First, export your genes from anvi'o.
 anvi-get-dna-sequences-for-gene-calls -c contigs.db -o gene-calls.fa
 ```
 
-#### 8. Run Centrifuge
+#### 6. Run Centrifuge
 ```
 centrifuge -f -x /usr/local/CENTRIFUGE/p_compressed gene-calls.fa -S centrifuge_hits.tsv
 ```
 
-#### 9. Import Centrifuge data
+#### 7. Import Centrifuge data
 Now import those centrifuge results for your contigs back in to anvi'o. It has a parser written into the software that can automatically read and import centrifuge output.
 ```
 anvi-import-taxonomy -c contigs.db -i centrifuge_report.tsv centrifuge_hits.tsv -p centrifuge
@@ -102,14 +102,14 @@ anvi-import-taxonomy -c contigs.db -i centrifuge_report.tsv centrifuge_hits.tsv 
 
 ## Incorporating mapping data
 
-#### 10. Copy mapping files
+#### 8. Copy mapping files
 In order to make bins, anvi'o needs to compare mappings from different datasets. Today, we are going to compare all of the datasets that are at the same depth as yours: for example, if you are assigned to the surface layer, you should pull in all the other surface layer mappings to your own dataset. Check the Moodle for the data spreadsheet explaining which is which. You need both the **sorted .bam files** and the **.bai files**. Those are stored at ``/Accounts/Genomics_Bioinformatics_shared/Tara_mappings/``. Copy the ones you need over to the directory that you are in now.
 
 ```
 cp /Accounts/Genomics_Bioinformatics_shared/Tara_mappings/[bam and/or bai files you want] .
 ```
 
-#### 11. Import mapping files into anvi'o with anvi-profile
+#### 9. Import mapping files into anvi'o with anvi-profile
 Now anvi’o needs to combine all of this information—your mapping, your contigs, your open reading frames, your taxonomy—together. To do this, use the anvi-profile script.
 
 -`anvi-profile` is the name of the program that combines the info together
@@ -121,7 +121,7 @@ anvi-profile -i [your sorted bam file] -c contigs.db -T 5 -M 500
 ```
 **Do this for each of the .bam files you have in your folder.**
 
-#### 12. Merge them together with anvi-merge
+#### 10. Merge them together with anvi-merge
 Now merge all of these profiles together using a program called anvi-merge. You have to merge together files in directories that were created by the previous profiling step. The asterisk * is a wildcard that tells the computer, 'take all of the folders called 'PROFILE.db' from all of the directories and merge them together.'
 
 We're also going to tell the computer not to bin these contigs automatically (called 'unsupervised' binning), we want to bin them by hand ('supervised' binning). So we use the --skip-concoct-binning flag.
