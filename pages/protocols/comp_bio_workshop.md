@@ -44,16 +44,15 @@ cd anvio
 Right-click on the following links (or Control-click) to download this data to your computer. Move it to the Desktop.
 [Link to data] (pages/data/ERR598995_assembly_formatted.fasta)
 
-And download the following data and put it in your new folder:
-*placeholder*
+And download the following data and put it in your new folder. The data includes:
 
-1) assembled contigs with the cleaned up names (i.e. >c_000000000001)
-2) all of your sorted .bam and .bai files that you already mapped to those contigs last week
+1) assembled sequences, called contigs  (i.e. >c_000000000001)
+2) bam files, which contain mapping data of metagenomes to your contigs.
 
 
 
 #### 3. Make contigs database
-The first thing you have to do is make contigs database, which contains the sequences of your contigs, plus lots of information about those contigs.
+The first thing you have to do is make a database of your contigs. Contigs are basically sequences that you have assembled together from lots of little short sequences. (I've done that step for you already.) We're going to put all of those assembled sequences into a nice organized database. This database will contain the sequences of your contigs, plus lots of extra information about those contigs.
 
 -`anvi-gen-contigs-database` is the anvi’o script that makes the contigs database.
 
@@ -143,7 +142,7 @@ Cool, eh?
 Click 'Draw' to see your results! You should see something like this:
 ![anvio screenshot](../images/anvio.png)
 
-*What you are looking at:
+*What you are looking at:*
 
 -the tree on the inside shows the clustering of your contigs. Contigs that were more similar according to k-mer frequency and coverage clustered together.
 
@@ -151,7 +150,7 @@ Click 'Draw' to see your results! You should see something like this:
 
 -the 'taxonomy' ring shows the centrifuge designation for the taxonomy of that particular contig.
 
--the 'GC content' ring shows the average percent of bases that were G or C as opposed to A or T for that contig.*
+-the 'GC content' ring shows the average percent of bases that were G or C as opposed to A or T for that contig.
 
 #### 15. Make bins
 We will go over the process for making bins together in class.
