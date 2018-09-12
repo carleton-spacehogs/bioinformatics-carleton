@@ -71,7 +71,7 @@ anvi-gen-contigs-database -f [your formatted, assembled contigs] -o contigs.db -
 #### 4. Search for single copy universal genes
 Now we will search our contigs for archaeal and bacterial single-copy core genes. This will be useful later on because when we try to disentangle genomes from this metagenome, these single-copy core genes can be good markers for how complete your disentangled genome is.
 
-This process is slow, so we're going to run it on 5 CPUs rather than just 1. You can run it on screen in the background while you move forward with step 6. It should take a little under 10 minutes.
+This process is slow, so we're going to run it on 5 CPUs rather than just 1. It should take a little under 10 minutes. We can talk about contigs and mapping while we wait to make sure we're all on the same page. 
 
 ```
 screen
@@ -102,7 +102,9 @@ anvi-import-taxonomy -c contigs.db -i centrifuge_report.tsv centrifuge_hits.tsv 
 ## Incorporating mapping data
 
 #### 8. Copy mapping files
-In order to make bins, anvi'o needs to compare mappings from different datasets. Today, we are going to compare all of the datasets that are at the same depth as yours: for example, if you are assigned to the surface layer, you should pull in all the other surface layer mappings to your own dataset. Check the Moodle for the data spreadsheet explaining which is which. You need both the **sorted .bam files** and the **.bai files**. Those are stored at ``/Accounts/Genomics_Bioinformatics_shared/Tara_mappings/``. Copy the ones you need over to the directory that you are in now.
+In order to make bins, anvi'o needs to compare mappings from different datasets. So, we mapped reads from a bunch of different metagenomes to these contigs. Each of those mapping files has coverage information that we can use to cluster contigs together-- contigs with similar coverage get clustered together.
+
+To do this, you need both the **sorted .bam files** and the **.bai files**. Those are stored at ``/Accounts/Genomics_Bioinformatics_shared/Tara_mappings/``. Copy the ones you need over to the directory that you are in now.
 
 ```
 cp /Accounts/Genomics_Bioinformatics_shared/Tara_mappings/[bam and/or bai files you want] .
@@ -113,7 +115,7 @@ Now anvi’o needs to combine all of this information—your mapping, your conti
 
 -`anvi-profile` is the name of the program that combines the info together
 -The `–i` flag provides the name of the sorted bam file that you copied in the step above.
--The `-T` flag sets the number of CPUs. There are 11 of you, and 96 to spare. For now, let's set it to 5 so we don't blow up the server.
+-The `-T` flag sets the number of CPUs. For now, let's set it to 5 so we don't blow up your computer.
 -The `-M` flag sets a minimum contig length. In a project for publication, you'd want to use at least 1000, because the clustering of contigs is dependent on calculating their tetranucleotide frequencies (searching for patterns of kmers). You need to have a long enough contig to calculate these frequences accurately. But for our purposes, let's use 500 so you can use as many contigs as possible.
 ```
 anvi-profile -i [your sorted bam file] -c contigs.db -T 5 -M 500
