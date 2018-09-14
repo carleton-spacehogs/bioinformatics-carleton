@@ -42,7 +42,7 @@ cd anvio
 ```
 
 Right-click on the following links (or Control-click) to download this data to your computer. Move it to the Desktop.
-[Link to data] (pages/data/ERR598995_assembly_formatted.fasta)
+[Link to data] (http://www.cs.carleton.edu/faculty/loesper/courses/f18_workshop/)
 
 And download the following data and put it in your new folder. The data includes:
 
@@ -71,7 +71,7 @@ anvi-gen-contigs-database -f [your formatted, assembled contigs] -o contigs.db -
 #### 4. Search for single copy universal genes
 Now we will search our contigs for archaeal and bacterial single-copy core genes. This will be useful later on because when we try to disentangle genomes from this metagenome, these single-copy core genes can be good markers for how complete your disentangled genome is.
 
-This process is slow, so we're going to run it on 5 CPUs rather than just 1. It should take a little under 10 minutes. We can talk about contigs and mapping while we wait to make sure we're all on the same page. 
+This process is slow, so we're going to run it on 5 CPUs rather than just 1. It should take a little under 10 minutes. We can talk about contigs and mapping while we wait to make sure we're all on the same page.
 
 ```
 screen
