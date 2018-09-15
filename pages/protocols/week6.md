@@ -237,3 +237,14 @@ Use the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/variability.txt` fil
      *Important caveat! If your sample had low coverage (i.e. less than 10), that may be skewing the variability results because if you don't have any reads mapping, there are no variants to count!*
 
 **Compile Figures 1-3 and your answers to questions 1-4 and submit on the Moodle by lab time next week.**
+
+#### Final step: sharing data
+Some of you might want access to each others' anvio data for your final projects. So let's share it on class_shared.
+
+First, make a directory with your name on it, and then put your contigs database and SAMPLES_MERGED directory in there.
+
+```
+mkdir /usr/local/data/class_shared/anvio_stuff/[your name]
+cp contigs.db /usr/local/data/class_shared/anvio_stuff/[your name]
+cp -r SAMPLES_MERGED /usr/local/data/class_shared/anvio_stuff/[your name]
+```

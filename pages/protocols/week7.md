@@ -1,3 +1,170 @@
 # Week 7: Classifying taxonomy of short reads with mothur
 
-To be created...
+## Introduction
+Today we're going to learn how to use sequence data to assess diversity across samples. We'll learn how to:
+
+1) classify the distribution of different taxa in different datsets (i.e. what % are *Procholorococcus*, what % are SAR11, what % are Thaumarchaeota, and so on)
+2) calculate diversity metrics to determine which sample sites had higher richness or evenness.
+
+We're going to do things a little differently this week: rather than have you ask a question or test a hypothesis at the end of the lab today, you're going to ask your question or write a hypothesis at the beginning. Your hypothesis involve a comparison of the diversity or taxonomic distribution of a few different datasets.
+
+
+**Take a moment to develop a question or hypothesis about taxonomic abundance and/or diversity across different sample sets. Keep it relatively simple.** 
+
+For example:
+1) I hypothesize that there will be a higher abundance of SUP05 in the North Pacific mesopelagic zone compared to the South Pacific mesopelagic zone because (xyz).
+2) I hypothesize that the taxonomic diversity will be highest in the mesopelagic zone compared to all other depths in the North Atlantic sample site because (xyz).
+
+You can refine these questions or hypotheses later on, but you should at least have a general idea of what you'd like to investigate prior to continuing because it will determine which sample sets you will investigate for the rest of lab today.
+
+## Using mothur to profile the taxonomy of your dataset
+
+#### 1. Log in
+Once you have come up with a general question or hypothesis, log on to liverpool or baross using ssh on your Terminal. Make a new directory and change into it.
+```
+mkdir ~/project_directory/taxonomy
+cd project_directory/taxonomy
+```
+
+#### 2. Copy over data
+The Tara Ocean people have already pulled out all of the metagenomic reads that matched 16S ribosomal RNA from their datasets. I copied those files into the directories listed in /usr/local/data/Tara_datasets/. Copy over all of the relevant 16S rRNA files that you will need to address your question or hypothesis into your new taxonomy folder.
+```
+cp /usr/local/data/Tara_datasets/[project sample site of interest]/[16S rRNA data file of interest] .
+```
+For example, if you wanted to copy over all of the 16S rRNA datasets from the North Pacific, you could use the asterisk (wildcard) and type:
+`cp /usr/local/data/Tara_datasets/North_Pacific/*16S* .`
+
+#### 3. Open mothur
+Now, we're going to use a program called "mothur" to analyze these sequences. mothur is a bit different from other programs that we've used in that we can enter a mothur interface and type commands that are specific to mothur. To enter the mothur program, simply type this:
+```
+mothur
+```
+
+Fun fact: The first version of this computer program was called `DOTUR`. The next version was called `SONS.` The final version was called `mothur` and it's been that way ever since.
+
+#### 4. Create groups file
+Right now, the 16S rRNA-matching reads from each sample site are in separate files. Pretty soon we are going to merge all of your FASTA files together in order to compare them. Before we do that, we need to tell mothur how to tell them apart once they are merged. We do that with the make.group command. Replace the file names below with your 16S rRNA fasta file names. Substitute the group names with a suitable name for your sample so that you can recognize it, like `NPacific_DCM` or `Arabian_surface.`
+
+*Note: any time you see something in [brackets] in a command, it means you have to substitute that with your own data.*
+
+```
+make.group(fasta=[file1.fasta]-[file2.fasta]-[file3.fasta], groups=[group1]-[group2]-[group3])
+```
+
+For example:
+`make.group(fasta=ERR598944_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599001_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599078_MERGED_FASTQ_16SrRNA_10000.fasta, groups=meso-transect-surface)`
+
+#### 5. Look at the groups file
+This command should generate a file that ends in '.groups.” Take a look at it with less. (Hint: you can use the command system() if you want to use Unix commands while you are using mothur.) You will see that each sequence name is linked up with the group name that you provided. That way the program can combine all of the sequences together into one file, but you can still keep track of which one belongs to which sample. This file will be essential for allowing mothur to compare groups later on.
+
+```
+system(less [groups file name])
+```
+For example:
+` system(less ERR598980_MERGED_FASTQ_16SrRNA_10000.ERR598995_MERGED_FASTQ_16SrRNA_10000.ERR599142_MERGED_FASTQ_16SrRNA_10000.groups)`
+
+### 6. Merge FASTA files together
+Now you can merge all of your FASTA files together, and the .groups file will record which sequences came from which file.The output here will be a file called merged.fa. Again, substitute "file-1.fa" and so on with the names of your 16S rRNA fasta files.
+
+Hint: use the up arrow on your keyboard to call up the last command you typed, and then edit that command instead of retyping all of the filenames again.
+
+```
+merge.files(input=[file1.fa]-[file2.fa]-[file3.fa], output=merged.fa)
+```
+
+For example:
+`merge.files(input=ERR598944_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599001_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599078_MERGED_FASTQ_16SrRNA_10000.fasta, output=merged.fa)`
+
+#### 7. Classify your sequences
+Everything we've done so far is basically record-keeping. Now it's time to do SCIENCE!
+
+We will classify our sequences by comparing them to a reference database. We will the SILVA database to compare these sequences. (It's a very good, well-curated 16S rRNA database.) 
+
+Note!
+You will see lots of warnings along the lines of: "[WARNING]: xxx could not be classified." We are going to have to leave these sequences out of the analysis! This means all of the unknowns will be grouped together even though they most likely repesent many different species, so they will be missing from our diversity analyses later on. This is why OTUs are often a better way to go here, but unfortunately our metagenomic data is too messy to be able to make nice OTUs.
+```
+classify.seqs(fasta=merged.fa, group=[your groups file], reference=/usr/local/data/silva_databases/silva.seed_v119.align, taxonomy=/usr/local/data/silva_databases/silva.seed_v119.tax)
+```
+e.g. `classify.seqs(fasta=merged.fa, group=ERR598980_MERGED_FASTQ_16SrRNA_10000.ERR598995_MERGED_FASTQ_16SrRNA_10000.ERR599142_MERGED_FASTQ_16SrRNA_10000.groups, reference=/usr/local/data/silva_databases/silva.seed_v119.align, taxonomy=/usr/local/data/silva_databases/silva.seed_v119.tax)`
+
+#### 8. Open classified sequences
+Use FileZilla or scp to transfer your files over to your local desktop. Open the file that is called 'merged.seed_v119.wang.tax.summary' in Excel. (You may have to change the name so the file ends in '.txt' or Excel won't recognize it as a valid file to open.) Here is the definition of the columns, from left to right:
+
+-Taxonomic level is in the farthest left-hand column. The lower the number, the larger the phylogenetic classification. For example, Archaea, Bacteria, Eukarya, and 'unknown' are taxonomic level 1. Taxonomic level 2 goes down a bit deeper: it classifies different phyla of Archaea, Bacteria, and Eukaryotes. Taxonomic level 3 classifies different classes of those phyla, and so on.
+
+-The rankID provides a means of keeping track of where that particular organism falls. For example, the SAR_11 clade is rankID 0.2.17.2.9, which means it is a clade within the Alphaproteobacteria (0.2.17.2), which are a clade within the Proteobacteria (rankID 0.2.17), which is a clade within the Bacteria (rankID 0.2).
+
+-The taxon column tells you the name of the taxon.
+
+-The daugther level tells you how may levels down you are in the phylogeny.
+
+-The 'total' tells you how many total sequences are within that taxonomic category.
+
+-Each of the following columns gives you the taxonomic breakdown for that sample.
+
+I'd recommend sorting your Excel spreadsheet by taxlevel. Make either a pie chart or stacked bar chart for each sample depth based on the taxonomic distribution at taxonomic level 2 to compare the taxonomic breakdown between each of your samples. Save these charts as Figure 1(abc) and provide a figure caption for this figure.
+
+#### 9. Share your data
+Your classmates may wish to use your taxonomy data for their project datasets. Please rename your taxonomy files and share them on the class_shared directory. 
+
+```
+mv merged.seed_v119.wang.tax.summary [newname]
+cp [newname] /usr/local/data/class_shared/taxonomy
+```
+For example:
+```
+mv merged.seed_v119.wang.tax.summary rikas_taxonomy.summary
+cp rikas_taxonomy.summary /usr/local/data/class_shared/taxonomy
+```
+
+#### 10. Calculate the diversity of your sample
+Now we're going to calculate the diversity at each of your sample sites. These will will be pure calculations in Excel rather than on the command-line. mothur can do this using OTUs, but our data is too messy to create nice OTUs!
+
+We'll calculate diversity using two measures: species richness (r) and the Shannon-Weiner Index (H'). The Shannon-Weiner Index (H') is meant to take into account both the taxon richness (how many different taxa there are) and evenness (does one taxon dominate or are they evenly distributed?) 
+
+We are going to calculate the diversity of each of your sample sites at taxonomic level 2. This means that each entry at level 2 (i.e. 'Euryarchaeota,' 'Thaumarchaeota,' 'Proteobacteria') will count as one taxon. The number of sequences for that taxon in your sample represents the total number counted in that sample for that taxon. Calculate the following for each of your sites (i.e. you should have one H' value for the deep chlorophyll max, one for the surface, and one for the mesopelagic zone).
+
+Species richness = r = number of taxa in your sample
+
+The equation for the Shannon-Weiner index is:
+H’ = -Σ (Pi ln(Pi))
+H’= index of taxonomic diversity, the Shannon-Weiner Index
+Pi = proportion (percent) of total sample belonging to the ith taxon
+ln= natural log (log base e = not the same as log!)
+
+This index takes into account more than just the number of taxa (richness) in a sample, but also how evenly distributed the taxa are (evenness) within the sample.  The index increases either by having more richness or by having greater evenness.
+
+Hint: -Σ (Pi ln(Pi)) = -((Ptaxon1*ln(Ptaxon1)) + (Ptaxon2*ln(Ptaxon2)) + (Ptaxon3*ln(Ptaxon3)) + …)
+
+I suggest that you start by calculating the total number of sequences for each sample site for all of taxonomic level 2. Then, for each taxon within taxlevel2, calculate the total proportion of seqences belonging to that taxon (Pi). Then calculate H'.
+
+Excel command for natural log: LN()
+Note that in Excel, LN(0) = error, so skip the cells with a value of 0.
+Pay attention to your use of parentheses!
+
+Please do these calculations in a way that is clear so that I can track your calculations. You will be submitting these Excel spreadsheets as part of your lab assignment for this week. Please compile the total number of sequences, the species richness, and the Shannon-Weiner index for each of your sample depths in a table. **Save this as Table 1 and provide a caption.**
+
+#### 11. Compare diversity with metadata
+In your Excel spreadsheet, make 5 columns containing metadata for each of your samples (1 column each for temperature, chlorophyll, nitrate, oxygen, and salinity). Make a scatterplot for each of the metadata versus your Shannon-Weiner index (H') for each of the samples. For example, one plot will have temperature on the x axis, and H' on the y axis, one will have chlorophyll on the x axis, and H' on the y axis, and so on. For each plot, plot a trendline through the data and include the equation and the R-squared value. **Save these 5 plots as Figure 2(abcde).**
+
+#### 12. Post-lab assignment
+**Check for understanding questions:***
+
+1. Many of your sequences were unclassifiable. How would this likely affect your richness calculations for each sample? Explain why.
+
+2. What is the difference between richness and the Shannon-Weiner index? Describe a situation in which you might have a high richness but a relatively low Shannon-Weiner index.
+
+3. Does your taxonomic diversity, as calculated by the Shannon-Weiner index, correlate with any of the metadata for your sample (temperature, chlorophyll, nitrate, oxygen, salinity)? (The R squared value should vary between 0 and 1; the stronger the correlation, the closer the R-squared value is to 1. We did not calculate p-values or conduct a more rigorous statistical analysis, but the R-squared value will tell you how closely the variables are correlated.) Write a short paragraph speculating on any correlations you find. (It's possible the correlations will be terrible.) 
+
+**Mini-research question:**
+
+Return to the question or hypothesis you wrote at the beginning of the lab. Based on the data you generated today, what is the answer to your question, or did you prove or disprove your hypothesis? Write a discussion (~1-2 paragraphs) explaining your results based on what we learned in class about marine taxa and diversity in various ocean basins and at different depths.
+
+ **Summary of what to turn in next week:**
+ For this week's post-lab assignment, please submit the following (should all be in the same document):
+ -Figure 1(abc)
+ -Figure 2(abcde)
+ -Table 1
+ -The answers to the three "check for understanding" questions above
+ -The response to this week's mini-research question
+ -Your Excel spreadsheet so that I can check your calculations (submitted separately)
