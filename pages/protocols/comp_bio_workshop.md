@@ -41,7 +41,7 @@ mkdir anvio
 cd anvio
 ```
 
-Right-click on the following links (or Control-click) to download this data to your computer. Move it to the Desktop.
+Right-click on the following links (or Control-click, or click "Save Link as...") to download this data to your computer. (Draggin and dropping won't work.) Move it to the Desktop.
 [Link to data] (http://www.cs.carleton.edu/faculty/loesper/courses/f18_workshop/)
 
 And download the following data and put it in your new folder. The data includes:
