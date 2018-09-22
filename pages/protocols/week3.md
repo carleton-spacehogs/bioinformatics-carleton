@@ -16,10 +16,10 @@ Find and open the Terminal application (it should be in "Applications" in the fo
 *The terminal is the interface you will use to log in to the remote server for the rest of the course. It is also the interface we will be using to run almost all of the bioinformatics software we will be learning in this course. You can navigate through files on the server or on your computer, copy, move, and create files, and run programs using the Unix commands we learned earlier this week.*
 
 #### 3. ssh
-We will use something called ssh, or a secure socket shell, to remotely connect to another computer (in this case it will our class server, baross). Type the following:
+We will use something called ssh, or a secure socket shell, to remotely connect to another computer (in this case it will our class server, baross). Type the following (substituting *username* with your own Carleton username-- the same name as your email address):
 
 ```bash
-ssh [username]@baross.its.carleton.edu
+ssh username@baross.its.carleton.edu
 ```
 
 #### 4. ssh (cont.)
@@ -155,15 +155,19 @@ You should see a fasta file with some very long sequences in it. When you're don
 
 #### 17. Evaluate assembly quality
 
-Now we’re going to evaluate the quality of our assembly. One measure of assembly quality is N50, which is the contig length for which the collection of all contigs of that length or longer contains at least 50% of the sum of the lengths of all contigs. We could theoretically calculate the N50 by hand, but often times you’ll get many, many contigs and it’s very tedious to do by hand. So we will use an assembly evaluator called Quast. Run it on your toy dataset. (If you’ve been copying and pasting, it may not work here; you may have to type it in.) Here is what the commands mean:
+Now we’re going to evaluate the quality of our assembly. One measure of assembly quality is N50, which is the contig length for which the collection of all contigs of that length or longer contains at least 50% of the sum of the lengths of all contigs. We could theoretically calculate the N50 by hand, but often times you’ll get many, many contigs and it’s very tedious to do by hand. So we will use an assembly evaluator called Quast. Run it on your toy dataset.
+
+```bash
+quast.py contig-20.fa contig-40.fa contig-60.fa contig-80.fa contig-100.fa scaffold.fa –o toy_assembly_quast_evaluation
+```
+
+Here is what the commands mean:
 
 1. Invoke the program `quast.py`
 2. We tell it to run the program on all of the output files of your toy assembly. Every fasta file that we list after `quast.py` will be included in the analysis.
 3. The `-o` flag will create an output directory that we will call `toy_assembly_quast_evaluation`
 
-```bash
-quast.py contig-20.fa contig-40.fa contig-60.fa contig-80.fa contig-100.fa scaffold.fa –o toy_assembly_quast_evaluation
-```
+
 
 #### 18. View output with x2go
 
@@ -178,7 +182,7 @@ https://wiki.carleton.edu/display/carl/How+to+Install+and+Configure+x2go+client
 5. Log in with your Carleton account name and password.
 6. Navigate to the directory called “toy_assembly_quast_evaluation.”
 7. Double-clock on the file called “report.html” and take a look. It reports the number of contigs, the contig lengths, the N50, and other statistics for each of the assembly files you entered. The graph at the bottom shows the cumulative length of your assembly (y-axis) as you add up each contig in your assembly (x-axis). Many of your lab questions for this week are based on the quast assembly report.
-8. When you are done with x2go, be sure to click on “Log Out” when you log out!
+8. **When you are done with x2go, be sure to click on “Log Out” when you log out!**
 
 #### 19. Bookkeeping
 
@@ -235,41 +239,14 @@ After you've started the process, detach from screen:
 Ctrl+A d
 ```
 
-These assemblies will likely take some time. Take advantage of your time in lab to discuss the postlab questions with your colleagues. I encourage collaboration and sharing of ideas, but I expect each of you to submit your own assignment, which should reflect your own ideas and understanding of the responses.
+These assemblies will likely take some time. You can move on to the next steps ("Searching for and annotating open reading frames") while this runs, and then come back to this when it's done.
 
 To check on the progress of your assemblies, you can either use `top` to see if your assembly is still running, or you can re-attach to your screen using the instructions above.
 
-When IDBA-UD finishes, it will say:
-
-```
-invalid insert distance
-Segmentation fault
-```
-
-This is because we gave IDBA-UD single-end reads instead of paired-end reads. Never fear! Despite appearances, your assembly actually did finish. However, the use of single-end reads instead of paired-end reads means that your assemblies will NOT have scaffolds, because we couldn’t take advantage of the paired-end data to make scaffolds. So, your final assembly is just the final contig file from the longest kmer, called `contig-100.fa.`
-
-#### 25. Rename assembly
-
-When your project assembly is done, change the name of your final assembly from `contig-100.fa` to a name that starts with your dataset number, followed by `_assembly.fasta`. For example, you might call it something like `ERR598966_assembly.fasta`.
-
-This way we will have standardized names and save ourselves future heartache. (For a reminder on how to change file names, see your Unix cheat sheet.)
-
-
-#### 26. Run anvi-script-reformat-fasta
-
-Run `anvi-script-reformat-fasta` on your completed project assemblies (see step 19 for instructions).
-
-#### 27. Copy data to shared folder
-
-Please copy your newly formatted, assembled project assemblies and put them into the folder that we'll be sharing as a class, substituting the placeholder below with the name of your assembled file. This will be the shared folder for all of the data that you generate as a class.
-
-```
-cp [name of your formatted, assembled file] /usr/local/data/class_shared
-```
 
 ## Searching for and annotating open reading frames
 
-Now that we have assembled our contigs, we want to find genes on them. That requires identifying open reading frames (ORFs), and then comparing the ORF sequences with existing databases to see if we can figure out what kinds of genes they are. There are lots of programs to identify and annotate ORFs. We're going to use a program called Prokka, which wraps a bunch of different software into a pipeline that is nice and streamlined. Prokka basically does two things:
+Now that we have assembled our contigs, we want to find genes on them. That requires identifying open reading frames (ORFs), and then comparing the ORF sequences with existing databases to see if we can figure out what kinds of genes they are. There are lots of programs to identify and annotate ORFs. We're going to use a program called Prokka, which wraps a bunch of different software into a pipeline that is nice and streamlined. Prokka basically does two (okay, three) things:
 
 1. Identify ORFs
 2. Compare those ORFs to databases of known genes to find the closest match and assign their putative functions
@@ -285,21 +262,22 @@ mkdir ORF_finding
 cd ORF_finding
 ```
 
-#### 9. Run Prokka
+#### 25. Run Prokka
 Now run Prokka on your toy assembly, which is located in the toy_assembly folder:
 ```
-prokka ../toy_assembly/toy_dataset_assembly_reformatted.fa
+prokka ../toy_assembly/toy_dataset_assembly_reformatted.fa --outdir prokka_toy
 ```
+This means you're invoking prokka on your reformatted toy dataset assembly, and you're putting it in a new directory called `prokka_toy.`
 
-#### 10. View output in FASTA format
-You should see a directory called `PROKKA_09252018` or something similar (with today's date). Use `cd` to go into that folder, then use the program `less` to look at `PROKKA_09 252018.faa` (again, adjust according the date). You should see a fasta file with amino acid sequences. Each amino acid sequence is an open reading frame (ORF), or a putative gene that has been identified from your assembly.
+#### 26. View output in FASTA format
+You should see a directory called `prokka_toy`. Use `cd` to go into that folder, then use the program `less` to look at `PROKKA_09252018.faa` (or something like that-- adjust according the date). You should see a fasta file with amino acid sequences. Each amino acid sequence is an open reading frame (ORF), or a putative gene that has been identified from your assembly.
 
 The cool thing is the Prokka has also annotated your genes with their putative function. You can see that in each sequence title, which provides the name of the sequence assigned by Prokka (e.g. KGLPOPID_00002) and the putative function (e.g. Proine/betaine transporter). A lot of them will say `hypothetical protein`, which simply means that Prokka couldn't find a good match for that protein in public databases.
 
 Note that the file that ends in `.ffn` contains the same thing, except the ORF sequences are in nucleotide format, not amino acid.
 
 
-#### 11. View output in Genbank (gbk) formatted
+#### 27. View output in Genbank (gbk) formatted
 Prokka is handy because it gives you output in all kinds of formats, which you could use for other downstream applications. For example, it gives you a Genbank output, which is commonly used in the National Institute of Health (NIH) National Centers for Biotechnology Information (NCBI) database, which we'll be using a lot over the next few weeks. Take a look:
 
 ```
@@ -307,7 +285,7 @@ less PROKKA_09252018.gbk
 ```
 For each contig, the Genbank file will give you information like the name of the contig, its length, the organism it comes from, and then information about every ORF or coding sequence (abbreviated as CDS) that contig. This includes the gene name, the location, the translation table (some organisms use slightly different codons and therefore different translation tables), its product, and its amino acid sequence. At the end of the list of ORFs for each contig, it gives you the DNA sequence of the contig.
 
-#### 12. View output in tab-separated column (tsv) format
+#### 28. View output in tab-separated column (tsv) format
 Let's look at one last output format, which is in tab-separated columns, and therefore best visualized in a spreadsheet application like Excel. The easiset way to do that is copy this file from the server to your own desktop and look at it with Excel. We’re going to learn how to use FileZilla to do that.
 
 Locate FileZilla in the Applications folder on your computer and open it. Enter the following:
@@ -318,10 +296,10 @@ Locate FileZilla in the Applications folder on your computer and open it. Enter 
 4. For the Port: 22
 5. Then click QuickConnect.
 6. The left side shows files in the local computer you’re using. The right side shows files on baross. On the left side, navigate to whatever location you want your files to go to on the local computer. On the right side, navigate to the directory where you put your Prokka results.
-`/Accounts/yourusername/toy_dataset_directory/ORF_finding/PROKKA_09252018/PROKKA_09252018.tsv`
+`/Accounts/yourusername/toy_dataset_directory/ORF_finding/prokka_toy/PROKKA_09252018.tsv`
 All you have to do is double-click on the file you want to transfer, and over it goes!
 
-#### 13. Open tsv file
+#### 29. Open tsv file
 Find your file on your local computer, and open your `.tsv` file in Excel. The column headers are in columns as follows, left to right:
 1. `locus_tag`: the name that Prokka assigned the ORF
 2. `ftype` (feature type): whether the thing it found is an ORF (CDS) or a tRNA or rRNA gene or something else.
@@ -333,18 +311,50 @@ Find your file on your local computer, and open your `.tsv` file in Excel. The c
 
 
 ## Annotate your own project datasets
+Now that you have the general lay of the land, you're now going to annotate your own project dataset assemblies using `Prokka`.
 
-#### 14. Project dataset annotation
-Now that you have the general lay of the land, you're now going to annotate your own project dataset assemblies using `Prokka`. Move in to your project directory, start a screen session, then start running `Prokka` on your dataset, then exit the screen session so it can run in the background. When your annotation is finished, don't forget to re-enter and then terminate the screen session!
+#### 30. Check on your project assemblies
+Hopefully your project assemblies are done by now. Log back into your screen session (`screen -r`). When IDBA-UD finishes, it will say:
+
+```
+invalid insert distance
+Segmentation fault
+```
+
+This is because we gave IDBA-UD single-end reads instead of paired-end reads. Never fear! Despite appearances, your assembly actually did finish. However, the use of single-end reads instead of paired-end reads means that your assemblies will NOT have scaffolds, because we couldn’t take advantage of the paired-end data to make scaffolds. So, your final assembly is just the final contig file from the longest kmer, called `contig-100.fa.`
+
+#### 31. Rename assembly
+
+When your project assembly is done, change the name of your final assembly from `contig-100.fa` to a name that starts with your dataset number, followed by `_assembly.fasta`. For example, you might call it something like `ERR598966_assembly.fasta`.
+
+This way we will have standardized names and save ourselves future heartache. (For a reminder on how to change file names, see your Unix cheat sheet.)
+
+
+#### 32. Run anvi-script-reformat-fasta
+
+Run `anvi-script-reformat-fasta` on your completed project assemblies (see step 19 for instructions).
+
+#### 33. Copy data to shared folder
+
+Please copy your newly formatted, assembled project assemblies and put them into the folder that we'll be sharing as a class, substituting the placeholder below with the name of your assembled file. This will be the shared folder for all of the data that you generate as a class. I made a folder called `assemblies` that you will put your assembled contigs into.
+
+```
+cp [name of your formatted, assembled file] /Accounts/Genomics_Bioinformatics_shared/assemblies
+```
+
+
+#### 34. Run Prokka on your project dataset
+
+If you aren't in your project directory right now, move into it and start `prokka`. Remember that you're still in screen. This shouldn't take too long, but if you log out of screen, don't forget to re-enter and then terminate the screen session!
 
 ```
 cd ~/project_directory
 screen
-prokka [your assembly reformatted]
+prokka [your assembly reformatted] --outdir prokka_project
 Ctrl+A d
 ```
 
-#### 15. Share your data
+#### 35. Share your data
 **When Prokka is done, please copy your completed tsv and faa files to the shared class folder, and rename it with the name of your project dataset so it's recognizable. for example:**
 ```
 cp PROKKA_09252018.tsv /Accounts/Genomics_Bioinformatics_shared/PROKKA_results/ERR598995_ORFs.tsv
@@ -356,29 +366,29 @@ Congratulations! You now have annotations for your entire project dataset. This 
 
 We're almost done. But first we're going to see an example of how we might analyze this kind of data.
 
-#### 16. COG categories
+#### 36. COG categories
 First, there's a text file on the server that assigns every single COG in the COG database to a specific gene category, like `Translation, ribosomal structure, and biogenesis`. You can see it by typing this:
 
 ```
 less /usr/local/data/Python_scripts/COG_numbers_categories_annotations.txt
 ```
 
-#### 17. Getting COG categories of your genes
+#### 37. Getting COG categories of your genes
 Let's say you want to know how many of the genes in your dataset are responsible for translation, how many are for energy metabolism, how many are viruses, etc. Fortunately, there is a magic script available for you to do that on the server. Change directories into wherever your Prokka results are and type this:
 
 ```
 get_ORF_COG_categories.py [name of your Prokka tsv file]
 ```
-And voilà! You'll get a new file that ends in `_cog_categories.txt` with a list of all the different COG categories and the number of genes that fall into that category. Some of the COGs fall into multiple categories, denoted with, for example, `Signal_transduction_mechanisms/Transcription`. Imagine the possibilities! You can investigate so many questions about gene function in your dataset! Or, you know, answer Critical Thinking Question number 6 below.
+And voilà! You'll get a new file that ends in `_cog_categories.txt` with a list of all the different COG categories and the number of genes that fall into that category. Some of the COGs fall into multiple categories, denoted with, for example, `Signal_transduction_mechanisms/Transcription`. Imagine the possibilities! You can investigate so many questions about gene function in your dataset! (Or, you know, answer Critical Thinking Question number 6 below.)
 
-#### 18. Share your data
+#### 38. Share your data
 Please copy your COG categories file into the shared class folder so others can access it, and while you're at it, change the name so it's easily recognizable. For example:
 ```
-cp PROKKA09252019_cog_categories.tsv /Accounts/Genomics_Bioinformatics_shared/ERR590988_cog_categories.txt
+cp PROKKA09252019_cog_categories.tsv /Accounts/Genomics_Bioinformatics_shared/PROKKA_results/ERR590988_cog_categories.txt
 ```
 Obviously, please substitute the names of your own files for the ones listed above.
 
-#### 19. Exit
+#### 39. Exit
 
 When you are all done with your work on the server, you can log off the server by typing:
 
@@ -390,26 +400,25 @@ exit
 
 ## Questions to answer for this week
 
-#### 17. Questions
 
-Consider and answer the following questions and submit a Word document with your responses on the Moodle by lab time next week.
+Consider and answer the following questions and submit a Word document with your responses on the Moodle by lab time next week. I encourage collaboration and sharing of ideas with your classmates, but I expect each of you to submit your own assignment, which should reflect your own ideas and understanding of the responses.
 
 **Check for understanding:**
 
 Q1. (a-d) About your toy dataset assembly:
-- How many reads did you start with in the raw data file for your toy dataset, prior to assembly? (Hint: refer to the Unix tutorial you did, and use grep to search for the '>' symbol that denotes each new sequence. The > symbol also means something in Unix, so be sure to use quotes around it!)
-- Examine the Quast output. Describe and explain the pattern you observe in terms of N50 as the kmer size increases (from 'contig-20.fa' all the way to 'contig-100.fa').
-- Examine the Quast output. How does the N50 of your scaffold file compare to your contig-100 file? Explain why.
-- Examine the Quast output. Which assembly output file had the most contigs? The fewest? Explain why.
+- a) How many reads did you start with in the raw data file for your toy dataset, prior to assembly? (Hint: refer to the Unix tutorial you did, and use grep to search for the '>' symbol that denotes each new sequence. The > symbol also means something in Unix, so be sure to use quotes around it!)
+- b) Examine the Quast output. Describe and explain the pattern you observe in terms of N50 as the kmer size increases (from 'contig-20.fa' all the way to 'contig-100.fa').
+- c) Examine the Quast output. How does the N50 of your scaffold file compare to your contig-100 file? Explain why.
+- d) Examine the Quast output. Which assembly output file had the most contigs? The fewest? Explain why.
 
 **Critical thinking:**
 
 Q2. Let’s say that in preparing your samples for sequencing, you sheared your DNA to create an insert size (DNA sequence length) of 200 bp, and you sequenced them on an Illumina machine with 200 bp reads. How would you expect your scaffolds file to differ from your contig-100 file? What if you had instead selected an insert size of 500 bp? Explain your reasoning.
 
-Q3. Describe why a CRISPR array (see here for a reminder of what that looks like) might present a problem for assembly and what strategies you might use to overcome this problem.
+Q3. Describe why a CRISPR array might present a problem for assembly and what strategies you might use to overcome this problem.
 
 Q4. If you were testing different types of assembly software on a metagenome with high coverage, and one used k-mers of length 40 and the other used k-mers of length 20, how would you expect the N50 and total assembly length to differ and why? In contrast, if you were testing them on a metagenome with low coverage, would you expect the same results?
 
 Q5. Last week, we sampled water bodies within the Cannon River watershed. In the winter, you tend to get a very diverse microbial community, with lots of single nucleotide variants differentiating the microbes. In contrast, in spring or fall after a heavy rainfall, you might expect that nutrient runoff would go into the lakes, leading to a bloom of one specific type of microbe with very few single nucleotide variants, creating a less diverse microbial community. How might you expect your assembly N50 to differ between the winter and spring/fall communities? (You should include a discussion of coverage and de Bruijn graph construction in your answer.)
 
-Q6. Write a mini research question about the COG categories you got from your ORF annotations. You can compare your sample to someone else's. For example, you might ask, "Is there a difference in the number of genes related to the mobilome/prophage in the surface ocean compared to the mesopelagic zone?" Make an Excel bar plot based on your COG category results that demonstrates the answer to your question. Briefly explain your results and speculate as to why.
+Q6. Write a mini research question about the COG categories you got from your ORF annotations. You can compare your sample to someone else's. For example, you might ask, "Is there a difference in the number of genes related to the mobilome/prophage in the surface ocean compared to the mesopelagic zone?" Make an Excel bar plot based on your COG category results that demonstrates the answer to your question. Briefly explain your results and speculate as to why your results look they way they do. You should cite at least one paper from the literature that is relevant to your results.
