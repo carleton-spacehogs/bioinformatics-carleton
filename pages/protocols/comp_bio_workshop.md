@@ -97,18 +97,8 @@ This process is slow, so we're going to run it on 5 CPUs rather than just 1. It 
 anvi-run-hmms -c contigs.db -T 5
 ```
 
-#### 6. Determine taxonomy using Centrifuge
-Now we are going to figure out the taxonomy of our contigs using a program called centrifuge. Centrifuge is a program that compares your contigs to a sequence database in order to assign taxonomy to different sequences within your metagenome. We're going to use it first to classify your contigs.
 
-If you would like to know more, go here: http://merenlab.org/2016/06/22/anvio-tutorial-v2/ and here: http://www.ccb.jhu.edu/software/centrifuge/
-
-First, export your genes from anvi'o.
-```
-anvi-get-sequences-for-gene-calls -c contigs.db -o gene-calls.fa
-```
-
-
-#### 7. Import taxonomy data
+#### 6. Import taxonomy data
 
  One of the things that's useful to know is what kinds of microbes are in your sample. I have already run a separate program called `centrifuge` that has assigned a taxonomy to your contigs. Now you're going to put that information into your contigs database in anvi'o. It has a parser written into the software that can automatically read and import centrifuge output.
 
@@ -118,7 +108,7 @@ anvi-import-taxonomy-for-genes -c contigs.db -i centrifuge_report.tsv centrifuge
 
 ## Incorporating mapping data
 
-#### 8. Copy mapping files
+#### 7. Copy mapping files
 In order to make bins, anvi'o needs to compare mappings from different datasets. So, we mapped reads from a bunch of different metagenomes to these contigs. Each of those mapping files has coverage information that we can use to cluster contigs together-- contigs with similar coverage get clustered together.
 
 To do this, you need both the **sorted .bam files** and the **.bai files**. Those are stored at ``/Accounts/Genomics_Bioinformatics_shared/Tara_mappings/``. Copy the ones you need over to the directory that you are in now.
@@ -127,7 +117,7 @@ To do this, you need both the **sorted .bam files** and the **.bai files**. Thos
 cp /Accounts/Genomics_Bioinformatics_shared/Tara_mappings/[bam and/or bai files you want] .
 ```
 
-#### 9. Import mapping files into anvi'o with anvi-profile
+#### 8. Import mapping files into anvi'o with anvi-profile
 Now anvi’o needs to combine all of this information—your mapping, your contigs, your open reading frames, your taxonomy—together. To do this, use the anvi-profile script.
 
 -`anvi-profile` is the name of the program that combines the info together
@@ -139,7 +129,7 @@ anvi-profile -i [your sorted bam file] -c contigs.db -T 5 -M 500
 ```
 **Do this for each of the .bam files you have in your folder.**
 
-#### 10. Merge them together with anvi-merge
+#### 9. Merge them together with anvi-merge
 Now merge all of these profiles together using a program called anvi-merge. You have to merge together files in directories that were created by the previous profiling step. The asterisk * is a wildcard that tells the computer, 'take all of the folders called 'PROFILE.db' from all of the directories and merge them together.'
 
 We're also going to tell the computer not to bin these contigs automatically (called 'unsupervised' binning), we want to bin them by hand ('supervised' binning). So we use the --skip-concoct-binning flag.
@@ -150,7 +140,7 @@ anvi-merge all_mapping_files/*/PROFILE.db -o SAMPLES-MERGED -c contigs.db --skip
 ```
 ## Visualizing and making your bins
 
-#### 13. anvi-interactive
+#### 10. anvi-interactive
 Now the fun part with pretty pictures! Type this to open up the visualization of your contigs:
 ```
 anvi-interactive -p SAMPLES-MERGED/PROFILE.db -c contigs.db
@@ -184,11 +174,22 @@ When you are done making your bins, be sure to click on 'Store bin collection', 
 #### 16. Finding bin information
 You will find your new bin FASTA files in the directory called '~/Desktopy/anvio/SAMPLES-MERGED/SUMMARY_my_bins'.
 
-`bins_summary.txt` provides just that, with information about the taxonomy, total length, number of contigs, N50, GC content, percent complete, and percent redundancy of each of your bins. This is reflected in the summary html page you generated earlier when you clicked 'Generate a static summary page.'
+If you aren't familiar with Unix, here's how to change into that directory:
+```
+cd ~/Desktopy/anvio/SAMPLES-MERGED/SUMMARY_my_bins
+```
+
+And here's how to look at files in that directory (looking at the sequences in Bin_1, for example).
+
+```
+less bin_by_bin/Bin_1/Bin_1-contigs.fa
+```
+
+`bins_summary.txt` provides... well... a summary of your bins. It has information about the taxonomy, total length, number of contigs, N50, GC content, percent complete, and percent redundancy of each of your bins. This is reflected in the summary html page you generated earlier when you clicked 'Generate a static summary page.'
 
 If you go to the directory `bin_by_bin`, you will find a series of directories, one for each bin you made. Inside each directory is a wealth of information about each bin. This includes (among other things):
 
--a FASTA file containing all of the contigs that comprise your bin (i.e. `Bin_1-contigs.fa`)
+-a FASTA file containing all of the contigs (sequences) that make up your bin (i.e. `Bin_1-contigs.fa`)
 
 -mean coverage of each bin across all of your samples (i.e. `Bin_1-mean-coverage.txt`)
 
@@ -204,12 +205,37 @@ Let's take a moment and appreciate what you did. The sequences you started with 
 
 Now that we've appreciated how cool that is, there are a few things we could continue to do with these genomes if we were scientists studying the oceans (like me!)
 
-#### 17. Look at their gene content
+#### 17. Take a closer look using BLAST (nucleotide BLAST against a nucleotide database)
 
-We can see what types of genes were in these genomes simply by inspecting our summary page. After you click "generate static gene summary" on the anvi'o visualization page, a new page will pop up giving you lots of info about what types of genes are on those genomes. Take a look and see what you find. Different types of microbes have different types of abilities, and this is giving you a glimpse into their functional potential.
+One of the most obvious things you might want to investigate is what kinds of genes you have in the genomes you've just made. Different types of microbes have different types of abilities, and maybe you want to compare the abilities of your microbes.
+
+There are LOTS of sophisticated ways to do this. One of them is to use BLAST, the old bioinformatics workhorse. Here's an example of how to do that.
+
+```
+less ~/Desktopy/anvio/SAMPLES-MERGED/SUMMARY_my_bins/bin_by_bin/Bin_1/Bin_1-contigs.fa
+```
+Copy the first sequence you see. Navigate a web browser to https://blast.ncbi.nlm.nih.gov/Blast.cgi. Click on "Nucleotide BLAST." Paste your sequence into the box on the top. Scroll down and make sure "Somewhat similar sequences (blastn)" is clicked.
+Hit the BLAST button and go!
+
+This will tell you what *kinds* of microbes are in your sample, because you're doing a BLAST against a database of genomes. Let's try it against a database of proteins.
+
+#### 18. Take a closer look using BLAST (translated nucleotide BLAST against a protein database)
+Let's take a closer look at the gene level. Let's copy one of the genes that anvi'o called for us.
+
+```
+less bin_by_bin/Bin_1/Bin_1-gene_calls.txt
+```
+
+Copy the first sequence you see. Be sure to only copy the sequences (i.e. AGTTGA) and not the sequence title.
+
+Now Navigate a web browser to https://blast.ncbi.nlm.nih.gov/Blast.cgi. Click on "blastx- translated nucleotide --> protein." Paste your sequence into the box on the top. Hit the BLAST button and go!
+
+(This could take a while. Like I said, this is a relatively unsophisticated method, but it works for our purposes.)
+
+What you'll see is a description of the best match in NCBI's database to the actual gene you copied. It might tell you something about what your microbe is capable of.
 
 
-#### 18. Look at the variation within the microbial populations
+#### 19. Look at the variation within the microbial populations
 
 We can also see how these populations are *evolving* over time by looking at how much variation there is within the population. It's sort of like Darwin's finches: some finch populations had beaks with all the same size and shape, and some populations had different beak shapes and sizes, probably because there were seeds of different shapes and sizes in that habitat. Our equivalent here is single nucleotide variants, or SNVs. You can look at the SNVs by examining the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/variability.txt`
 file that you generated when you made the sample summary page. It has tons of information about how many SNVs there were for each of your bins.
