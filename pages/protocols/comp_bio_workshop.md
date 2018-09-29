@@ -56,6 +56,7 @@ The data includes:
 
 1) assembled sequences, called contigs  (i.e. >c_000000000001)
 2) bam files, which contain mapping data of metagenomes to your contigs.
+3) centrifuge files, which contain information about what types of microbes are in your sample.
 
 
 #### 3. Unpack the data
