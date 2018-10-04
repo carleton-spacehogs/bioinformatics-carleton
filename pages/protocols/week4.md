@@ -107,7 +107,7 @@ http://pfam.xfam.org/family/PF03787
 This takes you to a page with information about the RAMP family of proteins, the "Repair Associated Mysterious Proteins." While indeed mysterious, they turn out to be CRISPR-related proteins.
 
 #### 11. Find protein (cont.)
-Click on "1866 sequences" near the top.
+Click on "3016 sequences" near the top. If the link doesn't work, click on "Alignments" on the side bar.
 
 #### 12. Generate file
 Under "format an alignment," select your format as "FASTA" from the drop-down menu, and select gaps as "No gaps (unaligned)" from the drop-down menu. Click "Generate."
@@ -172,13 +172,13 @@ Take a look at your BLAST results and answer the following questions for the Wor
 Q4. (a-e)
 - Which protein among your Pfam query sequences had the best hit?
 - What was the percent identity?
-- What organism does the matching Pfam protien query sequence come from?
+- What organism does the matching Pfam protein query sequence come from?
 - Which of your ORFs did it match?
 - Does this ORF have hits to other sequences within your query file? What do you think this means?
 
 
 #### 19. Post-lab questions
-Let’s try this another way. Run your blast again, but this time use a lower e-value cutoff.
+Let’s try this another way. Run your blast again, but this time use a bigger e-value cutoff.
 
 ```bash
 blastp -query PF03787_seed.txt -db PROKKA_09252018.faa -evalue 1e-02 -outfmt 6 -out PF03787_vs_toy_ORFs_evalue1e02.blastp
@@ -215,7 +215,7 @@ blastp -query DNA_pol_T_aquaticus.faa -db PROKKA_09252018.faa -outfmt 6 -out DNA
 
 #### 22. Examine results
 
-Take a look at your blastp output using less. Notice the e-value column, second from left. Most of your e-values for this range between 2.3 (at best) and 7.4 (at worst). These e-values are TERRIBLE. This means you probably didn’t have very good hits to this protein in your dataset. (What constitutes a “good” e-value is debatable and depends on your application, but a general rule of thumb is for it to be 1e-05 or lower.)
+Take a look at your blastp output using less. Notice the e-value column, second from right. Most of your e-values for this range between 2.3 (at best) and 7.4 (at worst). These e-values are TERRIBLE. This means you probably didn’t have very good hits to this protein in your dataset. (What constitutes a “good” e-value is debatable and depends on your application, but a general rule of thumb is for it to be 1e-05 or lower.)
 
 #### 23. Post-lab questions
 

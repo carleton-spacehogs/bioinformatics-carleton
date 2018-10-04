@@ -1,18 +1,16 @@
 # Week 5: Mapping with bowtie2
 
-Rika Anderson,
-Carleton College
 
 
 #### 1. Log in to the remote server
-Boot your computer as a Mac and use the Terminal to ssh in to baross. One or two of you can hop on to liverpool. (We're going to be using multiple threads today. As always, please observe proper computer etiquette when using any shared server and don't use more than your fair share of processors.)
+Boot your computer as a Mac and use the Terminal to ssh in to baross.
 
 ## Mapping with a toy dataset
 
 #### 2. Make new directory
-We're going to start by mapping the sequencing reads from a genome sequence of a type of archaeon (Sulfolobus acidocaldarius-- you've seen it before) against a scaffold from a very closely related species.
+We're going to start by mapping the sequencing reads from a genome sequence of a type of archaeon (*Sulfolobus acidocaldarius*-- you've seen it before) against a scaffold from a very closely related species.
 
-The sequencing reads from from one strain of Sulfolobus acidocaldarius, and the reference sequence that they are mapping to is from a very closely related strain of Sulfolobus acidocaldarius.
+The sequencing reads from from one strain of *Sulfolobus acidocaldarius*, and the reference sequence that they are mapping to is from a very closely related strain of *Sulfolobus acidocaldarius*.
 
 In your home directory, make a new directory called “mapping,” then change into that directory.
 ```
@@ -31,13 +29,13 @@ cp /usr/local/data/toy_datasets/toy_dataset_contig_for_mapping.fasta .
 #### 4. Build index
 You're going to be mapping short reads to a longer reference sequence. The first thing you have to do is prepare an index of your reference so that the mapping software can map to it.
 
+```
+bowtie2-build toy_dataset_contig_for_mapping.fasta toy_dataset_contig_for_mapping.btindex
+```
 -`bowtie2-build` is the program that indexes your reference.
 -The first argument gives the reference dataset name.
 -The second argument provides the name you want to give to the index.
 
-```
-bowtie2-build toy_dataset_contig_for_mapping.fasta toy_dataset_contig_for_mapping.btindex
-```
 
 #### 5. Map!
 Now, map! This will take a few steps.
@@ -58,14 +56,16 @@ bowtie2 -x toy_dataset_contig_for_mapping.btindex -f -U toy_dataset_reads_for_ma
 If you look at the output file with `less`, you can see that it is human-readable (sort of). It tells you exactly which reads mapped, and where they mapped on the reference, and what the differences were between the reference and the mapped reads. This can sometimes be useful if you want to parse it yourself with your own scripts-- but there's a whole suite of tools in a package called `samtools` that we'll rely on to do that next.
 
 #### 7. samtools
-Now you will use a package called samtools to convert the SAM file into a non-human-readable BAM file. You've heard of BAM files before-- now you get to make one.
-
--`samtools` is a package used to manipulate and work with mapping files. samtools view is one program within the whole samtools package.
--The flag `-bS` is not BS. It tells samtools to convert a bam file to a sam file. (Bioinformatics jokes = still not very funny.)
+Now you will use a package called `samtools` to convert the SAM file into a non-human-readable BAM file. You've heard of BAM files before-- now you get to make one.
 
 ```
 samtools view -bS toy_dataset_mapped_species1.sam > toy_dataset_mapped_species1.bam
 ```
+
+-`samtools` is a package used to manipulate and work with mapping files. samtools view is one program within the whole samtools package.
+-The flag `-bS` is not BS. It tells samtools to convert a bam file to a sam file. (Bioinformatics jokes = still not very funny.)
+
+
 #### 8. samtools sort
 And because this is so fun, we get to do some more bookkeeping. Sort your bam file so that later programs have an easier time parsing it:
 
@@ -78,7 +78,7 @@ samtools sort toy_dataset_mapped_species1.bam -o toy_dataset_mapped_species1_sor
 -The `-o` flag gives the name of the output file you want.
 
 #### 9. Index the reference with samtools
-In order to visualize your mapping, you have to **index your reference**. Yes, again. This time with samtools instead of bowtie2. (NOTE: you only need to do this step if you're going to visualize your mapping, as we're about to do now. In the future, if you don't intend to visualize, then you don't need to bother with this step.)
+In order to visualize your mapping, you have to **index your reference**. Yes, again. This time with samtools instead of bowtie2. (NOTE: you only need to do this step if you're going to visualize your mapping, as we're about to do now. In the future, if you don't intend to visualize your mapping, then you don't need to bother with this step.)
 
 ```
 samtools faidx toy_dataset_contig_for_mapping.fasta
@@ -101,18 +101,18 @@ samtools index toy_dataset_mapped_species1_sorted.bam
 Now we're going to visualize this. Copy the entire "mapping" folder over to your local computer using either FileZilla or scp.
 
 ```
-scp -r [your username]@liverpool.its.carleton.edu:/Accounts/[your username]/toy_dataset_directory/mapping/ ~/Desktop
+scp -r [your username]@baross.its.carleton.edu:/Accounts/[your username]/toy_dataset_directory/mapping/ ~/Desktop
 ```
-*Remember, if you use scp, you should open a new Terminal window that is NOT logged in to liverpool. The above command copies the folder at toy_dataset_directory/mapping to your local computer's Desktop.*
+*Remember, if you use scp, you should open a new Terminal window that is NOT logged in to baross. The above command copies the folder at toy_dataset_directory/mapping to your local computer's Desktop.*
 
 #### 12. Visualize in IGV
-Find the IGV Viewer and open it. Click 'Genomes' --> 'Load Genome from File' and find your reference file. Then click 'File' --> 'Load from File' and open your sorted bam file. You should be able to visualize the mapping. Along the top, you'll see the coordinates of your reference sequence. Below that, you'll see a graph showing the coverage of each base pair along your reference sequence. Below that, you'll see each read mapped to each position. The arrows indicate the direction of the read; white reads are reads that mapped to two different locations in your reference. Single nucleotide variants in the reads are marked with colored letters; insertions are marked with a purple bracket, and deletions are marked with a horizontal black line. More information can be found at the link below.
+Find the IGV Viewer on your local computer and open it. Click 'Genomes' --> 'Load Genome from File' and find your reference file. Then click 'File' --> 'Load from File' and open your sorted bam file. You should be able to visualize the mapping. Along the top, you'll see the coordinates of your reference sequence. Below that, you'll see a graph showing the coverage of each base pair along your reference sequence. Below that, you'll see each read mapped to each position. The arrows indicate the direction of the read; white reads are reads that mapped to two different locations in your reference. Single nucleotide variants in the reads are marked with colored letters; insertions are marked with a purple bracket, and deletions are marked with a horizontal black line. More information can be found at the link below.
 
 Link to IGV viewer:
 http://software.broadinstitute.org/software/igv/AlignmentData
 
 #### 13. Compare mappings
-We're going to compare and contrast this mapping with another one. Now we're use the sequencing reads from a third very closely related strain of Sulfolobus acidocaldarius, and we're going to map those reads to the original reference sequence.
+We're going to compare and contrast this mapping with another one. Now we're use the sequencing reads from a third very closely related strain of `Sulfolobus acidocaldarius`, and we're going to map those reads to the original reference sequence.
 
 First, copy the second file to your directory (see below). Then, we will map these reads to the same reference file you used above, and then we will compare the mapping. You have already indexed the reference file, so you only need to repeat the steps that index the reads, and then map. All of those commands are listed below.
 
@@ -131,11 +131,9 @@ Copy the new data files to your local computer, and then visualize both of them 
 
 Check for understanding:
 
-1. Describe the large-scale differences between the mapped reads from species 1 and species 2, and explain what this mapping tells us about the relative genome structure of the two genomes that we mapped. If we compared this genomic region in a dot plot, what would it look like? Describe at least one biological mechanism by which this may have occurred.
+1. Describe the large-scale differences between the mapped reads from species 1 and species 2, and explain what this mapping tells us about the relative genome structure of the two genomes that we mapped. If we compared this genomic region in a dot plot, what would it look like? Describe an example of a biological mechanism by which this may have occurred.
 
-2. Do you see evidence of misassemblies? If so, describe where you see evidence for this and what this evidence looks like.
-
-3. Do you see any evidence of single nucleotide polymorphisms? If so, describe where you see evidence for this and what this evidence looks like.**
+2. Do you see evidence of either misassemblies or deletions? If so, describe where you see evidence for this and what this evidence looks like.**
 
 ## Mapping your project datasets
 Now we're going to map your project datasets. Remember that these are metagenomes, not a genome, so the data will be a bit more complex to interpret.
@@ -150,18 +148,18 @@ We're going to map your raw reads against your assembled contigs. Why would we d
 
 Check for understanding:
 
-4. If you wanted to quantify the relative abundances of specific genes in your sample, why couldn't you simply count the number of times your gene appears in your assembly?**
+3. If you wanted to quantify the relative abundances of specific genes in your sample, why couldn't you simply count the number of times your gene appears in your assembly?**
 
 #### 15. Map to project datasets
-Change directory into your project dataset directory folder. We're going to map your raw reads against your assemblies (not your ORFs). Make sure you know where your project assembly is and where your raw reads are. Follow the instructions to map your raw reads back to your assembled contigs. For example, if you were mapping the dataset ERR599166_1mill_sample.fasta and your assembly was called ERR599166_assembly_formatted.fa, you might do something like this. Please be sure to use the assembled files that you've already run through anvi-script-reformat-fasta, which you should have done in our first computer lab.
+Change directory into your project dataset directory folder. We're going to map your raw reads against your assembled contigs (not your ORFs). Make sure you know where your project assembly is and where your raw reads are. Follow the instructions to map your raw reads back to your assembled contigs. For example, if you were mapping the dataset ERR599166_1mill_sample.fasta and your assembly was called ERR599166_assembly_formatted.fa, you might do something like this (below). Please be sure to use the assembled files that you've already run through anvi-script-reformat-fasta, which you should have done in our first computer lab.
 
-One more thing. Your project datasets are very large-- you each have 10 million reads. So mapping will take longer than for the toy datasets. So we're going to add an extra flag (-p) to the mapping step to tell the computer to use more than one processors so the process goes faster. You'll each use 4 for this process, so the class will be using 44 in total. The mapping may still take about 5-10 minutes, so have patience!
+One more thing. Your project datasets are very large-- you each have 10 million reads. So mapping will take longer than for the toy datasets. So we're going to add an extra flag (-p) to the mapping step to tell the computer to use more than one processor so the process goes faster. You'll each use 5 for this process. The mapping may still take about 5-10 minutes, so have patience!
 
 An example set of commands is shown below. Remember to replace the datasets here with your own project datasets!
 
 ```
 bowtie2-build ERR599166_assembly_formatted.fa ERR599166_assembly_formatted.btindex
-bowtie2 -x ERR599166_assembly_formatted.btindex -f -U ERR599166_sample.fasta -S ERR599166_mapped.sam -p 4
+bowtie2 -x ERR599166_assembly_formatted.btindex -f -U ERR599166_sample.fasta -S ERR599166_mapped.sam -p 5
 samtools view -bS ERR599166_mapped.sam > ERR599166_mapped.bam
 samtools sort ERR599166_mapped.bam -o ERR599166_mapped_sorted.bam
 samtools faidx ERR599166_assembled.fa
@@ -176,7 +174,7 @@ samtools index ERR599166_mapped_sorted.bam
 When you visualize this in TGV, remember that you have multiple contigs. So you have to click the drop-down menu at the top and choose which contig you wish to visualize.
 
 #### 17. Check for understanding
-**5. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind this is a metagenome from a population of individual organisms vs an assembly, not an individual vs. an individual.)**
+**4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind this is a metagenome from a population of individual organisms vs an assembly, not an individual vs. an individual.)**
 
 #### 18. Calculating coverage- generate bed file
 You were able to visualize the mappings in IGV, but sometimes you just want to have a number: for example, you might want to know the average coverage across a specific gene, and compare that to the average coverage of another gene in order to compare their relative abundances in the sample. So, next we're going to calculate gene coverages based on your mapping.
@@ -188,7 +186,9 @@ make_bed_file_from_ORF_file.py [your ORF file]
 ```
 
 For example:
+```
 make_bed_file_from_ORF_file.py ERR599166_assembled_ORFs.faa
+```
 
 This will create a bed file that ends in .bed. You can take a look at it if you wish-- it should have the contig name, the coordinates of your ORF, and the name of your ORF.
 
@@ -200,7 +200,9 @@ samtools bedcov [your bed file] [your sorted bam file] > [ an output file that e
 ```
 
 For example:
+```
 samtools bedcov ERR599166_assembled.bed ERR599166_mapped_sorted.bam > ERR599166_ORF_coverage.txt
+```
 
 #### 20. Calculate coverage in Excel
 Open the file that it spits out. It should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, and then the sum of the per-base coverage. To get the average coverage, open this document in Excel, and divide that number by the difference between the stop and start coordinates.
