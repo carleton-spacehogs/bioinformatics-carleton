@@ -133,7 +133,7 @@ Copy the new data files to your local computer using scp or FileZilla like in st
 
 1. Describe the large-scale differences between the mapped reads from species 1 and species 2, and explain what this mapping tells us about the relative genome structure of the two genomes that we mapped. If we compared this genomic region in a dot plot, what would it look like?
 
-2. Do you see evidence of misassemblies or deletions in the reference? What does that evidence look like?**
+2. Do you see evidence of misassemblies or deletions in the reference? What does that evidence look like?
 
 ## Mapping your project datasets
 Now we're going to map your project datasets. Remember that these are metagenomes, not a genome, so the data will be a bit more complex to interpret.
@@ -141,7 +141,9 @@ Now we're going to map your project datasets. Remember that these are metagenome
 We're going to map your raw reads against your assembled contigs. Why would we do this, you ask? A few reasons:
 
 -to look for single nucleotide variants in specific genes.
+
 -to quantify the relative abundances of different genes, and determine whether specific genes have better coverage than others.
+
 -to quantify the relative abundances of specific taxa, and determine whether specific taxa are more abundant than others.
 
 **As you consider this, answer the following question for this week's lab questions:**
@@ -214,7 +216,7 @@ Keep in mind that if you map a different metagenome against this same reference 
 #### 21. Check for understanding
 This is a really common type of analysis for 'omics-based studies-- you can compare the coverage of specific genes of interest. For example, you might compare the coverage of genes related to photosythesis, respiration, and nitrogen fixation if you're interested in how abundant those metabolisms are in the community. Or you might be interested in the relative coverage of ribosomal genes from archaea vs bacteria, for example, if you're interested in how abundant archaea are vs. bacteria.
 
-**Check for understanding:
+**Check for understanding:**
 
 6. Go back to your Interproscan files and find two ORFs that you're interested in. Choose one that you think might be really abundant in a sample (a housekeeping gene, for example, that might be really common) and choose one that you think might be more specialized and only found in specific types of microbes. Describe the ORFs you chose and which one you predict to have higher coverage.
 
@@ -224,9 +226,10 @@ This is a really common type of analysis for 'omics-based studies-- you can comp
 
 Was your prediction correct? If not, speculate on why or why not.
 
-8. As you scroll through the data file reporting the average coverage of all of your ORFs, which ORF had the highest coverage? What did it encode, according to your Prokka file or BLAST? Speculate on why that gene may have had the highest coverage of all the genes in your dataset. NOTE! The genes with the highest coverage were probably really short and resulted from Illumina sequencing error-- i.e., ATATATATATATAT. IDBA-UD orders contigs by length, so I recommend skipping the contigs that are really short (high numbers in the contig name) and find the contig with the highest coverage that was unlikely to be a sequencing error.**
+8. As you scroll through the data file reporting the average coverage of all of your ORFs, which ORF had the highest coverage? What did it encode, according to your Prokka file or BLAST? Speculate on why that gene may have had the highest coverage of all the genes in your dataset. NOTE! The genes with the highest coverage were probably really short and resulted from Illumina sequencing error-- i.e., ATATATATATATAT. IDBA-UD orders contigs by length, so I recommend skipping the contigs that are really short (high numbers in the contig name) and find the contig with the highest coverage that was unlikely to be a sequencing error.
 
 #### 22. Copy your mapping files to the shared class folder
+
 Please copy your bam files, bai files, bed files, and your ORF coverage files over to the class shared folder.
 Remember to give them names that are uniform and recognizable (see below example, and substitute your file names for the ones below).
 ```
@@ -240,22 +243,24 @@ cp ERR598995_ORF_coverage.txt  /Accounts/Genomics_Bioinformatics_shared/mapping
 #### 25. This week's postlab writeup
 For this week's post-lab writeup:
 
-**10. Mini Research Question
+**10. Mini Research Question**
 
-Write either a question or generate a hypothesis about the relative coverage of this set of genes with respect to your project datasets. This question/hypothesis should include a comparison between your own project dataset and another dataset, and it should be couched within the larger ecological context.**
+Write either a question or generate a hypothesis about the relative coverage of this set of genes with respect to your project datasets. This question/hypothesis should include a comparison between your own project dataset and another dataset, and it should be couched within the larger ecological context.
 
 You do have some information to act as a basis for your question or hypothesis. For example, the KEGG metabolisms page you saw last week provides good information about which genes are used in specific pathways. You also have some metadata related to your project sample in the Project Dataset Excel spreadsheet on the Moodle.
 
-*Example #1:
+---
+*Example #1:*
 I hypothesize that there will be lower coverage of genes related to photosynthesis (i.e. the psb genes) in the mesopelagic zone relative to the surface. This is because at the surface there will be more organisms that photosynthesize compared to the mesopelagic zone, where less light is available. Therefore, a lower proportion of genes in the microbial community in the mesopelagic zone will be related to photosynthesis compared to the surface, and therefore, fewer reads will map to photosynthesis genes in the mesopelagic zone.
 
-Example #2:
-I hypothesize that there will be higher coverage of genes related to viruses in my sample relative to the deeper samples because there are more viruses in surface waters than in deeper waters, simply because there are more organisms to infect in surface waters.*
+*Example #2:*
+I hypothesize that there will be higher coverage of genes related to viruses in my sample relative to the deeper samples because there are more viruses in surface waters than in deeper waters, simply because there are more organisms to infect in surface waters.
+---
 
 Once you've identified the set of genes related to a specific metabolism/function/type of organism, and you have written a question or generated a hypothesis, find the average coverage to each of those ORFs in your dataset. Remember that more than one ORF may have that function.
 
 You will have to compare your mapping of your own reads to your own dataset to a mapping made by one of your classmates to their own dataset. The bam files and ORF coverage files should be saved in /Accounts/Genomics_Bioinformatics_shared/mapping.
 
-**Describe your results and create at least one graph to visualize those results. This should represent a mini 'Results' section in a lab report or paper. Interpret your results within the context of the ecosystem you are investigating. This should represent a mini 'Discussion' section in a lab report or paper.
+**Describe your results and create at least one graph to visualize those results. This should represent a mini 'Results' section in a lab report or paper. Interpret your results within the context of the ecosystem you are investigating. This should represent a mini 'Discussion' section in a lab report or paper.**
 
-Compile your "check for understanding" questions and your mini research question together and submit on the Moodle by lab time next week.**
+**Compile your "check for understanding" questions and your mini research question together and submit on the Moodle by lab time next week.**
