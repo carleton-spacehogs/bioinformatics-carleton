@@ -1,7 +1,5 @@
 # Week 5: Mapping with bowtie2
 
-
-
 #### 1. Log in to the remote server
 Boot your computer as a Mac and use the Terminal to ssh in to baross.
 
@@ -129,9 +127,9 @@ samtools index toy_dataset_mapped_species2_sorted.bam
 #### 14. Visualize new mapping
 Copy the new data files to your local computer using scp or FileZilla like in step 11, and then visualize both of them in IGV viewer. Since you have already loaded the reference file and reads from your first mapping, all you have to do is click 'File' --> 'Load from File' and click on your new bam file. You should be able to see them side by side.
 
-**Answer these questions for this week's postlab assignment.
+**Answer these questions for this week's postlab assignment.**
 
-Check for understanding:
+**Check for understanding:**
 
 1. Describe the large-scale differences between the mapped reads from species 1 and species 2, and explain what this mapping tells us about the relative genome structure of the two genomes that we mapped. If we compared this genomic region in a dot plot, what would it look like?
 
@@ -146,11 +144,11 @@ We're going to map your raw reads against your assembled contigs. Why would we d
 -to quantify the relative abundances of different genes, and determine whether specific genes have better coverage than others.
 -to quantify the relative abundances of specific taxa, and determine whether specific taxa are more abundant than others.
 
-**As you consider this, answer the following question for this week's lab questions:
+**As you consider this, answer the following question for this week's lab questions:**
 
-Check for understanding:
+**Check for understanding:**
 
-3. If you wanted to quantify the relative abundances of specific genes in your sample, why couldn't you simply count the number of times your gene appears in your assembly?**
+3. If you wanted to quantify the relative abundances of specific genes in your sample, why couldn't you simply count the number of times your gene appears in your assembly?
 
 #### 15. Map to project datasets
 Change directory into your project dataset directory folder. We're going to map your raw reads against your assembled contigs (not your ORFs). Make sure you know where your project assembly is and where your raw reads are. Follow the instructions to map your raw reads back to your assembled contigs. For example, if you were mapping the dataset ERR599166_1mill_sample.fasta and your assembly was called ERR599166_assembly_formatted.fa, you might do something like this (below). Please be sure to use the assembled files that you've already run through anvi-script-reformat-fasta, which you should have done in our first computer lab.
@@ -176,7 +174,7 @@ samtools index ERR599166_mapped_sorted.bam
 When you visualize this in TGV, remember that you have multiple contigs. So you have to click the drop-down menu at the top and choose which contig you wish to visualize.
 
 #### 17. Check for understanding
-**4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind that you have mapped metagenomic reads from a whole microbial community against a consensus assembly-- this is not reads from an individual vs an individual's reference assembly.)**
+4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind that you have mapped metagenomic reads from a whole microbial community against a consensus assembly-- this is not reads from an individual vs an individual's reference assembly.)
 
 #### 18. Calculating coverage- generate bed file
 You were able to visualize the mappings in IGV, but sometimes you just want to have a number: for example, you might want to know the average coverage across a specific gene, and compare that to the average coverage of another gene in order to compare their relative abundances in the sample. So, next we're going to calculate gene coverages based on your mapping.
