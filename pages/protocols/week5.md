@@ -45,7 +45,7 @@ First, you make what is called a SAM file. It's a human-readable version of a BA
 -`bowtie2` is the name of the mapping program.
 -`-x` is the flag that provides the name of the index you just made.
 -`-f` means that the reads you are mapping are in fasta, not fastq, format.
--`-U` means that the reads are not paired.
+-`-U` means that the reads are not paired. (They aren't in this dataset.)
 -`-S` provides the name of your output file, which is in SAM format.
 
 ```
@@ -63,7 +63,7 @@ samtools view -bS toy_dataset_mapped_species1.sam > toy_dataset_mapped_species1.
 ```
 
 -`samtools` is a package used to manipulate and work with mapping files. samtools view is one program within the whole samtools package.
--The flag `-bS` is not BS. It tells samtools to convert a bam file to a sam file. (Bioinformatics jokes = still not very funny.)
+-The flag `-bS` is not BS! It tells samtools to convert a bam file to a sam file. (Bioinformatics jokes = still not very funny.)
 
 
 #### 8. samtools sort
@@ -78,7 +78,9 @@ samtools sort toy_dataset_mapped_species1.bam -o toy_dataset_mapped_species1_sor
 -The `-o` flag gives the name of the output file you want.
 
 #### 9. Index the reference with samtools
-In order to visualize your mapping, you have to **index your reference**. Yes, again. This time with samtools instead of bowtie2. (NOTE: you only need to do this step if you're going to visualize your mapping, as we're about to do now. In the future, if you don't intend to visualize your mapping, then you don't need to bother with this step.)
+In order to visualize your mapping, you have to **index your reference**. Because indexing is SO MUCH FUN. This time we are indexing with samtools instead of bowtie2.
+
+(**NOTE!!**: you only need to do this step if you're going to visualize your mapping with IGV, as we're about to do now. In the future, if you don't intend to visualize your mapping, then you don't need to bother with this step.)
 
 ```
 samtools faidx toy_dataset_contig_for_mapping.fasta
@@ -88,7 +90,7 @@ samtools faidx toy_dataset_contig_for_mapping.fasta
 -The first argument provides the name of the index, which should be your reference file.
 
 #### 10. Index the bam file
-Almost there! Now you index the bam file that you just made:
+Almost there! Now you index the bam file that you just made because WE LOVE INDEXING.
 
 ```
 samtools index toy_dataset_mapped_species1_sorted.bam
@@ -112,9 +114,9 @@ Link to IGV viewer:
 http://software.broadinstitute.org/software/igv/AlignmentData
 
 #### 13. Compare mappings
-We're going to compare and contrast this mapping with another one. Now we're use the sequencing reads from a third very closely related strain of `Sulfolobus acidocaldarius`, and we're going to map those reads to the original reference sequence.
+We're going to compare and contrast this mapping with another one. Now we're use the sequencing reads from a third very closely related strain of *Sulfolobus acidocaldarius*, and we're going to map those reads to the original reference sequence so that we can compare the mapping.
 
-First, copy the second file to your directory (see below). Then, we will map these reads to the same reference file you used above, and then we will compare the mapping. You have already indexed the reference file, so you only need to repeat the steps that index the reads, and then map. All of those commands are listed below.
+All of the commands are listed below. First, you will copy the second file to your directory (see below). You have already indexed the reference file. Then you map, convert SAM to BAM, sort, and then index.
 
 ```
 cp /usr/local/data/toy_datasets/toy_dataset_reads_for_mapping_species2.fasta .
@@ -125,15 +127,15 @@ samtools index toy_dataset_mapped_species2_sorted.bam
 ```
 
 #### 14. Visualize new mapping
-Copy the new data files to your local computer, and then visualize both of them in IGV viewer. Since you have already loaded the reference file and reads from your first mapping, all you have to do is click 'File' --> 'Load from File' and click on your new bam file. You should be able to see them side by side.
+Copy the new data files to your local computer using scp or FileZilla like in step 11, and then visualize both of them in IGV viewer. Since you have already loaded the reference file and reads from your first mapping, all you have to do is click 'File' --> 'Load from File' and click on your new bam file. You should be able to see them side by side.
 
 **Answer these questions for this week's postlab assignment.
 
 Check for understanding:
 
-1. Describe the large-scale differences between the mapped reads from species 1 and species 2, and explain what this mapping tells us about the relative genome structure of the two genomes that we mapped. If we compared this genomic region in a dot plot, what would it look like? Describe an example of a biological mechanism by which this may have occurred.
+1. Describe the large-scale differences between the mapped reads from species 1 and species 2, and explain what this mapping tells us about the relative genome structure of the two genomes that we mapped. If we compared this genomic region in a dot plot, what would it look like?
 
-2. Do you see evidence of either misassemblies or deletions? If so, describe where you see evidence for this and what this evidence looks like.**
+2. Do you see evidence of misassemblies or deletions in the reference? What does that evidence look like?**
 
 ## Mapping your project datasets
 Now we're going to map your project datasets. Remember that these are metagenomes, not a genome, so the data will be a bit more complex to interpret.
@@ -155,7 +157,7 @@ Change directory into your project dataset directory folder. We're going to map 
 
 One more thing. Your project datasets are very large-- you each have 10 million reads. So mapping will take longer than for the toy datasets. So we're going to add an extra flag (-p) to the mapping step to tell the computer to use more than one processor so the process goes faster. You'll each use 5 for this process. The mapping may still take about 5-10 minutes, so have patience!
 
-An example set of commands is shown below. Remember to replace the datasets here with your own project datasets!
+An example set of commands is shown below. **Remember to replace the dataset names here with your own project datasets!**
 
 ```
 bowtie2-build ERR599166_assembly_formatted.fa ERR599166_assembly_formatted.btindex
@@ -174,7 +176,7 @@ samtools index ERR599166_mapped_sorted.bam
 When you visualize this in TGV, remember that you have multiple contigs. So you have to click the drop-down menu at the top and choose which contig you wish to visualize.
 
 #### 17. Check for understanding
-**4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind this is a metagenome from a population of individual organisms vs an assembly, not an individual vs. an individual.)**
+**4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind that you have mapped metagenomic reads from a whole microbial community against a consensus assembly-- this is not reads from an individual vs an individual's reference assembly.)**
 
 #### 18. Calculating coverage- generate bed file
 You were able to visualize the mappings in IGV, but sometimes you just want to have a number: for example, you might want to know the average coverage across a specific gene, and compare that to the average coverage of another gene in order to compare their relative abundances in the sample. So, next we're going to calculate gene coverages based on your mapping.
@@ -224,34 +226,18 @@ This is a really common type of analysis for 'omics-based studies-- you can comp
 
 Was your prediction correct? If not, speculate on why or why not.
 
-8. As you scroll through the data file reporting the average coverage of all of your ORFs, which ORF had the highest coverage? What did it encode, according to your Interproscan file? Speculate on why that gene may have had the highest coverage of all the genes in your dataset. NOTE! The genes with the highest coverage were probably really short and resulted from sequencing error-- i.e., ATATATATATATAT. IDBA-UD orders contigs by length, so I recommend skipping the contigs that are really short (high numbers in the contig name) and find the contig with the highest coverage that was not a sequencing error.**
+8. As you scroll through the data file reporting the average coverage of all of your ORFs, which ORF had the highest coverage? What did it encode, according to your Prokka file or BLAST? Speculate on why that gene may have had the highest coverage of all the genes in your dataset. NOTE! The genes with the highest coverage were probably really short and resulted from Illumina sequencing error-- i.e., ATATATATATATAT. IDBA-UD orders contigs by length, so I recommend skipping the contigs that are really short (high numbers in the contig name) and find the contig with the highest coverage that was unlikely to be a sequencing error.**
 
 #### 22. Copy your mapping files to the shared class folder
-Before we move on, please copy your bam files, your bed files, and your ORF coverage files over to the class shared folder.
-
-Copy ALL of your: bam files, bai files, and your ORF_coverage.txt files over to /usr/local/data/class_shared. Remember to give them names that are uniform and recognizable (see below example, and substitute your file names for the ones below).
+Please copy your bam files, bai files, bed files, and your ORF coverage files over to the class shared folder.
+Remember to give them names that are uniform and recognizable (see below example, and substitute your file names for the ones below).
 ```
-cp ERR598995_mapped_sorted.bam /usr/local/data/class_shared/
-cp ERR598995_mapped_sorted.bam.bai /usr/local/data/class_shared/
-cp ERR598995_assembly_ORFs.bed /usr/local/data/class_shared/
-cp ERR598995_ORF_coverage.txt  /usr/local/data/class_shared/
+cp ERR598995_mapped_sorted.bam /Accounts/Genomics_Bioinformatics_shared/mapping
+cp ERR598995_mapped_sorted.bam.bai /Accounts/Genomics_Bioinformatics_shared/mapping
+cp ERR598995_assembly_ORFs.bed /Accounts/Genomics_Bioinformatics_shared/mapping
+cp ERR598995_ORF_coverage.txt  /Accounts/Genomics_Bioinformatics_shared/mapping
 ```
 
-## Mapping other metagenomes to your own metagenome
-
-#### 23. Map other metagenomes to your own
-Now, you're going to map the raw reads from other datasets back to your assembled contigs. Basically, you'll be using the raw data that your classmates have been working with. This could be an interesting way for you to compare samples from different regions or depths. Each of you will map the raw reads of two other samples against your own assembled dataset.
-
-Choose two other datasets that you want to investigate. Perhaps you want to look at the other two samples in your project region (like the Arabian Sea). Or maybe you want to compare other samples from the same depth. Copy the file of raw reads from two other other datasets over to your project directory, and map them to your assembled contigs using the commands above. So your *reference sequences will be the same,* but your *reads for mapping* will be different. Talk to your TA or to Rika if you need help.
-
-Compare the mappings of each of the other metagenomes to your own metagenome in IGV.
-
-#### 24. Check for understanding
-**9. Take a look at the mappings of each of the metagenomes to your first contig. (Please include a screenshot of this mapping so I can see what you're looking at.)
-
-      a. Describe the differences you observe in the relative coverage between the different metagenomes, and explain what this means biologically.
-
-      b. Provide an example of different patterns of single nucleotide variants between the metagenomes, and explain what this means biologically. What might this tell us about microbes of the same species living in these different habitats?**
 
 #### 25. This week's postlab writeup
 For this week's post-lab writeup:
@@ -268,11 +254,10 @@ I hypothesize that there will be lower coverage of genes related to photosynthes
 Example #2:
 I hypothesize that there will be higher coverage of genes related to viruses in my sample relative to the deeper samples because there are more viruses in surface waters than in deeper waters, simply because there are more organisms to infect in surface waters.*
 
-Once you've identified the set of genes related to a specific metabolism/function/type of organism, and you have written a question or generated a hypothesis, calculate the average coverage to each of those ORFs in your dataset. Then, contrast that with the average coverage of those genes from the mapping of at least one another metagenome. Keep in mind that you are mapping metagenomic reads from other samples to your own assembly. Use bedtools and get_ORF_coverage.py to calculate the relative coverage of the genes you are investigating.
+Once you've identified the set of genes related to a specific metabolism/function/type of organism, and you have written a question or generated a hypothesis, find the average coverage to each of those ORFs in your dataset. Remember that more than one ORF may have that function.
+
+You will have to compare your mapping of your own reads to your own dataset to a mapping made by one of your classmates to their own dataset. The bam files and ORF coverage files should be saved in /Accounts/Genomics_Bioinformatics_shared/mapping.
 
 **Describe your results and create at least one graph to visualize those results. This should represent a mini 'Results' section in a lab report or paper. Interpret your results within the context of the ecosystem you are investigating. This should represent a mini 'Discussion' section in a lab report or paper.
 
 Compile your "check for understanding" questions and your mini research question together and submit on the Moodle by lab time next week.**
-
-NOTE!
-If you find that other people's reads are NOT mapping well to your own contigs, you can instead look at other people's mappings to their own datasets and compare that to your own mappings to your own dataset. (For example, if Preethiya has dataset A and Kerim has dataset B, they could look at the coverage of reads from A mapping to contigs from A, and reads from B matching to contigs from B, rather than trying to look at the coverage of reads from B mapping to contigs from A.) This is why we copied all of our mapping files over to the shared folder, so you have access to each other's data.
