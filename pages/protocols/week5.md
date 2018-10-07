@@ -150,7 +150,7 @@ We're going to map your raw reads against your assembled contigs. Why would we d
 
 **Check for understanding:**
 
-3. If you wanted to quantify the relative abundances of specific genes in your sample, why couldn't you simply count the number of times your gene appears in your assembly?
+ 3. If you wanted to quantify the relative abundances of specific genes in your sample, why couldn't you simply count the number of times your gene appears in your assembly?
 
 #### 15. Map to project datasets
 Change directory into your project dataset directory folder. We're going to map your raw reads against your assembled contigs (not your ORFs). Make sure you know where your project assembly is and where your raw reads are. Follow the instructions to map your raw reads back to your assembled contigs. For example, if you were mapping the dataset ERR599166_1mill_sample.fasta and your assembly was called ERR599166_assembly_formatted.fa, you might do something like this (below). Please be sure to use the assembled files that you've already run through anvi-script-reformat-fasta, which you should have done in our first computer lab.
@@ -176,7 +176,7 @@ samtools index ERR599166_mapped_sorted.bam
 When you visualize this in TGV, remember that you have multiple contigs. So you have to click the drop-down menu at the top and choose which contig you wish to visualize.
 
 #### 17. Check for understanding
-4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind that you have mapped metagenomic reads from a whole microbial community against a consensus assembly-- this is not reads from an individual vs an individual's reference assembly.)
+ 4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind that you have mapped metagenomic reads from a whole microbial community against a consensus assembly-- this is not reads from an individual vs an individual's reference assembly.)
 
 #### 18. Calculating coverage- generate bed file
 You were able to visualize the mappings in IGV, but sometimes you just want to have a number: for example, you might want to know the average coverage across a specific gene, and compare that to the average coverage of another gene in order to compare their relative abundances in the sample. So, next we're going to calculate gene coverages based on your mapping.
@@ -218,9 +218,9 @@ This is a really common type of analysis for 'omics-based studies-- you can comp
 
 **Check for understanding:**
 
-6. Go back to your Interproscan files and find two ORFs that you're interested in. Choose one that you think might be really abundant in a sample (a housekeeping gene, for example, that might be really common) and choose one that you think might be more specialized and only found in specific types of microbes. Describe the ORFs you chose and which one you predict to have higher coverage.
+ 5. Go back to your Interproscan files and find two ORFs that you're interested in. Choose one that you think might be really abundant in a sample (a housekeeping gene, for example, that might be really common) and choose one that you think might be more specialized and only found in specific types of microbes. Describe the ORFs you chose and which one you predict to have higher coverage.
 
-7. Make a bar graph showing your results and submit it as 'Figure 1' for this week's lab writeup. I did one in Excel, like this:
+ 6. Make a bar graph showing your results and submit it as 'Figure 1' for this week's lab writeup. I did one in Excel, like this:
 
 ![Excel screenshot](../images/excel_screenshot.png)
 
@@ -263,4 +263,4 @@ You will have to compare your mapping of your own reads to your own dataset to a
 
 **Describe your results and create at least one graph to visualize those results. This should represent a mini 'Results' section in a lab report or paper. Interpret your results within the context of the ecosystem you are investigating. This should represent a mini 'Discussion' section in a lab report or paper.**
 
-**Compile your "check for understanding" questions and your mini research question together and submit on the Moodle by lab time next week.**
+**Compile your 6 "check for understanding" questions and your mini research question together and submit on the Moodle by lab time next week.**
