@@ -184,15 +184,17 @@ You were able to visualize the mappings in IGV, but sometimes you just want to h
 First we're going to make what's called a bed file. We will use it to find the average coverage of every single open reading frame in your dataset. Please make sure that your contigs have names that are something like c_00000000001 and your ORFs have names that are something like c_00000000001_1.
 
 ```
-make_bed_file_from_ORF_file.py [your ORF file]
+make_bed_file_from_gff_file_prokka.py [your gff file from prokka]
 ```
 
 For example:
 ```
-make_bed_file_from_ORF_file.py ERR599166_assembled_ORFs.faa
+make_bed_file_from_gff_file_prokka.py PROKKA_09252018.gff
 ```
 
 This will create a bed file that ends in .bed. You can take a look at it if you wish-- it should have the contig name, the coordinates of your ORF, and the name of your ORF.
+
+
 
 #### 19. Run script to calculate coverage
 Now run a script that will use your bed file and will calculate the read depth for every single ORF in your ORF file.
@@ -206,23 +208,61 @@ For example:
 samtools bedcov ERR599166_assembled.bed ERR599166_mapped_sorted.bam > ERR599166_ORF_coverage.txt
 ```
 
+**IT is extremely important that you ran bowtie2 and prokka on the reformatted assembly! IF YOU GET ERRORS, THIS IS PROBABLY BECAUSE YOU DID NOT RUN THEM AGAINST THE REFORMATTED ASSEMBLY!**
+
+How do you check that you ran it on the reformatted dataset?
+First, check your Prokka output:
+```
+less PROKKA_09252018.gff
+```
+It should look something like this, with the second column showing numbers like c_000000000001 and so on.
+```
+##gff-version 3
+##sequence-region c_000000000001 1 2569
+##sequence-region c_000000000002 1 1660
+##sequence-region c_000000000003 1 1376
+##sequence-region c_000000000004 1 1037
+##sequence-region c_000000000005 1 945
+##sequence-region c_000000000006 1 917
+##sequence-region c_000000000007 1 902
+##sequence-region c_000000000008 1 892
+...
+```
+If it looks more like this, you did not run prokka against the reformatted dataset.
+```
+##gff-version 3
+##sequence-region contig-100_0 1 44454
+##sequence-region contig-100_1 1 44231
+##sequence-region contig-100_2 1 35217
+##sequence-region contig-100_3 1 29595
+##sequence-region contig-100_4 1 29534
+...
+```
+If it looks like this, then you should run `anvi-script-reformat` again and then run prokka again. For example:
+```
+anvi-script-reformat-fasta contig-100.fa -o ERR599899_assembled_reformatted.fa -l 0 --simplify-names
+prokka ERR599899_assembled_reformatted.fa --outdir prokka_ERR599899
+```
+You should also make sure that you ran bowtie2 against the reformatted version. How do you know? Go back up up to Step 13 in this week's protocol and check the assembly file with `less`. Make sure the contigs start with c_00000001 and not contig-100_0.
+
+
 #### 20. Calculate coverage in Excel
-Open the file that it spits out. It should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, and then the sum of the per-base coverage. To get the average coverage, open this document in Excel, and divide that number by the difference between the stop and start coordinates.
+It will give you a file that ends in `ORF_coverage.txt`. Use FileZilla or scp to move it to your local computer, then open with Excel. It should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, and then the sum of the per-base coverage. To get the average coverage, divide the sum of the per-base coverage by the difference between the stop and start coordinates. In other words, type this in the top column and then fill down to the bottom:
+=E1/(C1-B1)
 
-Now you have the average coverage of every ORF for this particular bam file, and you should be able to match the name of your ORF from Interproscan to the ORF in this output file.
+Now you have the average coverage of every ORF for this particular bam file, and you should be able to match the name of your ORF from Prokka to the ORF in this output file.
 
-Keep in mind that if you map a different metagenome against this same reference sequence (i.e. your own project assembly), you'll need to run this script again to get the coverage for that metagenome.
 
 #### 21. Check for understanding
 This is a really common type of analysis for 'omics-based studies-- you can compare the coverage of specific genes of interest. For example, you might compare the coverage of genes related to photosythesis, respiration, and nitrogen fixation if you're interested in how abundant those metabolisms are in the community. Or you might be interested in the relative coverage of ribosomal genes from archaea vs bacteria, for example, if you're interested in how abundant archaea are vs. bacteria.
 
 **Check for understanding:**
 
- Q5. Go back to your Interproscan files and find two ORFs that you're interested in. Choose one that you think might be really abundant in a sample (a housekeeping gene, for example, that might be really common) and choose one that you think might be more specialized and only found in specific types of microbes. Describe the ORFs you chose and which one you predict to have higher coverage.
+ Q5. Go back to your Prokka files and find two ORFs that you're interested in. Choose one that you think might be really abundant in a sample (a housekeeping gene, for example, that might be really common) and choose one that you think might be more specialized and only found in specific types of microbes. Describe the ORFs you chose and which one you predict to have higher coverage.
 
  Q6. Make a bar graph showing your results and submit it as 'Figure 1' for this week's lab writeup. I did one in Excel, like this:
 
-![Excel screenshot](../images/excel_screenshot.png)
+![Excel screenshot](../images/excel_screenshot.jpg)
 
 Was your prediction correct? If not, speculate on why or why not.
 
@@ -259,7 +299,7 @@ I hypothesize that there will be higher coverage of genes related to viruses in 
 
 Once you've identified the set of genes related to a specific metabolism/function/type of organism, and you have written a question or generated a hypothesis, find the average coverage to each of those ORFs in your dataset. Remember that more than one ORF may have that function.
 
-You will have to compare your mapping of your own reads to your own dataset to a mapping made by one of your classmates to their own dataset. The bam files and ORF coverage files should be saved in /Accounts/Genomics_Bioinformatics_shared/mapping.
+Many of you will probably want to compare your mapping of your own reads to your own dataset to a mapping made by one of your classmates to their own dataset. The bam files and ORF coverage files should be saved in /Accounts/Genomics_Bioinformatics_shared/mapping.
 
 **Describe your results and create at least one graph to visualize those results. This should represent a mini 'Results' section in a lab report or paper. Interpret your results within the context of the ecosystem you are investigating. This should represent a mini 'Discussion' section in a lab report or paper.**
 
