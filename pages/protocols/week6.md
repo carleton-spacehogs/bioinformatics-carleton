@@ -281,6 +281,6 @@ First, make a directory with your name on it, and then put your contigs databas
 
 ```
 mkdir /Accounts/Genomics_Bioinformatics_shared/anvio_stuff/[your name]
-cp contigs.db /Accounts/Genomics_Bioinformatics_shared/nvio_stuff/[your name]
+cp contigs.db /Accounts/Genomics_Bioinformatics_shared/anvio_stuff/[your name]
 cp -r SAMPLES_MERGED /Accounts/Genomics_Bioinformatics_shared/anvio_stuff/[your name]
 ```
