@@ -122,7 +122,7 @@ anvi-get-dna-sequences-for-gene-calls -c contigs.db -o gene-calls.fa
 
 #### 9. Run Centrifuge
 ```
-centrifuge -f -x /usr/local/CENTRIFUGE/p_compressed gene_calls.fa -S centrifuge_hits.tsv
+centrifuge -f -x /usr/local/CENTRIFUGE/p_compressed gene-calls.fa -S centrifuge_hits.tsv
 ```
 
 #### 10. Import Centrifuge data
@@ -158,9 +158,9 @@ anvi-merge */PROFILE.db -o SAMPLES-MERGED -c contigs.db --skip-concoct-binning
 ## Visualizing and making your bins
 
 #### 13. anvi-interactive
-Now the fun part with pretty pictures! Type this to open up the visualization of your contigs:
+Now the fun part with pretty pictures! Type this to open up the visualization of your contigs (of course, change the port number to the one you were assigned):
 ```
-anvi-interactive -p SAMPLES-MERGED/PROFILE.db -c contigs.db
+anvi-interactive -p SAMPLES-MERGED/PROFILE.db -c contigs.db -P 8080
 ````
 
 #### 14. Visualize in browser
@@ -237,7 +237,7 @@ Use the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/mean_coverage.txt` f
 
 2a. Which bin had the highest coverage, when looking only at the mapping of your own dataset against itself?
 
-2b. What is the taxonomy of that bin, according to anvi'o and according to BLAST (see part 1 above)?
+2b. What is the taxonomy of that bin, according to anvi'o?
 
 2c. Make a bar graph in which each bin is a different bar, and the bar height indicates the mean coverage. Call this 'Figure 2' and include a figure caption.
 
@@ -266,7 +266,7 @@ Use the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/variability.txt` fil
 
 4a. Which bins had the highest and lowest variability (single nucleotide variants per kilobase pair (SNVs/kbp) across all samples, when looking only at the mapping of your own dataset (self-to-self)?
 
-4b. What is the taxonomy of those bins, according to anvi'o and BLAST (see above)?
+4b. What is the taxonomy of those bins, according to anvi'o?
 
 4c. SNVs are usually removed from a population after some sort of selective sweep (like an extinction event) or when one microbe starts to reproduce very quickly (like an algal bloom). SNVs start to appear if there has been enough time for mutations to build up in the population. Based on your bins, what does the SNV information tell you about the microbial populations in your specific sample? (Keep in mind that this information tells you about the population of closely related organisms to your bin, not just one specific individual cell.)
 
