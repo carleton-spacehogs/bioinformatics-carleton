@@ -280,7 +280,7 @@ Some of you might want access to each others' anvio data for your final project
 First, make a directory with your name on it, and then put your contigs database and SAMPLES_MERGED directory in there.
 
 ```
-mkdir /Accounts/Genomics_and_Bioinformatics_shared/anvio_stuff/[your name]
-cp contigs.db /Accounts/Genomics_and_Bioinformatics_shared/nvio_stuff/[your name]
-cp -r SAMPLES_MERGED /Accounts/Genomics_and_Bioinformatics_shared/anvio_stuff/[your name]
+mkdir /Accounts/Genomics_Bioinformatics_shared/anvio_stuff/[your name]
+cp contigs.db /Accounts/Genomics_Bioinformatics_shared/nvio_stuff/[your name]
+cp -r SAMPLES_MERGED /Accounts/Genomics_Bioinformatics_shared/anvio_stuff/[your name]
 ```
