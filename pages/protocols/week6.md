@@ -1,9 +1,9 @@
 # Week 6: Binning genomes with anvi'o
 
-## Intro
-This week in lab we’ll learn how to visualize your metagenomes and pull out individual genome bins. We aren’t going to use a toy dataset this week—we’re going straight into analysis with your metagenome datasets for your projects.
+## Intro (Rika will go over this at the beginning of lab)
+This week in lab we’ll learn how disentangle individual microbial genomes from your mess of metagenomic contigs. We aren’t going to use a toy dataset this week—-we’re going straight into analysis with your metagenome datasets for your projects.
 
-Genomes are disentangled from metagenomes by clustering reads together according to two properties: **coverage** and **tetranucleotide** frequency. Basically, if contigs have similar coverage patterns between datasets, they are clustered together; and if they have similar kmers appear over and over again, they will cluster together. When we cluster contigs together like this, we get a collection of contigs that are thought to represent a reconstruction of a genome from your metagenomic sample. We call these 'genome bins,' or 'metagenome-asembled genomes (MAGs).'
+Genomes are disentangled from metagenomes by clustering reads together according to two properties: **coverage** and **tetranucleotide** frequency. Basically, if contigs have similar coverage patterns between datasets, they are clustered together; and if contigs have similar kmers, they will cluster together. When we cluster contigs together like this, we get a collection of contigs that are thought to represent a reconstruction of a genome from your metagenomic sample. We call these 'genome bins,' or 'metagenome-asembled genomes' (MAGs).
 
 There is a lot of discussion in the field about which software packages are the best for making these genome bins. And of course, the one you choose will depend a lot on your dataset, what you’re trying to accomplish, and personal preference. I chose anvi’o because it is a nice visualization tool that builds in many handy features.
 
@@ -13,7 +13,7 @@ http://merenlab.org/2016/06/22/anvio-tutorial-v2/
 
 ## Preparing your contigs database for anvi'o
 #### 1. ssh tunnel
-Boot your computer as a Mac and use the Terminal to ssh in to baross. (For now, you will have to run all anvi'o-related things on baross.) Anvio requires visualization through the server, so this week we have to create what is called an "ssh tunnel" to log into the server in a specific way. Substitute "username" below with your own Carleton login name.
+Boot your computer as a Mac and use the Terminal to ssh in to baross. Anvio requires visualization through the server, so this week we have to create what is called an "ssh tunnel" to log into the server in a specific way. Substitute "username" below with your own Carleton login name.
 
 NOTE: Each of you will be assigned a different port number (i.e. 8080, 8081, 8082, etc.). Substitute that number for the one shown below.
 
@@ -21,33 +21,67 @@ NOTE: Each of you will be assigned a different port number (i.e. 8080, 8081, 808
 ssh -L 8080:localhost:8080 username@baross.its.carleton.edu
 ```
 
-#### 2. Copying data
+#### 2. Make new folder
 Make a new directory called “anvio” inside your project folder, then change into that directory.
 
-Copy the following into your new directory:
+```
+cd project_directory
+mkdir anvio
+cd anvio
+```
 
-1) assembled contigs with the cleaned up names (i.e. >c_000000000001)
-2) all of your sorted .bam and .bai files that you already mapped to those contigs last week
+#### 3. Copying data
+
+Last week, we learned how to make BAM files. This week, we'll need them to make our bins, because they give us coverage information. You need BAM files that show the coverage of your own reads mapped against your own contigs, as well as other BAM files showing other people's reads mapped against your contigs.
+
+Fortunately for you, I made all of these BAM files for you ahead of time. They are in this folder:
+
+/workspace/data/Genomics_Bioinformatics_shared/Tara_mappings
+
+Choose **three** mapping files from that folder. The ones you choose should all be from your own dataset. The names are like this, as an example:
+
+`ERR599021_assembled_vs_ERR599013_reads_sorted.bam`
+
+Where ERR599021 is the reference, and reads from ERR599013 were mapped to it. You want only the bam files with your **own** sample number as the **reference**.
+
+You should also include the bam file of your own reads mapped against your own contig.
 
 ```
-mkdir project_directory/anvio
-cd project_directory/anvio
-cp [path to assembled, formatted contigs] .
 cp [path to sorted .bam files] .
 cp [path to sorted .bai files] .
 ```
 
-#### 3. Get gene calls and annotations from Prokka
+For example:
+```
+cp /workspace/data/Genomics_Bioinformatics_shared/Tara_mappings/ERR599021_assembled_vs_ERR599021_reads_sorted.bam
+cp /workspace/data/Genomics_Bioinformatics_shared/Tara_mappings/ERR599021_assembled_vs_ERR599021_reads_sorted.bam.bai
+cp /workspace/data/Genomics_Bioinformatics_shared/Tara_mappings/ERR599021_assembled_vs_ERR599013_reads_sorted.bam
+cp /workspace/data/Genomics_Bioinformatics_shared/Tara_mappings/ERR599021_assembled_vs_ERR599013_reads_sorted.bam.bai
+cp /workspace/data/Genomics_Bioinformatics_shared/Tara_mappings/ERR599021_assembled_vs_ERR599075_reads_sorted.bam
+cp /workspace/data/Genomics_Bioinformatics_shared/Tara_mappings/ERR599021_assembled_vs_ERR599075_reads_sorted.bam.bai
+```
+
+Finally, copy your contigs over as well. They are probably in your assembly directory. For example:
+```
+cp ../ERR598983_assembly/ERR598983_assembled_reformatted.fasta .
+```
+
+#### 4. Get gene calls and annotations from Prokka
 The first thing you have to do is make contigs database, which contains the sequences of your contigs, plus lots of information about those contigs. This includes information from Prokka-- so we have to take the information from Prokka and put it in our contigs database.
 
-First, you hav to run a script on your Prokka files to convert them into a text file that we can import into anvi'o. Navigate to wherever your Prokka results are for your project assembly, and run this script:
+First, you hav to run a script on your Prokka files to convert them into a text file that we can import into anvi'o. Navigate to wherever your Prokka results are for your project assembly, and run a script to extract information from that file. Then copy it to your anvi'o folder and change directory to your anvio folder.
 
 ```
+cd prokka_project
 gff_parser.py [your PROKKA gff file] --gene-calls gene_calls.txt --annotation gene_annot.txt
+cp gene_calls.txt ../../anvio
+cp gene_annot.txt ../../anvio
+cd ../../anvio
 ```
-Copy the `gene_calls.txt` and `gene_annot.txt` files over to your anvi'o folder.
 
-#### 4. Make the contigs database
+
+#### 5. Make the contigs database
+
 Now, you make the database.
 
 -`anvi-gen-contigs-database` is the anvi’o script that makes the contigs database.
@@ -57,17 +91,17 @@ Now, you make the database.
 -`--ignore-internal-stop-codons` will ignore any internal stop codons in your gene calls. Sometimes these will get included in your Prokka results by accident, but for our purposes we can ignore them.
 
 ```
-anvi-gen-contigs-database -f [your formatted, assembled contigs] -o contigs.db --external-gene-calls gene_calls_PROKKA.txt --ignore-internal-stop-codons
+anvi-gen-contigs-database -f [your formatted, assembled contigs] -o contigs.db --external-gene-calls gene_calls.txt --ignore-internal-stop-codons
 ```
 
-#### 5. Import the Prokka annotations
+#### 6. Import the Prokka annotations
  Import the functional annotations like this:
  ```
  anvi-import-functions -c contigs.db -i gene_annot.txt
  ```
 
-#### 6. Search for single copy universal genes
-Now we will search our contigs for archaeal and bacterial single-copy core genes. This will be useful later on because when we try to disentangle genomes from this metagenome, these single-copy core genes can be good markers for how complete your disentangled genome is.
+#### 7. Search for single copy universal genes
+Now we will search our contigs for archaeal and bacterial single-copy core genes. This will be useful later on because when we try to disentangle genomes from this metagenome, these single-copy core genes can be good markers for how complete your genome is.
 
 This process is slow, so we're going to run it on 5 CPUs rather than just 1. You can run it on screen in the background while you move forward with step 6. It should take a little under 10 minutes.
 
@@ -76,7 +110,7 @@ screen
 anvi-run-hmms -c contigs.db -T 5
 ```
 
-#### 7. Determine taxonomy using Centrifuge
+#### 8. Determine taxonomy using Centrifuge
 Now we are going to figure out the taxonomy of our contigs using a program called centrifuge. Centrifuge is a program that compares your contigs to a sequence database in order to assign taxonomy to different sequences within your metagenome. We're going to use it first to classify your contigs.
 
 If you would like to know more, go here: http://merenlab.org/2016/06/22/anvio-tutorial-v2/ and here: http://www.ccb.jhu.edu/software/centrifuge/
@@ -86,33 +120,28 @@ First, export your genes from anvi'o.
 anvi-get-dna-sequences-for-gene-calls -c contigs.db -o gene-calls.fa
 ```
 
-#### 8. Run Centrifuge
+#### 9. Run Centrifuge
 ```
-centrifuge -f -x /usr/local/CENTRIFUGE/p_compressed gene-calls.fa -S centrifuge_hits.tsv
+centrifuge -f -x /usr/local/CENTRIFUGE/p_compressed gene_calls.fa -S centrifuge_hits.tsv
 ```
 
-#### 9. Import Centrifuge data
-Now import those centrifuge results for your contigs back in to anvi'o. It has a parser written into the software that can automatically read and import centrifuge output.
+#### 10. Import Centrifuge data
+Now import those centrifuge results for your contigs back in to anvi'o. Anvi'o can automatically read and import centrifuge output.
 ```
 anvi-import-taxonomy -c contigs.db -i centrifuge_report.tsv centrifuge_hits.tsv -p centrifuge
 ```
 
 ## Incorporating mapping data
 
-#### 10. Copy mapping files
-In order to make bins, anvi'o needs to compare mappings from different datasets. Today, we are going to compare all of the datasets that are at the same depth as yours: for example, if you are assigned to the surface layer, you should pull in all the other surface layer mappings to your own dataset. Check the Moodle for the data spreadsheet explaining which is which. You need both the **sorted .bam files** and the **.bai files**. Those are stored at ``/Accounts/Genomics_Bioinformatics_shared/Tara_mappings/``. Copy the ones you need over to the directory that you are in now.
-
-```
-cp /Accounts/Genomics_Bioinformatics_shared/Tara_mappings/[bam and/or bai files you want] .
-```
+We've just decorated our contigs database with all kinds of things. Now, we incorporate all of the BAM files.
 
 #### 11. Import mapping files into anvi'o with anvi-profile
-Now anvi’o needs to combine all of this information—your mapping, your contigs, your open reading frames, your taxonomy—together. To do this, use the anvi-profile script.
+Now anvi’o needs to combine all of this information (your mapping, your contigs, your open reading frames, and your taxonomy) together. To do this, use anvi-profile.
 
 -`anvi-profile` is the name of the program that combines the info together
 -The `–i` flag provides the name of the sorted bam file that you copied in the step above.
 -The `-T` flag sets the number of CPUs. There are 11 of you, and 96 to spare. For now, let's set it to 5 so we don't blow up the server.
--The `-M` flag sets a minimum contig length. In a project for publication, you'd want to use at least 1000, because the clustering of contigs is dependent on calculating their tetranucleotide frequencies (searching for patterns of kmers). You need to have a long enough contig to calculate these frequences accurately. But for our purposes, let's use 500 so you can use as many contigs as possible.
+-The `-M` flag sets a minimum contig length. In a project for publication, you'd want to use at least 1000, because the clustering of contigs is dependent on calculating their tetranucleotide frequencies (searching for patterns of kmers). You need to have a long enough contig to calculate these frequencies accurately. But for our purposes, let's use 500 so you can use as many contigs as possible.
 ```
 anvi-profile -i [your sorted bam file] -c contigs.db -T 5 -M 500
 ```
@@ -144,15 +173,15 @@ Cool, eh?
 Click 'Draw' to see your results! You should see something like this:
 ![anvio screenshot](../images/anvio.png)
 
-*What you are looking at:
+What you are looking at:
 
 -the tree on the inside shows the clustering of your contigs. Contigs that were more similar according to k-mer frequency and coverage clustered together.
 
--the rings on the outside show your samples. Each ring is a different sample. (So if you had a deep chlorophyll max sample, the rings are all different deep chlorophyll max samples.) This is a visualization of the mapping that you did last week, but now we can see the mapping across the whole sample, and for all samples at once. There is one black line per contig. The taller the black line, the more mapping for that contig.
+-the rings on the outside show your samples. Each ring is a different sample. This is a visualization of the mapping that you did last week, but now we can see the mapping across the whole sample, and for all samples at once. There is one black line per contig. The taller the black line, the more mapping for that contig.
 
 -the 'taxonomy' ring shows the centrifuge designation for the taxonomy of that particular contig.
 
--the 'GC content' ring shows the average percent of bases that were G or C as opposed to A or T for that contig.*
+-the 'GC content' ring shows the average percent of bases that were G or C as opposed to A or T for that contig.
 
 #### 15. Make bins
 We will go over the process for making bins together in class.
@@ -181,6 +210,8 @@ If you go to the directory `bin_by_bin`, you will find a series of directories, 
 ## Analyzing your bins
 For this week's post-lab assignment, you won't do a mini-research question because the quality of your bins may vary, through no fault of your own. (That's real data for you...) So instead, we're going to answer a few questions about the data that you just generated.
 
+Most of these questions can be answered with the static summary page that you can visualize in your web browser. However, you can also look at the text files that anvi'o generates-- I tell you which files to look at below.
+
 
 ##### 1. **Bin completeness**
 
@@ -194,16 +225,17 @@ The easiest bins to generate are often the ones that had the longest N50 and the
 
 1c. What was the anvi'o-labeled taxonomy of this bin?
 
-1d. Now find your bin folder in `SAMPLES-MERGED/SUMMARY_my_bins/bin_by_bin`. Inside that folder is a file called `SAMPLES-MERGED/SUMMARY_my_bins/bin_by_bin/Bin_X/Bin_X-Campbell_et_al-hmm-sequences.txt`. Use `less` to open that file. These are the single-copy universal genes (like ribosomal genes, for example) that anvi'o used to characterize the completeness of this bin. As a bonus, we can use these sequences to help figure out what this bin is. Copy the longest sequence in that file and BLAST it using blastn on the NCBI webpage. Report the e-value and description of the top hit. Does it match the taxonomy that anvi'o reports?
-
 
 
 
 ##### 2. **Coverage across all bins for one sample**
 
+By comparing different bins in a single sample, we can get a sense of which microbes are the most abundant in one sample. We could then later take a look at what genes are in those microbes to give us a sense of why they're so abundant.
+
+
 Use the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/mean_coverage.txt` file to answer these questions.
 
-2a. Which bin had the highest coverage across all samples, when looking only at the mapping of your own dataset (self-to-self)?
+2a. Which bin had the highest coverage, when looking only at the mapping of your own dataset against itself?
 
 2b. What is the taxonomy of that bin, according to anvi'o and according to BLAST (see part 1 above)?
 
@@ -214,6 +246,9 @@ Use the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/mean_coverage.txt` f
 
 
 ##### 3. **Coverage of one bin across samples**
+
+By comparing one bin across many samples, we can get a sense of where certain microbes grow the best. Again, we could then later take a look at what genes are in those microbes to give us a sense of why they're so abundant.
+
 
 Choose one bin that you're interested in. Use the file `SAMPLES-MERGED/SUMMARY_my_bins/bin_by_bin/Bin_X/Bin_X-mean_coverage.txt` to answer these questions.
 
@@ -226,25 +261,26 @@ Choose one bin that you're interested in. Use the file `SAMPLES-MERGED/SUMMARY_m
 
 ##### 4. **Variability of all bins for one sample**
 
+anvi'o can identify SNVs in your BAM files, and it can tell you all about the SNVs in your bin.
 Use the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/variability.txt` file to answer these questions.
 
 4a. Which bins had the highest and lowest variability (single nucleotide variants per kilobase pair (SNVs/kbp) across all samples, when looking only at the mapping of your own dataset (self-to-self)?
 
 4b. What is the taxonomy of those bins, according to anvi'o and BLAST (see above)?
 
-4c. What do you think the variability might imply about the microbial populations represented by those bins? What might it imply about the selection pressure on those populations? (We'll talk more about this in class on Wednesday, so you might want to wait until after then...)
+4c. SNVs are usually removed from a population after some sort of selective sweep (like an extinction event) or when one microbe starts to reproduce very quickly (like an algal bloom). SNVs start to appear if there has been enough time for mutations to build up in the population. Based on your bins, what does the SNV information tell you about the microbial populations in your specific sample? (Keep in mind that this information tells you about the population of closely related organisms to your bin, not just one specific individual cell.)
 
      *Important caveat! If your sample had low coverage (i.e. less than 10), that may be skewing the variability results because if you don't have any reads mapping, there are no variants to count!*
 
 **Compile Figures 1-3 and your answers to questions 1-4 and submit on the Moodle by lab time next week.**
 
 #### Final step: sharing data
-Some of you might want access to each others' anvio data for your final projects. So let's share it on class_shared.
+Some of you might want access to each others' anvio data for your final projects. So let's share it on in our shared folder.
 
 First, make a directory with your name on it, and then put your contigs database and SAMPLES_MERGED directory in there.
 
 ```
-mkdir /usr/local/data/class_shared/anvio_stuff/[your name]
-cp contigs.db /usr/local/data/class_shared/anvio_stuff/[your name]
-cp -r SAMPLES_MERGED /usr/local/data/class_shared/anvio_stuff/[your name]
+mkdir /Accounts/Genomics_and_Bioinformatics_shared/anvio_stuff/[your name]
+cp contigs.db /Accounts/Genomics_and_Bioinformatics_shared/nvio_stuff/[your name]
+cp -r SAMPLES_MERGED /Accounts/Genomics_and_Bioinformatics_shared/anvio_stuff/[your name]
 ```
