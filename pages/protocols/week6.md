@@ -69,11 +69,11 @@ cp ../ERR598983_assembly/ERR598983_assembled_reformatted.fasta .
 #### 4. Get gene calls and annotations from Prokka
 The first thing you have to do is make contigs database, which contains the sequences of your contigs, plus lots of information about those contigs. This includes information from Prokka-- so we have to take the information from Prokka and put it in our contigs database.
 
-First, you hav to run a script on your Prokka files to convert them into a text file that we can import into anvi'o. Navigate to wherever your Prokka results are for your project assembly, and run a script to extract information from that file. Then copy it to your anvi'o folder and change directory to your anvio folder.
+First, you have to run a script on your Prokka files to convert them into a text file that we can import into anvi'o. Navigate to wherever your Prokka results are for your project assembly, and run a script to extract information from that file. Then copy it to your anvi'o folder and change directory to your anvio folder. For example:
 
 ```
 cd prokka_project
-gff_parser.py [your PROKKA gff file] --gene-calls gene_calls.txt --annotation gene_annot.txt
+gff_parser.py PROKKA_10072018.gff --gene-calls gene_calls.txt --annotation gene_annot.txt
 cp gene_calls.txt ../../anvio
 cp gene_annot.txt ../../anvio
 cd ../../anvio
@@ -82,7 +82,7 @@ cd ../../anvio
 
 #### 5. Make the contigs database
 
-Now, you make the database.
+Now, you make the contigs database. It will have lots of information about-- wait for it-- your contigs!
 
 -`anvi-gen-contigs-database` is the anvi’o script that makes the contigs database.
 -`–f` is the fasta file with your contigs that you have already assembled and fixed.
@@ -95,7 +95,7 @@ anvi-gen-contigs-database -f [your formatted, assembled contigs] -o contigs.db -
 ```
 
 #### 6. Import the Prokka annotations
- Import the functional annotations like this:
+Import your prokka results like this:
  ```
  anvi-import-functions -c contigs.db -i gene_annot.txt
  ```
