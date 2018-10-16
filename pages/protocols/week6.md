@@ -270,7 +270,7 @@ Use the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/variability.txt` fil
 
 4c. SNVs are usually removed from a population after some sort of selective sweep (like an extinction event) or when one microbe starts to reproduce very quickly (like an algal bloom). SNVs start to appear if there has been enough time for mutations to build up in the population. Based on your bins, what does the SNV information tell you about the microbial populations in your specific sample? (Keep in mind that this information tells you about the population of closely related organisms to your bin, not just one specific individual cell.)
 
-     *Important caveat! If your sample had low coverage (i.e. less than 10), that may be skewing the variability results because if you don't have any reads mapping, there are no variants to count!*
+*Important caveat! If your sample had low coverage (i.e. less than 10), that may be skewing the variability results because if you don't have any reads mapping, there are no variants to count!*
 
 **Compile Figures 1-3 and your answers to questions 1-4 and submit on the Moodle by lab time next week.**
 
