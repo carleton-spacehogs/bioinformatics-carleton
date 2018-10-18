@@ -85,9 +85,13 @@ cd ../../anvio
 Now, you make the contigs database. It will have lots of information about-- wait for it-- your contigs!
 
 -`anvi-gen-contigs-database` is the anvi’o script that makes the contigs database.
+
 -`–f` is the fasta file with your contigs that you have already assembled and fixed.
+
 -`–o` provides the name of your new contigs database.
+
 -`external_gene_calls` provides the name of the Prokka file you just made so you can import the Prokka calls into your contigs database
+
 -`--ignore-internal-stop-codons` will ignore any internal stop codons in your gene calls. Sometimes these will get included in your Prokka results by accident, but for our purposes we can ignore them.
 
 ```
@@ -270,7 +274,7 @@ Use the `SAMPLES-MERGED/SUMMARY_my_bins/bins_across_samples/variability.txt` fil
 
 4c. SNVs are usually removed from a population after some sort of selective sweep (like an extinction event) or when one microbe starts to reproduce very quickly (like an algal bloom). SNVs start to appear if there has been enough time for mutations to build up in the population. Based on your bins, what does the SNV information tell you about the microbial populations in your specific sample? (Keep in mind that this information tells you about the population of closely related organisms to your bin, not just one specific individual cell.)
 
-*Important caveat! If your sample had low coverage (i.e. less than 10), that may be skewing the variability results because if you don't have any reads mapping, there are no variants to count!*
+*Important caveat! If your sample had low coverage (i.e. less than 10), that may be skewing the variability results because if you don't have any reads mapping, there are no SNVs to count!*
 
 **Compile Figures 1-3 and your answers to questions 1-4 and submit on the Moodle by lab time next week.**
 
