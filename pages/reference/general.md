@@ -16,6 +16,7 @@ ssh [username ]@baross.its.carleton.edu
 
 
 ## Using screen/ tmux
+(We have been using screen in class.)
 
 See: [Cheat Sheet](http://www.dayid.org/comp/tm.html)
 
@@ -44,14 +45,14 @@ See: [Cheat Sheet](http://www.dayid.org/comp/tm.html)
 
 ### Secure Copy
 
-From liverpool to local:
+From baross to local computer:
 
 ```bash
-scp [username]@liverpool.its.carleton.edu:/Accounts/[username]/[path of your destination directory]/[some_file.txt] ~/Desktop
+scp [username]@baross.its.carleton.edu:/Accounts/[username]/[path of your destination directory]/[some_file.txt] ~/Desktop
 ```
 
-From local to liverpool:
+From local computer to baross:
 
 ```bash
-scp ~/Desktop/[some_file.txt] [username]@liverpool.its.carleton.edu:/Accounts/[username]/[path of your destination directory]
+scp ~/Desktop/[some_file.txt] [username]@baross.its.carleton.edu:/Accounts/[username]/[path of your destination directory]
 ```
