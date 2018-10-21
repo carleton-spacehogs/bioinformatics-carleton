@@ -59,7 +59,11 @@ make.group(fasta=ERR598944_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599001_MERGED_FAS
 ```
 
 #### 5. Look at the groups file
-This command should generate a file that ends in '.groups.” Take a look at it with less. *(Hot top #2: you can use the command system() if you want to use Unix commands while you are using mothur.)* You will see that each sequence name is linked up with the group name that you provided. That way mothur can combine all of the sequences together into one file, but you can still keep track of which one belongs to which sample. This file will be essential for allowing mothur to compare your samples later on.
+This command should generate a file that ends in '.groups.” Take a look at it with less.
+
+***Hot tip #2!*** You can use the command system() if you want to use Unix commands while you are using mothur.
+
+You will see that each sequence name is linked up with the group name that you provided. That way mothur can combine all of the sequences together into one file, but you can still keep track of which one belongs to which sample. This file will be essential for allowing mothur to compare your samples later on.
 
 ```
 system(less [groups file name])
@@ -72,7 +76,7 @@ system(less ERR598980_MERGED_FASTQ_16SrRNA_10000.ERR598995_MERGED_FASTQ_16SrRNA_
 ### 6. Merge FASTA files together
 Now you can merge all of your FASTA files together, and the .groups file will record which sequences came from which file. The output here will be a file called merged.fa. Again, substitute "file-1.fa" and so on with the names of your 16S rRNA fasta files.
 
-*Hot tip #3: use the up arrow on your keyboard to call up the last command you typed, and then edit that command instead of retyping all of the filenames again.*
+***Hot tip #3!*** use the up arrow on your keyboard to call up the last command you typed, and then edit that command instead of retyping all of the filenames again.
 
 ```
 merge.files(input=[file1.fa]-[file2.fa]-[file3.fa], output=merged.fa)
