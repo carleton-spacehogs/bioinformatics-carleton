@@ -142,14 +142,18 @@ We are going to calculate the diversity of each of your sample sites at taxonomi
 Richness = r = number of taxa in your sample
 
 The equation for the Shannon-Weiner index is:
+
 H’ = -Σ (Pi ln(Pi))
+
 H’ = index of taxonomic diversity, the Shannon-Weiner Index
+
 Pi = proportion (percent) of total sample belonging to the ith taxon
+
 ln = natural log (log base e = not the same as log!)
 
 This index takes into account not just the number of taxa (richness) in a sample, but also how evenly distributed the taxa are (evenness) within the sample.  The index increases by having more richness and/or by having greater evenness.
 
-Hint: -Σ (Pi ln(Pi)) = -((Ptaxon1*ln(Ptaxon1)) + (Ptaxon2*ln(Ptaxon2)) + (Ptaxon3*ln(Ptaxon3)) + …)
+***Hint***: -Σ (Pi ln(Pi)) = -((Ptaxon1\*ln(Ptaxon1)) + (Ptaxon2\*ln(Ptaxon2)) + (Ptaxon3\*ln(Ptaxon3)) + …)
 
 I suggest that you start by calculating the total number of sequences for each sample site for all of taxonomic level 2. Then, for each taxon within taxlevel2, calculate the total proportion of sequences belonging to that taxon (Pi). Then calculate H'.
 
