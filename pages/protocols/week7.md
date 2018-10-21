@@ -3,9 +3,9 @@
 ## Introduction
 Today we're going to learn how to use sequence data to assess diversity across samples. We'll learn how to:
 
-  1) classify the distribution of different types (taxa) of microbes in different datasets (i.e. what % are *Procholorococcus*, what % are SAR11, what % are Thaumarchaeota, and so on)
+  -classify the distribution of different types (taxa) of microbes in different datasets (i.e. what % are *Procholorococcus*, what % are SAR11, what % are Thaumarchaeota, and so on)
 
-  2) calculate diversity metrics to determine which sample sites had higher richness or evenness.
+  -calculate diversity metrics to determine which sample sites had higher richness or evenness.
 
 
 Before you start, think about which datasets you'd like to compare to your own. Perhaps you want to compare a bunch of surface samples from different regions, or perhaps you want to compare the three depths from your region. This could also potentially feed right into your final project. Choose 3-5 samples to compare (including yours).
@@ -54,7 +54,9 @@ make.group(fasta=[file1.fasta]-[file2.fasta]-[file3.fasta], groups=[group1]-[gro
 ```
 
 For example:
-`make.group(fasta=ERR598944_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599001_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599078_MERGED_FASTQ_16SrRNA_10000.fasta, groups=meso-transect-surface)`
+```
+make.group(fasta=ERR598944_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599001_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599078_MERGED_FASTQ_16SrRNA_10000.fasta, groups=meso-transect-surface)
+```
 
 #### 5. Look at the groups file
 This command should generate a file that ends in '.groups.” Take a look at it with less. *(Hot top #2: you can use the command system() if you want to use Unix commands while you are using mothur.)* You will see that each sequence name is linked up with the group name that you provided. That way mothur can combine all of the sequences together into one file, but you can still keep track of which one belongs to which sample. This file will be essential for allowing mothur to compare your samples later on.
@@ -63,7 +65,9 @@ This command should generate a file that ends in '.groups.” Take a look at it 
 system(less [groups file name])
 ```
 For example:
-` system(less ERR598980_MERGED_FASTQ_16SrRNA_10000.ERR598995_MERGED_FASTQ_16SrRNA_10000.ERR599142_MERGED_FASTQ_16SrRNA_10000.groups)`
+```
+system(less ERR598980_MERGED_FASTQ_16SrRNA_10000.ERR598995_MERGED_FASTQ_16SrRNA_10000.ERR599142_MERGED_FASTQ_16SrRNA_10000.groups)
+```
 
 ### 6. Merge FASTA files together
 Now you can merge all of your FASTA files together, and the .groups file will record which sequences came from which file. The output here will be a file called merged.fa. Again, substitute "file-1.fa" and so on with the names of your 16S rRNA fasta files.
@@ -75,7 +79,9 @@ merge.files(input=[file1.fa]-[file2.fa]-[file3.fa], output=merged.fa)
 ```
 
 For example:
-`merge.files(input=ERR598944_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599001_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599078_MERGED_FASTQ_16SrRNA_10000.fasta, output=merged.fa)`
+```
+merge.files(input=ERR598944_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599001_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599078_MERGED_FASTQ_16SrRNA_10000.fasta, output=merged.fa)
+```
 
 #### 7. Classify your sequences
 Everything we've done so far is basically record-keeping. Now it's time to do SCIENCE!
@@ -114,12 +120,12 @@ Your classmates may wish to use your taxonomy data for their project datasets. 
 
 ```
 mv merged.seed_v119.wang.tax.summary [newname]
-cp [newname] /usr/local/data/class_shared/taxonomy
+cp [newname] /Accounts/Genomics_Bioinformatics_shared/taxonomy
 ```
 For example:
 ```
 mv merged.seed_v119.wang.tax.summary rikas_taxonomy.summary
-cp rikas_taxonomy.summary /usr/local/data/class_shared/taxonomy
+cp rikas_taxonomy.summary /Accounts/Genomics_Bioinformatics_shared/taxonomy
 ```
 
 #### 10. Calculate the diversity of your sample
@@ -153,7 +159,7 @@ Please do these calculations in a way that is clear so that I can track your cal
 In your Excel spreadsheet, make 5 columns containing metadata for each of your samples (1 column each for temperature, chlorophyll, nitrate, oxygen, and salinity). Make a scatterplot for each of the metadata versus your Shannon-Weiner index (H') for each of the samples. For example, one plot will have temperature on the x axis, and H' on the y axis, one will have chlorophyll on the x axis, and H' on the y axis, and so on. For each plot, plot a trendline through the data and include the equation and the R-squared value. **Save these 5 plots as Figure 2(abcde).**
 
 #### 12. Post-lab assignment
-**Check for understanding questions:***
+**Check for understanding questions:**
 
 Q1. Many of your sequences were unclassifiable. How would this likely affect your richness calculations for each sample? Explain why.
 
@@ -167,9 +173,15 @@ Look back at the 3-5 samples that you selected. What kinds of trends do you see 
 
  **Summary of what to turn in next week:**
  For this week's post-lab assignment, please submit the following (should all be in the same document):
+
  -Figure 1(abc)
+
  -Figure 2(abcde)
+
  -Table 1
+
  -The answers to the three "check for understanding" questions above
+
  -The response to the ecological connection question
+
  -Your Excel spreadsheet so that I can check your calculations (submitted separately)
