@@ -121,7 +121,7 @@ If you would like to know more, go here: http://merenlab.org/2016/06/22/anvio-tu
 
 First, export your genes from anvi'o.
 ```
-anvi-get-dna-sequences-for-gene-calls -c contigs.db -o gene-calls.fa
+anvi-get-sequences-for-gene-calls -c contigs.db -o gene-calls.fa
 ```
 
 #### 9. Run Centrifuge
@@ -132,7 +132,7 @@ centrifuge -f -x /usr/local/CENTRIFUGE/p_compressed gene-calls.fa -S centrifuge_
 #### 10. Import Centrifuge data
 Now import those centrifuge results for your contigs back in to anvi'o. Anvi'o can automatically read and import centrifuge output.
 ```
-anvi-import-taxonomy -c contigs.db -i centrifuge_report.tsv centrifuge_hits.tsv -p centrifuge
+anvi-import-taxonomy-for-genes -c contigs.db -i centrifuge_report.tsv centrifuge_hits.tsv -p centrifuge
 ```
 
 ## Incorporating mapping data
