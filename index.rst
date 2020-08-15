@@ -10,12 +10,12 @@ BIOL338: Genomics & Bioinformatics @ Carleton College
    :maxdepth: 1
    :caption: Protocols:
 
-   pages/protocols/week3.md
-   pages/protocols/week4.md
-   pages/protocols/week5.md
-   pages/protocols/week6.md
-   pages/protocols/week7.md
-   pages/protocols/comp_bio_workshop.md
+   pages/protocols/pre-lab.md
+   pages/protocols/week3-2020.md
+   pages/protocols/week4-2020.md
+   pages/protocols/week5-2020.md
+   pages/protocols/week6-2020.md
+   pages/protocols/week7-2020.md
 
 
 .. toctree::

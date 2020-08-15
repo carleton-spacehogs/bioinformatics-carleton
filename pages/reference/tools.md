@@ -104,14 +104,14 @@ samtools bedcov [your bed file] [your sorted bam file] > [ an output file that e
 ## anvi'o
 **Make bins from metagenomic assemblies and BAM files**
 
-The protocol for week 6 laid out anvi'o step by step. Here is another source of information:
-http://merenlab.org/2016/06/22/anvio-tutorial-v2/
+The protocol for week 6 laid out anvi'o step by step. The [anvi'o tutorial](http://merenlab.org/2016/06/22/anvio-tutorial-v2/) is another good source of information.
+
 
 ## mothur
 **Analyze 16S data to find taxonomy, OTUS**
 
-The protocol for week 7 laid out mothur step by step. Here is another source of information:
-https://www.mothur.org/wiki/MiSeq_SOP
+The protocol for week 7 laid out mothur step by step. The [mothur wiki](https://www.mothur.org/wiki/MiSeq_SOP) is another good source of information.
+
 
 # Legacy Items
 
