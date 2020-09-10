@@ -6,6 +6,9 @@ Carleton College
 ## Unix boot camp
 For those of you who have *not* worked with Unix on the command line before, please go through this [Unix boot camp](https://cli-boot.camp/?id=rjfb8yyz5da). For all of you (regardless of whether you have worked on the command line before or not), please fill out the quick Unix worksheet on Moodle and submit by Friday. If you aren't familiar with Unix, then this will be a handy cheat sheet for you. If you are, well, it won't take long to fill out and it will help me check on where everyone is at.
 
+## Carleton VPN
+Whenever you are doing bioinformatics analyses for this class and you are off-campus, **please log in to the Carleton [VPN](https://apps.carleton.edu/campus/its/services/accounts/offcampus/).** The VPN effectively "wraps" your computational inputs and outputs in a nice soft blanket of Carleton protection. If you are connecting remotely from China and having trouble accessing the VPN, contact the Carleton Helpdesk-- they have a VPN option that might work for you.
+
 ## Installing software
 This bioinformatics class will, obviously, require us to do some hands-on bioinformatics. Most of the software you need is already installed on the remote server (i.e. a giant computer) that we'll learn how to log onto next week. However, you'll also need other software for some analyses. Usually, this software is installed in the Carleton computer labs where we do our in-person labs, but this year is obviously a little different.
 
