@@ -1,4 +1,4 @@
-# Week 6: Classifying taxonomy of short reads with mothur
+# Week 7: Classifying taxonomy of short reads with mothur
 
 ## Introduction
 Today we're going to learn how to use sequence data to assess diversity across samples by focusing on just the 16S rRNA gene. You'll recall that 16S rRNA is like a "barcode" gene that we can use to compare and classify who is there. It's often used in microbiome studies. Today we'll learn how to:
@@ -149,17 +149,21 @@ Pay attention to your use of parentheses!
 Please do these calculations in a way that is clear so that I can track your calculations. You will be submitting these Excel spreadsheets as part of your lab assignment for this week. Please compile the total number of sequences, the species richness, and the Shannon-Weiner index for each of your sample depths in a table. **Save this as Table 1 and provide a caption.**
 
 #### 11. Compare diversity with metadata
-In your Excel spreadsheet, make 5 columns containing metadata for each of your samples (1 column each for temperature, chlorophyll, nitrate, oxygen, and salinity). Make a scatterplot for each of the metadata versus your Shannon-Weiner index (H') for each of the samples. For example, one plot will have temperature on the x axis, and H' on the y axis, one will have chlorophyll on the x axis, and H' on the y axis, and so on. For each plot, plot a trendline through the data and include the equation and the R-squared value. (Note that since in most cases you won't have more than, say, 3 samples, we're not going to do a formal statistical test on these datasets. Therefore, based on what you've done here, we can't yet conclude whether the relationships are significant.) **Save these 5 plots as Figure 2(abcde).**
 
-**If you're working synchronously and in gather.town, please discuss the Google Doc questions with other folks at your table to make sure you're understanding the basic concepts.**
+**Check in with your lab group. Help each other catch up, and then discuss the following check for understanding questions and write down your responses for your postlab:**
 
-**Postlab assignment question**
-Look at your results. What kinds of trends do you see? What were you expecting to see, and do your results support your initial expectations? Write 1-2 paragraphs explaining your results in light of what we have discussed in class (and perhaps based on what you have seen in your previous postlabs) about diversity in various ocean basins and at different depths.
+Q1. Many of your sequences were unclassifiable. How would this likely affect your richness calculations for each sample? Explain why.
+
+Q2. What is the difference between richness and the Shannon-Weiner index? Describe a situation in which you might have a high richness but a relatively low Shannon-Weiner index.
+
+**Next, as a lab group, pool your data together by sharing in a common folder on the server or Google Drive or whatever you prefer. You can use any of the pooled data for your mini research question this week:**
+
+**Mini research question**
+Design a mini research question using the data you've generated today (you can use data from any samples from your lab group as well.) Generate a plot or set of plots addressing your research question. What kinds of trends do you see? What were you expecting to see, and do your results support your initial expectations? Write 1-2 paragraphs explaining your results in light of what we have discussed in class (and perhaps based on what you have seen in your previous postlabs) about diversity in various ocean basins and at different depths.
 
  **Summary of what to turn in next week:**
  For this week's post-lab assignment, please submit the following (should all be in the same document):
  - Figure 1
- - Figure 2(abcde)
  - Table 1
- - The response to the Postlab question
- - Your Excel spreadsheet so that I can check your calculations (submitted separately)
+ - Responses to 2 "Check for understanding" questions
+ - Mini research question

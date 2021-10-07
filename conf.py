@@ -52,7 +52,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Carleton Bioinformatics'
-copyright = '2020, Rika Anderson'
+copyright = '2021, Rika Anderson'
 author = 'Rika Anderson'
 
 # The version info for the project you're documenting, acts as replacement for

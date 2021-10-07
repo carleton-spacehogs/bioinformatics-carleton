@@ -101,16 +101,19 @@ make_bed_file_from_gff_file_prokka.py [your gff file from prokka]
 samtools bedcov [your bed file] [your sorted bam file] > [ an output file that ends in _ORF_coverage.txt]
 ```
 
+## mothur
+**Analyze 16S data to find taxonomy, OTUs**
+
+The protocol for week 6 laid out mothur step by step. The [mothur wiki](https://www.mothur.org/wiki/MiSeq_SOP) is another good source of information.
+
+
 ## anvi'o
 **Make bins from metagenomic assemblies and BAM files**
 
-The protocol for week 6 laid out anvi'o step by step. The [anvi'o tutorial](http://merenlab.org/2016/06/22/anvio-tutorial-v2/) is another good source of information.
+The protocol for week 7 laid out anvi'o step by step. The [anvi'o tutorial](http://merenlab.org/2016/06/22/anvio-tutorial-v2/) is another good source of information.
 
 
-## mothur
-**Analyze 16S data to find taxonomy, OTUS**
 
-The protocol for week 7 laid out mothur step by step. The [mothur wiki](https://www.mothur.org/wiki/MiSeq_SOP) is another good source of information.
 
 
 # Legacy Items

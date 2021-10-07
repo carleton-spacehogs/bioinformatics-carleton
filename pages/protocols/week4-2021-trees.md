@@ -1,4 +1,4 @@
-# Week 3: Local alignments and sequence search with BLAST, global alignments with MUSCLE, and making trees with RAxML
+# Week 5: Local alignments and sequence search with BLAST, global alignments with MUSCLE, and making trees with RAxML
 
 Rika Anderson,
 Carleton College
@@ -7,10 +7,10 @@ Carleton College
 ## Logging in to the remote server
 
 #### 1. Login
-If you're in a lab on campus, boot as a Mac on the lab computer.
+Boot as a Mac on the lab computer.
 
 #### 2. Terminal
-Find and open the Terminal application (`Applications/Utilities`). If you're on a PC, open your Ubuntu terminal or your PuTTY terminal.
+Find and open the Terminal application (`Applications/Utilities`). (For future reference if you're doing this from home, if you're on a PC , open your Ubuntu terminal or your PuTTY terminal.)
 
 #### 3. Connect to baross
 
@@ -63,9 +63,15 @@ In contrast, `tblastn` is a translated nucleotide blast. You are blasting your p
 Isn't this a BLAST?!?
 (Bioinformatics jokes! Not funny.)
 
-#### 8. gather.town discussion
+#### 8. Pause to check for understanding with your lab group
 
-If you're able to work synchronously and you're in gather.town, get in a group with some other folks and answer the questions on the Google Doc to make sure you're all understanding what's going on.
+Take a pause here and check in with the others at your table. If others haven't quite caught up to you yet, help them catch up. As a table, discuss and answer the following questions. Include the responses as part of your postlab assignment.
+
+**Check for understanding:**
+
+Q1. First look at your blastp results. Take a look at the list of hits below the top hit. Why do you think there are so many different hits with a similar function?
+
+Q2. Describe the difference in your `tblastn` and `blastp` results. Why do they look different? How does this reflect the databases you are BLASTing against? Discuss and explain in what scenarios you might choose to use one over the other.
 
 
 ### Doing a BLAST against your own dataset
@@ -94,7 +100,7 @@ Your ORFs are ready to be BLASTed. Now we need a protein of interest to search f
 This takes you to a page with information about the RAMP family of proteins, the "Repair Associated Mysterious Proteins." While indeed mysterious, they turn out to be CRISPR-related proteins.
 
 #### 11. Find protein (cont.)
-Click on "2871 sequences" near the top. If the link doesn't work, click on "Alignments" on the side bar.
+Click on "3064 sequences" near the top. If the link doesn't work, click on "Alignments" on the side bar.
 
 #### 12. Generate file
 Under "format an alignment," select your format as "FASTA" from the drop-down menu, and select gaps as "No gaps (unaligned)" from the drop-down menu. Click "Generate."
@@ -115,10 +121,10 @@ It will ask you for your password; type it in and hit "Enter."
 
 
 #### 15. BLAST it
-Now, BLAST it! There are many parameters you can set. The following command illustrates some common parameters.
+Now, BLAST it! There are many parameters you can set. (Adjust the name of your PROKKA file if you need to.) The following command illustrates some common parameters.
 
 ```bash
-blastp -query PF03787_seed.txt -db PROKKA_09252018.faa -evalue 1e-05 -outfmt 6 -out PF03787_vs_toy_ORFs.blastp
+blastp -query PF03787_seed.txt -db PROKKA_01252021.faa -evalue 1e-05 -outfmt 6 -out PF03787_vs_toy_ORFs.blastp
 ```
 
 - `blastp` invokes the program within the blast suite that you want. (other choices are `blastn`, `blastx`, `tblastn`, `tblastx`.)
@@ -128,7 +134,7 @@ blastp -query PF03787_seed.txt -db PROKKA_09252018.faa -evalue 1e-05 -outfmt 6 -
 - `-outfmt` defines the output format of your blast results. option 6 is common; you can check out [this link](https://www.ncbi.nlm.nih.gov/books/NBK279675/) for other options.
 - `-out` defines the name of your output file. I like to title mine with the general format `query_vs_db.blastp` or something similar.
 
-We haven't talked about BLAST in class yet, but the e-value is a way to establish a cutoff of what makes a "good" BLAST hit. Smaller e-value = better hit.
+As we discussed in class, the e-value is a way to establish a cutoff of what makes a "good" BLAST hit. Smaller e-value = better hit.
 
 
 #### 16. Examine results
@@ -161,8 +167,32 @@ blastp -query PF03787_seed.txt -db PROKKA_09252018.faa -evalue 1e-02 -outfmt 6 -
 ```
 
 
-#### 19. Pause to check for understanding
-If you're able to work synchronously and you're in gather.town, talk over the next set of discussion questions with a group at your table.
+#### 18. Post-lab questions
+
+As before, take a pause and check in with your lab group. Help them catch up. As a group, take a look at your BLAST results and answer the following questions for the postlab.
+
+**Check for understanding:**
+
+Q4. (a-e)
+- Which protein among your Pfam query sequences had the best hit?
+- What was the percent identity?
+- What organism does the matching Pfam protein query sequence come from?
+- Which of your ORFs did it match?
+- Does this ORF have hits to other sequences within your query file? What do you think this means?
+
+
+#### 19. Post-lab questions
+Let’s try this another way. Run your blast again, but this time use a bigger e-value cutoff.
+
+```bash
+blastp -query PF03787_seed.txt -db PROKKA_09252018.faa -evalue 1e-02 -outfmt 6 -out PF03787_vs_toy_ORFs_evalue1e02.blastp
+```
+
+With your group, discuss and answer the following question for the postlab:
+
+**Check for understanding:**
+
+Q5. How do these BLAST results differ from your previous BLAST? Explain why.
 
 ## Making An Alignment
 
@@ -311,4 +341,4 @@ Or, "How many ORFs in my dataset have a match to a viral gene? How does that com
 
 -What do you think this tells you about your project dataset? (Think of this as a mini Discussion section: I'm looking for evidence that you thought about your results and how they connect more broadly to some ecological or evolutionary pattern in your dataset.)
 
-Submit via Moodle by lab next week. **I prefer to grade these blind, so please put your student ID number, rather than your name, on your assignment. (This applies to all future assignments as well.)**
+Submit via Moodle by lab time next week. **I prefer to grade these blind, so please put your student ID number, rather than your name, on your assignment. (This applies to all future assignments as well.)**

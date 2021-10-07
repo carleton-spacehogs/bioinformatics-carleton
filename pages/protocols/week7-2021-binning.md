@@ -1,6 +1,6 @@
-# Week 5: Binning genomes with anvi'o
+# Week 8: Binning genomes with anvi'o
 
-## Intro
+## Intro (Rika will go over this at the beginning of lab)
 This week in lab we’ll learn how disentangle individual microbial genomes from your mess of metagenomic contigs. We aren’t going to use a toy dataset this week—-we’re going straight into analysis with your metagenome datasets for your projects.
 
 Genomes are disentangled from metagenomes by clustering contigs according to two properties: **coverage** and **tetranucleotide** frequency. Basically, if contigs have similar coverage patterns between datasets, they are clustered together; and if contigs have similar kmers, they will cluster together. When we cluster contigs together like this, we get a collection of contigs that are thought to represent a reconstruction of a genome from your metagenomic sample. We call these 'genome bins,' or 'metagenome-asembled genomes' (MAGs). We will talk more about this in class.
@@ -10,10 +10,11 @@ There is a lot of discussion in the field about which software packages are the 
 I am drawing a lot of information for this tutorial from the anvi'o website. If you'd like to learn more, see [this link](http://merenlab.org/2016/06/22/anvio-tutorial-v2/).
 
 ## Preparing your contigs database for anvi'o
-#### 1. ssh tunnel
-As always, please log into the Carleton VPN, log into gather.town (if working synchronously), and open up your Terminal application. But don't ssh the normal way! Anvio requires visualization through the server, so this week we have to create what is called an "ssh tunnel" to log into the server in a specific way. Substitute "username" below with your own Carleton login name.
 
-NOTE: Each of you will be assigned a different port number (i.e. 8080, 8081, 8082, etc.). I'll put that in the Slack channel for this week. Substitute your assigned port number for 8080 shown below.
+#### 1. ssh tunnel
+As always, boot onto the Mac OS and open up your Terminal application. But don't ssh the normal way! Anvio requires visualization through the server, so this week we have to create what is called an "ssh tunnel" to log into the server in a specific way. Substitute "username" below with your own Carleton login name.
+
+NOTE: Each of you will be assigned a different port number (i.e. 8080, 8081, 8082, etc.). I'll put that on the white board. Substitute your assigned port number for 8080 shown below.
 
 ```
 ssh -L 8080:localhost:8080 username@baross.its.carleton.edu
@@ -199,7 +200,7 @@ What you are looking at:
 - the 'GC content' ring shows the average percent of bases that were G or C as opposed to A or T for that contig.
 
 #### 16. Make bins
-Once you get to this step, come find Rika in gather.town (in groups would be nice) or Zoom and I'll show you how this works. (If you're working asynchronously, please either wait until lab time or-- if that's not possible-- ping Rika and we'll find a time when I can show you how it works.)
+We will go over the process for making bins together in class.
 
 Because your datasets are fairly small, your bins are also going to be very small. Your percent completeness will be very low. Try to identify ~3-5 bins according to patterns in the mapping of the datasets as well as the GC content.
 

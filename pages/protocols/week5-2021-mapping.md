@@ -1,7 +1,7 @@
-# Week 4: Mapping with bowtie2
+# Week 6: Mapping with bowtie2
 
 #### 1. Log in to the remote server
-Log onto the Carleton VPN if you haven't already. Open up your Terminal window and ssh in to baross. If you're working synchronously, head over to gather.town and hang out at one of the tables.
+Boot your computer as a Mac and use the Terminal to ssh in to baross.
 
 ## Mapping with a toy dataset
 
@@ -127,7 +127,15 @@ samtools index toy_dataset_mapped_species2_sorted.bam
 #### 14. Visualize new mapping
 Copy the new data files to your local computer using scp like in step 11. Visualize both of them in IGV viewer. Since you have already loaded the reference file and reads from your first mapping, all you have to do is click 'File' --> 'Load from File' and click on `toy_dataset_mapped_species2_sorted.bam`. You should be able to see them side by side.
 
-**If you're working synchronously and are in gather.town, pause to make sure you're understanding what you're seeing by answering the questions on the Google Doc.**
+**Pause here. Check in with your group. Together, discuss and answer these questions for this week's postlab assignment.**
+
+**Check for understanding:**
+
+Q1. Describe the large-scale differences between the mapped reads from species 1 and species 2, and explain what this mapping tells us about the relative genome structure of the two genomes that we mapped. If we compared this genomic region in a dot plot, what would it look like?
+
+Q2. Do you see evidence of misassemblies or deletions in the reference? What does that evidence look like?
+
+
 
 ## Mapping your project datasets
 Now we're going to map your project datasets. Remember that these are metagenomes, not a genome, so the data will be a bit more complex to interpret.
@@ -136,6 +144,12 @@ We're going to map your *reads* against your *assembled contigs*. Why would we d
 - to look for single nucleotide variants in specific genes.
 - to quantify the relative abundances of different genes, and determine whether specific genes have better coverage than others.
 - to quantify the relative abundances of specific taxa, and determine whether specific taxa are more abundant than others.
+
+**As you consider this, discuss the following question with your group for this week's postlab questions:**
+
+**Check for understanding:**
+
+ Q3. If you wanted to quantify the relative abundances of specific genes in your sample, why couldn't you simply count the number of times your gene appears in your assembly?
 
 #### 15. Map to your project datasets
 Change directory into your project dataset directory folder.
@@ -165,6 +179,12 @@ samtools index ERR599166_mapped_sorted.bam
 
 #### 16. Visualize
 When you visualize this in IGV, remember that you have multiple contigs. So you have to click the drop-down menu at the top and choose which contig you wish to visualize.
+
+#### 17. Check for understanding
+
+**With your table, discuss and answer the following for this week's postlab:**
+
+ Q4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind that you have mapped metagenomic reads from a whole microbial community against a consensus assembly-- this is not reads from an individual vs an individual's reference assembly.)
 
 #### 17. Calculating coverage- generate bed file
 You were able to visualize the mappings in IGV, but sometimes you just want to have a number: for example, you might want to know the average coverage across a specific gene, and compare that to the average coverage of another gene in order to compare their relative abundances in the sample. So, next we're going to calculate gene coverages based on your mapping.
@@ -233,23 +253,54 @@ prokka ERR599899_assembled_reformatted.fa --outdir prokka_ERR599899
 ```
 You should also make sure that you ran bowtie2 against the reformatted version. How do you know? Go back up up to Step 13 in this week's protocol and check the assembly file with `less`. Make sure the contigs start with `c_00000001` and not `contig-100_0`.
 
+The `samtools bedcov` command will give you a file that ends in `ORF_coverage.txt`.
 
-#### 19. Calculate coverage in Excel
-The `samtools bedcov` command will give you a file that ends in `ORF_coverage.txt`. Use `scp` to move it to your local computer, then open with Excel. It should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, and then the sum of the per-base coverage. To get the average coverage, divide the sum of the per-base coverage by the difference between the stop and start coordinates. In other words, type this in the top column and then fill down to the bottom:
+#### 19. Matching the Prokka annotations with your ORF coverage
+
+Now you have the coverage for all of your ORFs. To make it easier to read and work with the results, let's match the coverage of each ORF with the Prokka annotation of that ORF so you can more easily read and understand the results. To do that, run this script, substituting in the names and paths of your own ORF coverage file and your faa file from Prokka:
+```
+python /Accounts/Genomics_Bioinformatics_shared/python_scripts/merge_name.py [ORF_coverage.txt file] [ORFs.faa file]
+```
+Your output will be a txt file that matches the name of your ORF coverage file and ends in `_matched.txt.`
+
+#### 20. Calculate coverage in Excel and examine results
+
+Use `scp` to move the new CSV file to your local computer, then open with Excel. The output file should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, the sum of the per-base coverage, and then the Prokka annotation for that protein. To get the *average* coverage for each ORF, divide the sum of the per-base coverage by the difference between the stop and start coordinates. In other words, type this in the top column and then fill down to the bottom:
 =E1/(C1-B1)
 
 *Pro tip: Rather than drag for 16,000 rows in Excel, highlight the top cell, then scroll down to the bottom of the column, then hold 'Shift' while you click the bottom cell of the column where the data ends, then click Edit --> Fill--> Down.*
 
-Now you have the average coverage of every ORF for this particular bam file, and you should be able to match the name of your ORF from Prokka to the ORF in this output file.
+Now you have the average coverage of every ORF for this particular bam file, and you should be able to match the name of your ORF from Prokka to the ORF in this output file. You can explore your results and see what kinds of genes tend to have the highest and lowest coverage.
 
 
-#### 20. Check for understanding
+#### 21. Check for understanding
 This is a really common type of analysis for 'omics-based studies-- you can compare the coverage of specific genes of interest. For example, you might compare the coverage of genes related to photosythesis, respiration, and nitrogen fixation if you're interested in how abundant those metabolisms are in the community. We also use a very similar technique when we're doing expression analyses using something like RNASeq (more on that in coming weeks).
 
-**If you're working synchronously and are in gather.town, check that you're understanding by discussing the questions in the Google Doc.**
 
 
-#### 21. Copy your mapping files to the shared class folder
+ Q5. Go back to your Prokka files and find two ORFs that you're interested in. Choose one that you think might be really abundant in a sample (a housekeeping gene, for example, that might be really common) and choose one that you think might be more specialized and only found in specific types of microbes. Describe the ORFs you chose and which one you predict to have higher coverage.
+
+
+  Q6. Make a bar graph showing your results and submit it as 'Figure 1' for this week's lab writeup. I did one in Excel, like this:
+
+ ![Excel screenshot](../images/excel_screenshot.jpg)
+
+ Was your prediction correct? If not, speculate on why or why not.
+
+ **Check for understanding by discussing your above plot and the below question with your lab group:**
+
+Q7. As you scroll through the data file reporting the average coverage of all of your ORFs, which ORF had the highest coverage? What did it encode, according to your Prokka file or BLAST? Speculate on why that gene may have had the highest coverage of all the genes in your dataset. NOTE! The genes with the highest coverage were probably really short and resulted from Illumina sequencing error-- i.e., ATATATATATATAT. IDBA-UD orders contigs by length, so I recommend skipping the contigs that are really short (high numbers in the contig name) and find the contig with the highest coverage that was unlikely to be a sequencing error.
+
+
+
+**Another script that may be useful for your postlab or your final project, but isn't required for this lab:**
+
+Let's say you ran a BLAST to identify ORFs of interest, and you want to only get the coverages of the genes that had a match in your BLAST results. To do that, run this script:
+```
+get_ORF_covg_from_BLAST_hits.py [BLAST file] [ORF coverage file]
+```
+
+#### 22. Copy your mapping files to the shared class folder
 
 Please copy your bam files, bai files, bed files, and your ORF coverage files over to the class shared folder. Before doing that, you might want to change the names of some of your files so they are uniform and recognizable (see below example, and substitute your file names for the ones below).
 
@@ -267,14 +318,12 @@ cp ERR598995_ORF_coverage.txt  /Accounts/Genomics_Bioinformatics_shared/mapping
 ```
 
 
-#### 22. This week's postlab writeup
+#### 23. This week's postlab writeup
 For this week's post-lab writeup:
 
 **Mini Research Question**
 
 Write either a question or generate a hypothesis about the relative coverage of this set of genes with respect to your project datasets.
-
-If you're having trouble thinking of a good question, come find Rika in gather.town or Slack, tell me what you're interested in, and we can bounce around some ideas.
 
 
 *Example #1:*
@@ -290,4 +339,4 @@ Many of you will probably want to compare your mapping of your own reads to your
 
 **Describe your results and create at least one graph to visualize those results. This should represent a mini 'Results' section in a lab report or paper. Interpret your results within the context of the ecosystem you are investigating. This should represent a mini 'Discussion' section in a lab report or paper.**
 
-**Submit on Moodle by lab time next week.**
+**Compile your 7 "check for understanding" questions and your mini research question together and submit on Moodle by lab time next week.**
