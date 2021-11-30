@@ -1,4 +1,4 @@
-# Week 7: Classifying taxonomy of short reads with mothur
+# Week 6: Classifying taxonomy of short reads with mothur
 
 ## Introduction
 Today we're going to learn how to use sequence data to assess diversity across samples by focusing on just the 16S rRNA gene. You'll recall that 16S rRNA is like a "barcode" gene that we can use to compare and classify who is there. It's often used in microbiome studies. Today we'll learn how to:
@@ -31,7 +31,7 @@ cp /usr/local/data/Tara_datasets/North_Pacific/ERR598995_MERGED_FASTQ_16SrRNA_10
 ```
 
 ***Hot tip!***
-If you want to copy over all of the 16S rRNA datasets from one folder, you could use the asterisk (wildcard). For example:
+If you want to copy over all of the 16S rRNA datasets from one location, you could use the asterisk (wildcard). For example:
 `cp /usr/local/data/Tara_datasets/North_Pacific/*16S* .`
 That would copy over all of the files containing `16S` in their title in the North Pacific folder.
 
@@ -56,15 +56,20 @@ For example:
 make.group(fasta=ERR598944_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599001_MERGED_FASTQ_16SrRNA_10000.fasta-ERR599078_MERGED_FASTQ_16SrRNA_10000.fasta, groups=meso-transect-surface)
 ```
 
+***Hot tip #2!*** You can use the command system() if you want to use Unix commands while you are using mothur. If you can't remember the names of the 16S files you just copied, you can see them by typing this:
+```
+system(ls)
+```
+
+
 #### 5. Look at the groups file
 This command should generate a file that is called either `groups` or `merge.groups`. Take a look at it with `less`.
 
-***Hot tip #2!*** You can use the command system() if you want to use Unix commands while you are using mothur.
-
-You will see that each sequence name is linked up with the group name that you provided. That way mothur can combine all of the sequences together into one file, but you can still keep track of which one belongs to which sample. This file will be essential for allowing mothur to compare your samples later on.
 ```
 system(less groups)
 ```
+You will see that each sequence name is linked up with the group name that you provided. That way mothur can combine all of the sequences together into one file, but you can still keep track of which one belongs to which sample. This file will be essential for allowing mothur to compare your samples later on.
+
 
 ### 6. Merge FASTA files together
 Now you can merge all of your FASTA files together, and the .groups file will record which sequences came from which file. The output here will be a file called `merged.fa`. Again, substitute "file-1.fa" and so on with the names of your 16S rRNA fasta files.
@@ -86,7 +91,7 @@ Everything we've done so far is basically record-keeping. Now it's time to do SC
 We will classify our sequences by comparing them to a reference database. We will the SILVA database to compare these sequences. (It's a very good, well-curated 16S rRNA database.) 
 
 Note!
-You will see lots of warnings along the lines of: "[WARNING]: xxx could not be classified." We are going to have to leave these sequences out of the analysis! This means all of the unknowns will be grouped together even though they most likely represent many different species, so they will be missing from our diversity analyses later on. (In class, we'll talk about why we would ideally use something like operational taxonomic units, or OTUs, to do this analysis. Unfortunately, our metagenomic data is too messy to be able to make nice OTUs.)
+You will see lots of warnings along the lines of: "[WARNING]: xxx could not be classified." We are going to have to leave these sequences out of the analysis! This means all of the unknowns will be grouped together even though they most likely represent many different species, so they will be missing from our diversity analyses later on. (In class, we'll talk about why we would ideally use something like operational taxonomic units, or OTUs, to do this analysis. Unfortunately, the Tara metagenomic data is too messy to be able to make nice OTUs, so we're going to classify every sequence.)
 
 ```
 classify.seqs(fasta=merged.fa, group=groups, reference=/usr/local/data/silva_databases/silva.seed_v119.align, taxonomy=/usr/local/data/silva_databases/silva.seed_v119.tax)
@@ -148,7 +153,7 @@ Pay attention to your use of parentheses!
 
 Please do these calculations in a way that is clear so that I can track your calculations. You will be submitting these Excel spreadsheets as part of your lab assignment for this week. Please compile the total number of sequences, the species richness, and the Shannon-Weiner index for each of your sample depths in a table. **Save this as Table 1 and provide a caption.**
 
-#### 11. Compare diversity with metadata
+#### 11. Check for understanding
 
 **Check in with your lab group. Help each other catch up, and then discuss the following check for understanding questions and write down your responses for your postlab:**
 
@@ -158,8 +163,8 @@ Q2. What is the difference between richness and the Shannon-Weiner index? Descri
 
 **Next, as a lab group, pool your data together by sharing in a common folder on the server or Google Drive or whatever you prefer. You can use any of the pooled data for your mini research question this week:**
 
-**Mini research question**
-Design a mini research question using the data you've generated today (you can use data from any samples from your lab group as well.) Generate a plot or set of plots addressing your research question. What kinds of trends do you see? What were you expecting to see, and do your results support your initial expectations? Write 1-2 paragraphs explaining your results in light of what we have discussed in class (and perhaps based on what you have seen in your previous postlabs) about diversity in various ocean basins and at different depths.
+#### 12. Mini research question
+Design a mini research question using the data you've generated today (you can use data from any samples from your lab group as well.) Remember that you have metadata (i.e. temp, chlorophyll, etc.) available as well (see the Tara Oceans spreadsheet). Generate a plot or set of plots addressing your research question. To create plots, you can use Excel or Flourish or R, whatever you're most comfortable with. What kinds of trends do you see? What were you expecting to see, and do your results support your initial expectations? Write 1-2 paragraphs explaining your results in light of what we have discussed in class (and perhaps based on what you have seen in your previous postlabs) about trends in taxonomy and/or diversity in various ocean basins and/or at different depths.
 
  **Summary of what to turn in next week:**
  For this week's post-lab assignment, please submit the following (should all be in the same document):

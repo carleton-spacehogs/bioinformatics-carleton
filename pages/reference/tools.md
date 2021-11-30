@@ -75,8 +75,7 @@ Example usage (replace names in brackets with your own names and remove brackets
 
 ```
 muscle -in [example_sequence_file.fasta] --out [example_sequence_file_aligned.afa]
-convert_afa_to_phy.py [example_sequence_file_aligned.afa]
-raxmlHPC-PTHREADS-AVX -f a -# 20 -m PROTGAMMAAUTO -p 12345 -x 12345 -s [example_sequence_file_aligned.phy] -n [example_tree_name.tree] -T 4
+raxmlHPC-PTHREADS-AVX -f a -# 20 -m PROTGAMMAAUTO -p 12345 -x 12345 -s [example_sequence_file_aligned.afa] -n [example_tree_name.tree] -T 4
 ```
 Open the RAxML_bipartitions.example_tree_name.tree file in ITOL.
 

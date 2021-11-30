@@ -1,4 +1,4 @@
-# Week 6: Mapping with bowtie2
+# Week 5: Mapping with bowtie2
 
 #### 1. Log in to the remote server
 Boot your computer as a Mac and use the Terminal to ssh in to baross.
@@ -10,9 +10,9 @@ We're going to start by mapping the sequencing reads from a genome sequence of a
 
 The sequencing reads from from one strain of *Sulfolobus acidocaldarius*, and the reference sequence that they are mapping to is from a very closely related strain of *Sulfolobus acidocaldarius*.
 
-In your home directory, make a new directory called “mapping,” then change into that directory.
+In your toy dataset directory, make a new directory called “mapping,” then change into that directory.
 ```
-cd ~
+cd ~/toy_dataset_directory
 mkdir mapping
 cd mapping
 ```
@@ -160,13 +160,13 @@ cd ~/project_directory
 
 We're going to map your raw reads against your assembled contigs (not your ORFs). Make sure you know where your project assembly is and where your raw reads are. Follow the instructions to map your raw reads back to your assembled contigs. For example, if you were mapping the reads in the dataset `ERR599166_1mill_sample.fasta` against an assembly called `ERR599166_assembly_reformatted.fa`, you might do something like this (below). Please be sure to use the assembled files that you've already run through anvi-script-reformat-fasta, which you should have done in our first computer lab.
 
-One more thing. Your project datasets are very large-- you each have 10 million reads. So mapping will take longer than for the toy datasets. So we're going to add an extra flag (-p) to the mapping step to tell the computer to use more than one CPU so that this goes faster. You'll each use 5 CPUs for this process. The mapping may still take about 5-10 minutes, so have patience!
+One more thing. Your project datasets are very large-- you each have 10 million reads. So mapping will take longer than for the toy datasets. So we're going to add an extra flag (-p) to the mapping step to tell the computer to use more than one CPU so that this goes faster. You'll each use 4 CPUs for this process. The mapping may still take about 5-10 minutes, so have patience!
 
 An example set of commands is shown below. **Remember to replace the dataset names here with your own project datasets!**
 
 ```
 bowtie2-build ERR599166_assembly_reformatted.fa ERR599166_assembly_reformatted.btindex
-bowtie2 -x ERR599166_assembly_reformatted.btindex -f -U ERR599166_sample.fasta -S ERR599166_mapped.sam -p 5
+bowtie2 -x ERR599166_assembly_reformatted.btindex -f -U ERR599166_sample.fasta -S ERR599166_mapped.sam -p 4
 samtools view -bS ERR599166_mapped.sam > ERR599166_mapped.bam
 samtools sort ERR599166_mapped.bam -o ERR599166_mapped_sorted.bam
 samtools faidx ERR599166_assembly_reformatted.fa
@@ -261,35 +261,30 @@ Now you have the coverage for all of your ORFs. To make it easier to read and wo
 ```
 python /Accounts/Genomics_Bioinformatics_shared/python_scripts/merge_name.py [ORF_coverage.txt file] [ORFs.faa file]
 ```
+
+So, for example:
+```
+python /Accounts/Genomics_Bioinformatics_shared/python_scripts/merge_name.py ERR598966_ORF_coverage.txt prokka_project/PROKKA_01252021.faa
+```
+
 Your output will be a txt file that matches the name of your ORF coverage file and ends in `_matched.txt.`
 
 #### 20. Calculate coverage in Excel and examine results
 
-Use `scp` to move the new CSV file to your local computer, then open with Excel. The output file should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, the sum of the per-base coverage, and then the Prokka annotation for that protein. To get the *average* coverage for each ORF, divide the sum of the per-base coverage by the difference between the stop and start coordinates. In other words, type this in the top column and then fill down to the bottom:
-=E1/(C1-B1)
+Use `scp` to move the new `_matched.txt.` file to your local computer, then open with Excel. The output file should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, the sum of the per-base coverage, and then the Prokka annotation for that protein. To get the *average* coverage for each ORF, divide the sum of the per-base coverage by the difference between the stop and start coordinates. In other words, type "average coverage" in the top of column H, then one row down, type this and then fill down to the bottom:
+=F2/(D2-C2)
 
 *Pro tip: Rather than drag for 16,000 rows in Excel, highlight the top cell, then scroll down to the bottom of the column, then hold 'Shift' while you click the bottom cell of the column where the data ends, then click Edit --> Fill--> Down.*
 
-Now you have the average coverage of every ORF for this particular bam file, and you should be able to match the name of your ORF from Prokka to the ORF in this output file. You can explore your results and see what kinds of genes tend to have the highest and lowest coverage.
+Now you have the average coverage of every ORF for this particular bam file, and you should be able to see what the annotation of each ORF is. You can explore your results and see what kinds of genes tend to have the highest and lowest coverage by sorting your spreadsheet in different ways.
 
-
-#### 21. Check for understanding
 This is a really common type of analysis for 'omics-based studies-- you can compare the coverage of specific genes of interest. For example, you might compare the coverage of genes related to photosythesis, respiration, and nitrogen fixation if you're interested in how abundant those metabolisms are in the community. We also use a very similar technique when we're doing expression analyses using something like RNASeq (more on that in coming weeks).
 
+#### 21. Check for understanding
 
+**Take a look at the spreadsheet and discuss with your lab group:**
 
- Q5. Go back to your Prokka files and find two ORFs that you're interested in. Choose one that you think might be really abundant in a sample (a housekeeping gene, for example, that might be really common) and choose one that you think might be more specialized and only found in specific types of microbes. Describe the ORFs you chose and which one you predict to have higher coverage.
-
-
-  Q6. Make a bar graph showing your results and submit it as 'Figure 1' for this week's lab writeup. I did one in Excel, like this:
-
- ![Excel screenshot](../images/excel_screenshot.jpg)
-
- Was your prediction correct? If not, speculate on why or why not.
-
- **Check for understanding by discussing your above plot and the below question with your lab group:**
-
-Q7. As you scroll through the data file reporting the average coverage of all of your ORFs, which ORF had the highest coverage? What did it encode, according to your Prokka file or BLAST? Speculate on why that gene may have had the highest coverage of all the genes in your dataset. NOTE! The genes with the highest coverage were probably really short and resulted from Illumina sequencing error-- i.e., ATATATATATATAT. IDBA-UD orders contigs by length, so I recommend skipping the contigs that are really short (high numbers in the contig name) and find the contig with the highest coverage that was unlikely to be a sequencing error.
+Q5. As you scroll through the data file reporting the average coverage of all of your ORFs, which ORFs had the highest coverage? What do they encode? Speculate on why those genes may have had the highest coverage of all the genes in your dataset. NOTE! The genes with the highest coverage were probably really short and resulted from Illumina sequencing error-- i.e., ATATATATATATAT. IDBA-UD orders contigs by length, so I recommend skipping the contigs that are really short (high numbers in the contig name) and find the contig with the highest coverage that was unlikely to be a sequencing error.
 
 
 
@@ -339,4 +334,4 @@ Many of you will probably want to compare your mapping of your own reads to your
 
 **Describe your results and create at least one graph to visualize those results. This should represent a mini 'Results' section in a lab report or paper. Interpret your results within the context of the ecosystem you are investigating. This should represent a mini 'Discussion' section in a lab report or paper.**
 
-**Compile your 7 "check for understanding" questions and your mini research question together and submit on Moodle by lab time next week.**
+**Compile your 5 "check for understanding" questions and your mini research question together and submit on Moodle by lab time next week.**

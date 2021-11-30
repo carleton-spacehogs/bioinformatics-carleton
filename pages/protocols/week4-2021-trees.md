@@ -1,4 +1,4 @@
-# Week 5: Local alignments and sequence search with BLAST, global alignments with MUSCLE, and making trees with RAxML
+# Week 4: Local alignments and sequence search with BLAST, global alignments with MUSCLE, and making trees with RAxML
 
 Rika Anderson,
 Carleton College
@@ -173,12 +173,12 @@ As before, take a pause and check in with your lab group. Help them catch up. As
 
 **Check for understanding:**
 
-Q4. (a-e)
+Q3. (a-e)
 - Which protein among your Pfam query sequences had the best hit?
 - What was the percent identity?
-- What organism does the matching Pfam protein query sequence come from?
 - Which of your ORFs did it match?
 - Does this ORF have hits to other sequences within your query file? What do you think this means?
+- Similarly, did multiple ORFs in your dataset have hits? What do you think this means?
 
 
 #### 19. Post-lab questions
@@ -192,7 +192,7 @@ With your group, discuss and answer the following question for the postlab:
 
 **Check for understanding:**
 
-Q5. How do these BLAST results differ from your previous BLAST? Explain why.
+Q4. How do these BLAST results differ from your previous BLAST? Explain why.
 
 ## Making An Alignment
 
@@ -252,27 +252,10 @@ Seaview shows the names of the sequences to the left. The letters to the right a
 ## Making a Tree
 Now we’re going to turn this alignment into a phylogenetic tree. We’re going to use a software package called RAxML, which is a commonly used tree-building software package that uses the maximum likelihood method to build trees.
 
-#### 24. Formatting
-First, we have to convert the aligned fasta file into a format that the tree-building software (RAxML) can handle. (A lot of the work of a bioinformatician is converting files from one format into the other.) I wrote a small Python script to convert your aligned fasta (.afa) file into Phylip file (.phy), which is what RAxML requires for input. Invoke it with the name of the script, followed by the aligned fasta file that you’d like to convert, like this:
+#### 24. To make your tree, type this:
 
 ```
-convert_afa_to_phy.py toy_dataset_PSII_protein_aligned.afa
-```
-#### 25. Looking at your Phylip file
-The script should have outputted a file that ends in .phy. Take a look at it to see what the format looks like.
-
-
-The top of a Phylip file indicates the number of sequences (in this case, 17) and the number of base pairs in the aligned sequences (571). It’s followed by the first 54 bases of each sequence, broken up by a space every 10 letters. Every new line shows a new sequence (from a different species or organism). The next 54 letters of each sequence starts after the first set, and continues like this for the rest of the file. (Yes, it’s weird, but a lot of tree-building programs use this format.)
-
-```
-less toy_dataset_PSII_protein_aligned.afa.phy
-```
-
-### 26. Build your tree!
-Now let’s make a tree. Type this:
-
-```
-raxmlHPC-PTHREADS-AVX -f a -# 20 -m PROTGAMMAAUTO -p 12345 -x 12345 -s toy_dataset_PSII_protein_aligned.afa.phy -n toy_dataset_PSII_protein.tree -T 4
+raxmlHPC-PTHREADS-AVX -f a -# 20 -m PROTGAMMAAUTO -p 12345 -x 12345 -s toy_dataset_PSII_protein_aligned.afa -n toy_dataset_PSII_protein.tree -T 4
 
 ```
 
@@ -288,7 +271,7 @@ What this means:
 
 `-p` and `–x` provide seed numbers so that the program can generate random numbers for the bootstrapping process.
 
-`-s` gives the name of your input Phylip file
+`-s` gives the name of your aligned FASTA file
 
 `-n` gives the name of your output Newick file, which will be made into a tree.
 
@@ -297,13 +280,13 @@ What this means:
 
 NOTE: "bootstrapping" is a statistical test used to assess the reliability of your tree topology (its shape). We'll talk about this more in class next week.
 
-#### 27. Tree output
+#### 25. Tree output
 
 You’ve made a tree! Congratulations! Let’s look at the raw RAxML output. You should have some files called:
 
 `RAxML_bestTree.toy_dataset_PSII_protein.tree`
 `RAxML_bipartitionsBranchLabels.toy_dataset_PSII_protein.tree`
-`RAxML_bipartitions.toy_dataset_PSII_protein.tree` <-- this is the one you want, because it gives you bootstrap values at the nods on the tree. (more on bootstrapping next week.)
+`RAxML_bipartitions.toy_dataset_PSII_protein.tree` <-- this is the one you want, because it gives you bootstrap values at the nods on the tree.
 `RAxML_bootstrap.toy_dataset_PSII_protein.tree`
 `RAxML_info.toy_dataset_PSII_protein.tree`
 
@@ -311,7 +294,7 @@ Take a look at the bipartitions file using `less`.
 
 This is a Newick file, and it’s a common format for phylogenetic trees.
 
-#### 28. Visualizing the tree
+#### 26. Visualizing the tree
 Copy your Newick file (RAxML_bipartitions.toy_dataset_PSII_protein.tree) to your local computer using `scp`. Open up a web browser on your local computer and navigate to the [IToL website](http://itol.embl.de/) and create an account for yourself.
 
 Click on “Upload tree files” and find your tree file and upload it.
@@ -321,7 +304,7 @@ Click on your tree. You should see it open in your window. You can play around w
 
 ## Post-lab assignment
 
-For your post-lab assignment, answer the critical thinking question below.
+For your post-lab assignment, compile the 4 "check for understanding" questions and answer the critical thinking question below.
 
 **Critical thinking question:**
 
@@ -335,7 +318,7 @@ Or, "How many ORFs in my dataset have a match to a viral gene? How does that com
 
 -What question did you ask?
 
--How did you go about answering it? (Write this like you would a mini Materials and Methods section: include which databases you searched, which software packages you used, and which important flags you used in your commands. You should include enough information for an intelligent researcher to be able to replicate your results.)
+-How did you go about answering it? (Write this like you would a mini Materials and Methods section: concisely include all the important details needed to repeat what you did, like which databases you searched, which software packages you used, and which important flags you used in your commands. You should include enough information for an intelligent researcher to be able to replicate your results.)
 
 -What were your results? Describe them. Show a table or a figure if appropriate.
 

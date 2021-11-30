@@ -1,4 +1,4 @@
-# Week 4: Introduction to Unix/Linux and the Server; Assembly with IDBA-UD; ORF Calling and Annotation with Prokka
+# Week 3: Introduction to Unix/Linux and the Server; Assembly with IDBA-UD; ORF Calling and Annotation with Prokka
 
 Rika Anderson,
 Carleton College

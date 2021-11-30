@@ -1,4 +1,4 @@
-# Week 8: Binning genomes with anvi'o
+# Week 7: Binning genomes with anvi'o
 
 ## Intro (Rika will go over this at the beginning of lab)
 This week in lab we’ll learn how disentangle individual microbial genomes from your mess of metagenomic contigs. We aren’t going to use a toy dataset this week—-we’re going straight into analysis with your metagenome datasets for your projects.
@@ -78,7 +78,6 @@ cp prokka-gene-annot.txt ../anvio
 cd ../anvio
 ```
 
-
 #### 5. Make the contigs database
 
 Now, make the contigs database. It will have lots of information about... well... your contigs.
@@ -107,15 +106,15 @@ Import your prokka results like this:
 #### 7. Search for single copy universal genes
 Now we will search our contigs for archaeal and bacterial single-copy core genes. This will be useful later on because when we try to disentangle genomes from this metagenome, these single-copy core genes can be good markers for how complete your genome is.
 
-This process is slow, so we're going to run it on 5 CPUs rather than just 1. You can run it on screen in the background while you move forward with step 8. It should take a little under 10 minutes.
+This process is slow, so we're going to run it on 4 CPUs. You can run it on screen in the background while you move forward with step 8. It should take a little under 10 minutes.
 
 ```
 screen -S anvio
-anvi-run-hmms -c contigs.db -T 5
+anvi-run-hmms -c contigs.db -T 4
 ```
 
 #### 8. Determine taxonomy using Centrifuge
-Now we are going to figure out the taxonomy of our contigs using a program called centrifuge. Centrifuge is a program that compares your contigs to a sequence database in order to assign taxonomy to different sequences within your metagenome. We're going to use it first to classify your contigs.
+Now we are going to figure out the taxonomy of our contigs using a program called [Centrifuge](http://www.ccb.jhu.edu/software/centrifuge/). Centrifuge is a program that compares your contigs to a sequence database in order to assign taxonomy to different sequences within your metagenome. We're going to use it first to classify your contigs.
 
 If you would like to know more, you can visit the [anvi'o tutorial](http://merenlab.org/2016/06/18/importing-taxonomy/#centrifuge) and the [Centrifuge website](http://www.ccb.jhu.edu/software/centrifuge/).
 
@@ -167,11 +166,11 @@ anvi-profile -i ERR599142_assembly_vs_North_Pacific_ERR599142_sorted.bam -c cont
 #### 13. Merge them together with anvi-merge
 Now merge all of these profiles together using a program called anvi-merge. You have to merge together files in directories that were created by the previous profiling step. The asterisk * is a wildcard that tells the computer, 'take all of the folders called 'PROFILE.db' from all of the directories and merge them together.'
 
-We're also going to tell the computer not to bin these contigs automatically (called 'unsupervised' binning), we want to bin them by hand ('supervised' binning). So we use the --skip-concoct-binning flag.
+If you have a sample with tons of contigs, this command may decide not to cluster your contigs together. We're going to force it to do that with the `--enforce-hierarchical-clustering` flag.
 
 This step will take a couple minutes.
 ```
-anvi-merge */PROFILE.db -o SAMPLES-MERGED -c contigs.db
+anvi-merge */PROFILE.db -o SAMPLES-MERGED -c contigs.db --enforce-hierarchical-clustering
 ```
 ## Visualizing and making your bins
 
