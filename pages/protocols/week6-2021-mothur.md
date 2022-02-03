@@ -161,10 +161,12 @@ Q1. Many of your sequences were unclassifiable. How would this likely affect yo
 
 Q2. What is the difference between richness and the Shannon-Weiner index? Describe a situation in which you might have a high richness but a relatively low Shannon-Weiner index.
 
-**Next, as a lab group, pool your data together by sharing in a common folder on the server or Google Drive or whatever you prefer. You can use any of the pooled data for your mini research question this week:**
+#### 12. Share data to Google Sheet
 
-#### 12. Mini research question
-Design a mini research question using the data you've generated today (you can use data from any samples from your lab group as well.) Remember that you have metadata (i.e. temp, chlorophyll, etc.) available as well (see the Tara Oceans spreadsheet). Generate a plot or set of plots addressing your research question. To create plots, you can use Excel or Flourish or R, whatever you're most comfortable with. What kinds of trends do you see? What were you expecting to see, and do your results support your initial expectations? Write 1-2 paragraphs explaining your results in light of what we have discussed in class (and perhaps based on what you have seen in your previous postlabs) about trends in taxonomy and/or diversity in various ocean basins and/or at different depths.
+Last, please enter the richness and Shannon-Weiner Index data for your sample site in the Google Sheet [here](https://docs.google.com/spreadsheets/d/1BOEHLLBYoymVR-7bITEpetpqa8yS_n2HNKojKAZLIQc/edit?usp=sharing) . We will use this data on Friday with Lin, and you may use it for your postlab this week.
+
+#### 13. Mini research question
+Design a mini research question using the data you've generated today. Remember that you have metadata (i.e. temp, chlorophyll, etc.) available as well in the Google Sheet. Generate a plot or set of plots addressing your research question. (We will work with vey similar plots on Friday with Lin.) What kinds of trends do you see? What were you expecting to see, and do your results support your initial expectations? Write 1-2 paragraphs explaining your results in light of what we have discussed in class (and perhaps based on what you have seen in your previous postlabs) about trends in taxonomy and/or diversity in various ocean basins and/or at different depths.
 
  **Summary of what to turn in next week:**
  For this week's post-lab assignment, please submit the following (should all be in the same document):
