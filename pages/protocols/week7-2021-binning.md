@@ -65,6 +65,11 @@ Finally, copy your contigs over as well. They are probably in your assembly dire
 cp ../ERR598983_assembly/ERR598983_assembly_reformatted.fa .
 ```
 
+If you can't find your assembly, I also copied them here (I used these assemblies to do the mapping):
+```
+/workspace/data/Genomics_Bioinformatics_shared/Tara_mappings/assemblies
+```
+
 #### 4. Get gene calls and annotations from Prokka
 The first thing you have to do is make contigs database, which contains the sequences of your contigs, plus lots of information about those contigs. This includes information from Prokka-- so we have to take the information from Prokka and put it in our contigs database.
 
