@@ -98,7 +98,9 @@ classify.seqs(fasta=merged.fa, group=groups, reference=/usr/local/data/silva_dat
 ```
 
 #### 8. Open classified sequences
-Use scp to transfer your files over to your local desktop. Open the file that is called `merged.seed_v119.wang.tax.summary` in Excel. (You may have to change the name so the file ends in '.txt' or Excel won't recognize it as a valid file to open.) Here is the definition of the columns, from left to right:
+Use scp to transfer your files over to your local desktop. Open the file that is called `merged.seed_v119.wang.tax.summary` in Excel. (You may have to change the name so the file ends in '.txt' or Excel won't recognize it as a valid file to open.) You have seen this dataset before-- it's the one we worked on with Lin!
+
+Here is the definition of the columns, from left to right:
 
 - Taxonomic level is in the farthest left-hand column. The lower the number, the larger the phylogenetic classification, starting with domain, then phylum, class, order, family, genus, species. For example, Archaea, Bacteria, Eukarya, and 'unknown' are taxonomic level 1. Taxonomic level 2 classifies different phyla of Archaea, Bacteria, and Eukaryotes. Taxonomic level 3 classifies different classes of those phyla, and so on.
 - The rankID provides a means of keeping track of where that particular organism falls. For example, the SAR_11 clade is rankID 0.2.17.2.9, which means it is a clade within the Alphaproteobacteria (0.2.17.2), which are a clade within the Proteobacteria (rankID 0.2.17), which is a clade within the Bacteria (rankID 0.2).
@@ -107,7 +109,8 @@ Use scp to transfer your files over to your local desktop. Open the file that is
 - The 'total' tells you how many total sequences are within that taxonomic category.
 - Each of the following columns gives you the taxonomic breakdown for that sample.
 
-I recommend sorting your Excel spreadsheet by taxlevel. Make either a pie chart or stacked bar chart for each sample depth based on the taxonomic distribution at taxonomic level 2 to compare the taxonomic breakdown between each of your samples. **Save these charts as Figure 1 and provide a figure caption for this figure.**
+Part of your postlab assignment will be to explore this dataset and ask a scientific question about it.
+
 
 #### 9. Share your data
 Your classmates may wish to use your taxonomy data for their project datasets. Please rename your taxonomy files and share them on the class_shared directory. 
@@ -166,11 +169,10 @@ Q2. What is the difference between richness and the Shannon-Weiner index? Descri
 Last, please enter the richness and Shannon-Weiner Index data for your sample site in the Google Sheet [here](https://docs.google.com/spreadsheets/d/1BOEHLLBYoymVR-7bITEpetpqa8yS_n2HNKojKAZLIQc/edit?usp=sharing) . We will use this data on Friday with Lin, and you may use it for your postlab this week.
 
 #### 13. Mini research question
-Design a mini research question using the data you've generated today. Remember that you have metadata (i.e. temp, chlorophyll, etc.) available as well in the Google Sheet. Generate a plot or set of plots addressing your research question. (We will work with vey similar plots on Friday with Lin.) What kinds of trends do you see? What were you expecting to see, and do your results support your initial expectations? Write 1-2 paragraphs explaining your results in light of what we have discussed in class (and perhaps based on what you have seen in your previous postlabs) about trends in taxonomy and/or diversity in various ocean basins and/or at different depths.
+Design a mini research question using the data you've generated today. Remember that you have metadata (i.e. temp, chlorophyll, etc.) available as well in the Google Sheet. Generate a plot or set of plots addressing your research question. (On Friday, we will work on data visualization on these types of datasets with Lin.) What kinds of trends do you see? What were you expecting to see, and do your results support your initial expectations? Write 1-2 paragraphs explaining your results in light of what we have discussed in class (and perhaps based on what you have seen in your previous postlabs) about trends in taxonomy and/or diversity in various ocean basins and/or at different depths.
 
  **Summary of what to turn in next week:**
  For this week's post-lab assignment, please submit the following (should all be in the same document):
- - Figure 1
  - Table 1
  - Responses to 2 "Check for understanding" questions
  - Mini research question

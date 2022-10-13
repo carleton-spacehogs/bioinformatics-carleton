@@ -229,9 +229,9 @@ cd ORF_finding
 #### 20. Run Prokka
 Now run Prokka on your toy assembly, which is located in the toy_assembly folder:
 ```
-prokka ../toy_assembly/toy_dataset_assembled_reformatted.fa --outdir prokka_toy
+prokka ../toy_assembly/scaffold.fa --outdir prokka_toy
 ```
-This means you're invoking prokka on your reformatted toy dataset assembly, and you're putting it in a new directory called `prokka_toy.`
+This means you're invoking prokka on your toy dataset assembly, and you're putting it in a new directory called `prokka_toy.`
 
 #### 21. View output in FASTA format
 You should see a directory called `prokka_toy`. Use `cd` to go into that folder, then use the program `less` to look at `PROKKA_01252021.faa` (or something like that-- adjust according the date). You should see a fasta file with amino acid sequences. Each amino acid sequence is an open reading frame (ORF), or a putative gene that has been identified from your assembly.
@@ -305,19 +305,14 @@ Look inside using `ls`. Inside, you will find the same files you saw with the to
 
 #### 27. Bookkeeping
 
-For the sake of future bookkeeping, you’ll need to modify your scaffold assembly file so that another software program we will use in the future (called `anvi’o`) is happy. **Please do this for both your toy and project datasets.** Do this while you are inside the directory with your assembly files:
+For the sake of future bookkeeping, you’ll need to modify your scaffold assembly file so that another software program we will use in the future (called `anvi’o`) is happy. Do this while you are inside the directory with your assembly files:
 
-toy dataset:
 
-```
-cd ~/toy_dataset_directory
-anvi-script-reformat-fasta scaffold.fa -o toy_dataset_assembled_reformatted.fa -l 0 --simplify-names
-```
 project dataset (substitute your own assembly name):
 
 ```
-cd ~/project_directory
-anvi-script-reformat-fasta contig-100.fasta -o ERR598966_assembly_reformatted.fa -l 0 --simplify-names
+cd ~/project_directory/[your assembly directory]
+anvi-script-reformat-fasta contig-100.fa -o ../ERR598966_assembly_reformatted.fa -l 0 --simplify-names
 ```
 
 

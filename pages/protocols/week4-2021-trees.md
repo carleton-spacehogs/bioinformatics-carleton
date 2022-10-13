@@ -227,7 +227,7 @@ What this means:
 `-out` defines the name of your output file. I like to give them an easy-to-recognize name with the extension `.afa`, which stands for “aligned fasta file.”
 
 #### 22. Secure copy to a local computer
-Let’s take a look at your alignment. I like to use the program Seaview to do this, and Seaview should be on your local computer (if not, go back to the Week 1 pre-lab for instructions). You will have to copy your file to your local computer using `scp.` (As before, substitute `[username]` with your own username.)
+Let’s take a look at your alignment. I like to use the program Seaview to do this, and Seaview should be on the lab computer. You will have to copy your file to your local computer using `scp.` (As before, substitute `[username]` with your own username.)
 
  ```
  scp [username]@baoss.its.carleton.edu:/Accounts/[username]/toy_dataset_directory/alignments_and_trees/toy_dataset_PSII_protein_aligned.afa ~/Desktop
