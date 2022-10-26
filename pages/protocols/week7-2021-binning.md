@@ -137,18 +137,18 @@ Type this:
 
 ## Analyzing your bins
 
-All right! You now have an output file called `kegg-metabolism-modules.txt`. I recommend that you se `scp` to download this to your computer, and take a look at it in Excel.
+All right! You now have an output file called `kegg-metabolism-modules.txt`. I recommend that you use `scp` to download this to your computer, and take a look at it in Excel.
 
 Here's what the columns mean:
 - `bin_name`: the bin name that anvi'o assigned your bins as you were making them, i.e. "Bin_1."
-- `kegg_module`: the pathway that the gene can be found in, as assigned by KEGG. See here: https://www.genome.jp/kegg/module.html
+- `kegg_module`: the pathway that the gene can be found in, as assigned by KEGG. See [here](https://www.genome.jp/kegg/module.html) for more information.
 - `module_name`: the name of the KEGG module in which the gene is found
 - `module_class`: the type of module it's found in. It can be a "pathway module," or a gene in a metabolic pathway, a "signature module", or a gene that characterizes a specific phenotype like drug resistance or pathogenicity, or a "reaction module," a set of genes that catalyze successive reactions (these are usually extensions of specific metabolic pathways.)
 - `module category`:  is the broadest category in which the metabolic pathway is found, i.e. "Carbohydrate metabolism"
 - `module subcategory`: one level down in terms of categories in which the metabolic pathway is found, i.e. "Carbon fixation"
 - `module definition`: the list of genes that are found in a pathway or module, listed by their KO (or "KEGG Orthology") number, which is how KEGG labels different genes
 - `module completion`: how complete the pathway is. If your metabolic pathway has 10 genes in it, and 6 of them are present in your bin, this value will be 0.6.
-- `module_is_complete`: this will only say 'TRUE' if your module completion value is 100%.
+- `module_is_complete`: this will only say 'TRUE' if your module completion value is 75% or above.
 - `kofam_hits_in_module`: tells you exactly which genes from the pathway were present in your bin
 - `gene_caller_ids_in_module`: tells you which gene numbers from Prokka (and re-numbered by anvi'o) were in your pathway.
 
