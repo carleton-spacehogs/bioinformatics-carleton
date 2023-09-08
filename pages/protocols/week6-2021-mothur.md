@@ -1,4 +1,5 @@
 # Week 6: Classifying taxonomy of short reads with mothur
+=========
 
 ## Introduction
 Today we're going to learn how to use sequence data to assess diversity across samples by focusing on just the 16S rRNA gene. You'll recall that 16S rRNA is like a "barcode" gene that we can use to compare and classify who is there. It's often used in microbiome studies. Today we'll learn how to:
@@ -18,7 +19,13 @@ cd project_directory/taxonomy
 ```
 
 #### 2. Copy over data
-The Tara Ocean people have already identified all of the reads that matched 16S ribosomal RNA from their metagenomes, and they made separate FASTA files with just those reads. (Thanks, French scientists!) I copied those FASTA files into the directories listed in `/usr/local/data/Tara_datasets/`. Copy over all of the relevant 16S rRNA files that you will need into your new taxonomy folder.
+The Tara Ocean people have already identified all of the reads that matched 16S ribosomal RNA from their metagenomes, and they made separate FASTA files with just those reads. (Thanks, French scientists!) I did this pre-processing already for the Arb samples.  For the Tara samples, I copied those FASTA files into the directories listed in `/usr/local/data/Tara_datasets/`. For the Arb samples, I copied thise into
+
+
+**DO THIS AND THEN ADD THE APPROPRIATE PATH HERE**
+
+
+Copy over all of the relevant 16S rRNA files that you will need into your new taxonomy folder.
 ```
 cp /usr/local/data/Tara_datasets/[project sample site of interest]/[16S rRNA data file of interest] .
 ```
@@ -98,7 +105,7 @@ classify.seqs(fasta=merged.fa, group=groups, reference=/usr/local/data/silva_dat
 ```
 
 #### 8. Open classified sequences
-Use scp to transfer your files over to your local desktop. Open the file that is called `merged.seed_v119.wang.tax.summary` in Excel. (You may have to change the name so the file ends in '.txt' or Excel won't recognize it as a valid file to open.) You have seen this dataset before-- it's the one we worked on with Lin!
+Use FileZilla or scp to transfer your files over to your local desktop. Open the file that is called `merged.seed_v119.wang.tax.summary` in Excel. (You may have to change the name so the file ends in '.txt' or Excel won't recognize it as a valid file to open.) You have seen this dataset before-- it's the one we worked on with Lin!
 
 Here is the definition of the columns, from left to right:
 
@@ -158,7 +165,7 @@ Please do these calculations in a way that is clear so that I can track your cal
 
 #### 11. Check for understanding
 
-**Check in with your lab group. Help each other catch up, and then discuss the following check for understanding questions and write down your responses for your postlab:**
+**Check in with your lab group. Help each other catch up, and then discuss the following check for understanding questions and write down your responses on a shared Google Doc:**
 
 Q1. Many of your sequences were unclassifiable. How would this likely affect your richness calculations for each sample? Explain why.
 
@@ -174,5 +181,4 @@ Design a mini research question using the data you've generated today. Remember 
  **Summary of what to turn in next week:**
  For this week's post-lab assignment, please submit the following (should all be in the same document):
  - Table 1
- - Responses to 2 "Check for understanding" questions
  - Mini research question

@@ -125,9 +125,9 @@ samtools index toy_dataset_mapped_species2_sorted.bam
 ```
 
 #### 14. Visualize new mapping
-Copy the new data files to your local computer using scp like in step 11. Visualize both of them in IGV viewer. Since you have already loaded the reference file and reads from your first mapping, all you have to do is click 'File' --> 'Load from File' and click on `toy_dataset_mapped_species2_sorted.bam`. You should be able to see them side by side.
+Copy the new data files to your local computer using FileZilla or scp like in step 11. Visualize both of them in IGV viewer. Since you have already loaded the reference file and reads from your first mapping, all you have to do is click 'File' --> 'Load from File' and click on `toy_dataset_mapped_species2_sorted.bam`. You should be able to see them side by side.
 
-**Pause here. Check in with your group. Together, discuss and answer these questions for this week's postlab assignment.**
+**Pause here. Check in with your group. Together, discuss and answer these questions on a shared Google Doc that you share with Rika.**
 
 **Check for understanding:**
 
@@ -145,7 +145,7 @@ We're going to map your *reads* against your *assembled contigs*. Why would we d
 - to quantify the relative abundances of different genes, and determine whether specific genes have better coverage than others.
 - to quantify the relative abundances of specific taxa, and determine whether specific taxa are more abundant than others.
 
-**As you consider this, discuss the following question with your group for this week's postlab questions:**
+**As you consider this, discuss the following question with your group:**
 
 **Check for understanding:**
 
@@ -158,7 +158,7 @@ Change directory into your project dataset directory folder.
 cd ~/project_directory
 ```
 
-We're going to map your raw reads against your assembled contigs (not your ORFs). Make sure you know where your project assembly is and where your raw reads are. Follow the instructions to map your raw reads back to your assembled contigs. For example, if you were mapping the reads in the dataset `ERR599166_1mill_sample.fasta` against an assembly called `ERR599166_assembly_reformatted.fa`, you might do something like this (below). Please be sure to use the assembled files that you've already run through anvi-script-reformat-fasta, which you should have done in our first computer lab.
+We're going to map your raw reads against your assembled contigs (not your ORFs). Make sure you know where your project assembly is and where your raw reads are. Follow the instructions to map your raw reads back to your assembled contigs. For example, if you were mapping the reads in the dataset `ERR599166_1mill_sample.fasta` against an assembly called `ERR599166_assembly_reformatted.fa`, you might do something like this (below). 
 
 One more thing. Your project datasets are very large-- you each have 10 million reads. So mapping will take longer than for the toy datasets. So we're going to add an extra flag (-p) to the mapping step to tell the computer to use more than one CPU so that this goes faster. You'll each use 4 CPUs for this process. The mapping may still take about 5-10 minutes, so have patience!
 
@@ -182,7 +182,7 @@ When you visualize this in IGV, remember that you have multiple contigs. So you 
 
 #### 17. Check for understanding
 
-**With your table, discuss and answer the following for this week's postlab:**
+**With your table, discuss and answer the following and put the answer in the shared Google Doc:**
 
  Q4. Do you see evidence of single nucleotide variants? Biologically speaking, what does this indicate? (Keep in mind that you have mapped metagenomic reads from a whole microbial community against a consensus assembly-- this is not reads from an individual vs an individual's reference assembly.)
 
@@ -216,43 +216,6 @@ For example:
 samtools bedcov PROKKA_09222020.bed ERR599166_mapped_sorted.bam > ERR599166_ORF_coverage.txt
 ```
 
-It is extremely important that you ran **both** bowtie2 and prokka on the <u>reformatted</u> assembly! If you get errors, this is probably because you did not run them against the reformatted assembly!!
-
-How do you check that you ran it on the reformatted dataset?
-First, check your Prokka output (replace with the name of your PROKKA file):
-```
-less PROKKA_09222020.gff
-```
-It should look something like this, with the second column showing numbers like c_000000000001 and so on.
-```
-##gff-version 3
-##sequence-region c_000000000001 1 2569
-##sequence-region c_000000000002 1 1660
-##sequence-region c_000000000003 1 1376
-##sequence-region c_000000000004 1 1037
-##sequence-region c_000000000005 1 945
-##sequence-region c_000000000006 1 917
-##sequence-region c_000000000007 1 902
-##sequence-region c_000000000008 1 892
-...
-```
-If it looks more like this, you did not run prokka against the reformatted dataset.
-```
-##gff-version 3
-##sequence-region contig-100_0 1 44454
-##sequence-region contig-100_1 1 44231
-##sequence-region contig-100_2 1 35217
-##sequence-region contig-100_3 1 29595
-##sequence-region contig-100_4 1 29534
-...
-```
-If it looks like this, then you should run `anvi-script-reformat` again and then run prokka again. For example:
-```
-anvi-script-reformat-fasta contig-100.fa -o ERR599899_assembled_reformatted.fa -l 0 --simplify-names
-prokka ERR599899_assembled_reformatted.fa --outdir prokka_ERR599899
-```
-You should also make sure that you ran bowtie2 against the reformatted version. How do you know? Go back up up to Step 13 in this week's protocol and check the assembly file with `less`. Make sure the contigs start with `c_00000001` and not `contig-100_0`.
-
 The `samtools bedcov` command will give you a file that ends in `ORF_coverage.txt`.
 
 #### 19. Matching the Prokka annotations with your ORF coverage
@@ -271,7 +234,7 @@ Your output will be a txt file that matches the name of your ORF coverage file a
 
 #### 20. Calculate coverage in Excel and examine results
 
-Use `scp` to move the new `_matched.txt.` file to your local computer, then open with Excel. The output file should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, the sum of the per-base coverage, and then the Prokka annotation for that protein. To get the *average* coverage for each ORF, divide the sum of the per-base coverage by the difference between the stop and start coordinates. In other words, type "average coverage" in the top of column H, then one row down, type this and then fill down to the bottom:
+Use FileZilla or `scp` to move the new `_matched.txt.` file to your local computer, then open with Excel. The output file should give the name of your contig, the start coordinate, the stop coordinate, the name of your open reading frame, the sum of the per-base coverage, and then the Prokka annotation for that protein. To get the *average* coverage for each ORF, divide the sum of the per-base coverage by the difference between the stop and start coordinates. In other words, type "average coverage" in the top of column H, then one row down, type this and then fill down to the bottom:
 =F2/(D2-C2)
 
 *Pro tip: Rather than drag for 16,000 rows in Excel, highlight the top cell, then scroll down to the bottom of the column, then hold 'Shift' while you click the bottom cell of the column where the data ends, then click Edit --> Fill--> Down.*
@@ -325,7 +288,7 @@ Write either a question or generate a hypothesis about the relative coverage of 
 I hypothesize that there will be lower coverage of genes related to photosynthesis (i.e. the psb genes) in the mesopelagic zone relative to the surface. This is because at the surface there will be more organisms that photosynthesize compared to the mesopelagic zone, where less light is available. Therefore, a lower proportion of genes in the microbial community in the mesopelagic zone will be related to photosynthesis compared to the surface, and therefore, fewer reads will map to photosynthesis genes in the mesopelagic zone.
 
 *Example #2:*
-I hypothesize that there will be higher coverage of genes related to viruses in my sample relative to the deeper samples because there are more viruses in surface waters than in deeper waters, simply because there are more organisms to infect in surface waters.
+I hypothesize that there will be higher coverage of genes related to viruses in my Lyman Lakes sample relative to the Cannon River samples because there are more viruses in Lyman Lakes than in river water, simply because there are more organisms to infect in lake waters.
 
 
 Once you've identified the set of genes related to a specific metabolism/function/type of organism, and you have written a question or generated a hypothesis, find the average coverage to each of those ORFs in your dataset. Remember that more than one ORF may have that function.
@@ -334,4 +297,4 @@ Many of you will probably want to compare your mapping of your own reads to your
 
 **Describe your results and create at least one graph to visualize those results. This should represent a mini 'Results' section in a lab report or paper. Interpret your results within the context of the ecosystem you are investigating. This should represent a mini 'Discussion' section in a lab report or paper.**
 
-**Compile your 5 "check for understanding" questions and your mini research question together and submit on Moodle by lab time next week.**
+**Please submit on Moodle by lab time next week. As before, please put your student ID number rather than your name.**

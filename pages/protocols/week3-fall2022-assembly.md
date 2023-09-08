@@ -6,7 +6,7 @@ Carleton College
 ## Connecting to baross
 
 #### 1. About baross
-We are going to do most of our computational work on a remote server (or computer) called baross, which is a remote server with 96 CPUs, 50 TB of storage, and 768 GB RAM. (In case anybody cares, baross is named after [this](https://depts.washington.edu/astrobio/wordpress/profile/john-baross/) absolute legend of a scientist, who happened to be my PhD advisor.) baross (the server) lives in the basement of the CMC. You can access it from lab computers on campus, and you can also access it from your own computer at home. First, you have to learn how to access baross.
+We are going to do most of our computational work on a remote server (or computer) called baross, which is a remote server with 96 CPUs, 50 TB of storage, and 768 GB RAM. (In case anybody cares, baross is named after [this](https://depts.washington.edu/astrobio/wordpress/profile/john-baross/) absolute legend of a scientist, who happened to be my PhD advisor.) baross (the server) lives in the basement of the CMC. You can access it from lab computers on campus, and you can also access it from your own computer at home. First, we have to learn how to access baross.
 
 **IF YOU ARE IN A COMPUTER LAB ON THE CARLETON CAMPUS:**
 Boot as a Mac user on the lab computer.
@@ -16,7 +16,7 @@ You should be able to follow the directions below.
 
 **IF YOU ARE WORKING ON A PERSONAL COMPUTER THAT IS OPERATING WINDOWS OR ANOTHER OS:**
 You will need to find a way to connect to a remote server. Some Windows machines have a native Terminal now. If you don't have one, I recommend installing a [Ubuntu terminal.](https://ubuntu.com/tutorials/ubuntu-on-windows#1-overview)
-If that doesn't work, you can use [PuTTY.](https://www.howtogeek.com/311287/how-to-connect-to-an-ssh-server-from-windows-macos-or-linux/). If all else fails, ask Jimmy. (Or do that first.)
+If that doesn't work, you can use [PuTTY.](https://www.howtogeek.com/311287/how-to-connect-to-an-ssh-server-from-windows-macos-or-linux/). 
 
 #### 2. Opening Terminal
 If you're on a Mac, find and open the Terminal application (it should be in "Applications" in the folder called "Utilities"). If you're on a PC or other OS, open the window you'll use to ssh into a remote server (like Ubuntu or PuTTY or something similar).
@@ -90,7 +90,7 @@ To kill your screen session (this is important to tidy up and keep things neat w
 
 #### 9. mkdir
 
-Let’s say we’ve taken our samples, we’ve extracted the DNA, and we’ve sent them to a sequencer. Then we get back the raw sequencing reads. One of the first things we have to do is assemble them. To do that, we’re going to use a software package called [IDBA-UD](https://github.com/loneknightpy/idba). Bioinformaticians love to debate about which assembler is best, but ultimately it usually depends on the nature of your own dataset. If you find yourself with data like this someday and you want to know which assembler to use, my advice is to try a bunch of them and then compare the results using something like Quast, which we’ll test below. For now, we’re going to use IDBA-UD, which I’ve found to be a good general-purpose assembler.
+Let’s say we’ve taken our samples, we’ve extracted the DNA, and we’ve sent them to a sequencer. Then we get back the raw sequencing reads. One of the first things we have to do is assemble them. To do that, we’re going to use a software package called [IDBA-UD](https://github.com/loneknightpy/idba). Bioinformaticians love to debate about which assembler is best, but ultimately it usually depends on the nature of your own dataset. If you find yourself with data like this someday and you want to know which assembler to use, my advice is to try a bunch of them and then compare the results using something like Quast, which we’ll test below. For now, we’re going to use IDBA-UD, which I’ve found to be a decent general-purpose assembler.
 
 Make a new directory in your home folder:
 
@@ -182,7 +182,17 @@ Quast called the output `quast_results` by default. You can change that using th
 
 #### 18. View output by copying to your local computer
 
-Quast gives you some nice visual outputs, but it's easier to look at these if you copy them from the server to your local computer. For this, we will use `scp`, or 'secure copy.' It's a lot like `cp`, except that you're copying from a remote server to your own computer. We will use `scp -r` because we're copying a directory recursively, not just a file.
+Quast gives you some nice visual outputs, but it's easier to look at these if you copy them from the server to your local computer. For this, we have a couple of options. The easiest way is to use FileZilla, which should already be on the Mac computers in the computer lab. To do that, open the FileZilla application on your local computer, then enter the following:
+
+Host: sftp://baross.its.carleton.edu
+Username: Carleton username
+Password: Carleton password
+Port: 22
+Click QuickConnect
+
+You'll see your local computer contents show up on one side, and the stuff from the server show up on the other side. On the server side, nigate to wherever you kept the file you want to copy over. On the local computer side, navigate to wherever you want to put it. Double-click on the file you want to copy over. It should transfer over automatically. You can also drag and drop if you prefer.
+
+Alternatively, if you don't have something like FileZilla, you can use a command called  `scp`, or 'secure copy.' It's a lot like `cp`, except that you're copying from a remote server to your own computer. We will use `scp -r` because we're copying a directory recursively, not just a file.
 
 Open up another Terminal window on your own computer. Don't ssh into anything. Navigate to your home directory.
 
@@ -197,10 +207,11 @@ scp -r username@baross.its.carleton.edu:~/toy_dataset_directory/toy_assembly/toy
 
 That means: copy something from the remote server baross and put it right here on my local computer.
 
-Find your newly copied folder on your own computer. Double-click on the file called “report.html” and discuss it with your group (below).
+
+Regardless of the method you use, copy over the `toy_assembly_quast_evaluation` folder to your local computer. Double-click on the file called “report.html” and discuss it with your group (below).
 
 #### 19. Pause to check for understanding
-Take a pause here and check in with the other folks at their table. Help them catch up if they aren't at this step yet. When you're all at this point, discuss the following questions. You'll submit these as part of your postlab writeup described at the end of this protocol document (write your group members' names on the writeup as well).
+Take a pause here and check in with the other folks at their table. Help them catch up if they aren't at this step yet. When you're all at this point, discuss the following questions. Please put them into a shared Google Doc with your group and share that Google Doc with Rika. Please put everyone's name on the doc. I will not be grading these per se, but I'll be checking that you did them. This is a way to make sure everyone is on the same page and understanding what's going on.
 
 - a) Examine the Quast output. Describe and explain the pattern you observe in terms of N50 as the kmer size increases (from 'contig-20.fa' all the way to 'contig-100.fa').
 - b) Examine the Quast output. How does the N50 of your scaffold file compare to your contig-100 file? Explain why.
@@ -229,12 +240,12 @@ cd ORF_finding
 #### 20. Run Prokka
 Now run Prokka on your toy assembly, which is located in the toy_assembly folder:
 ```
-prokka ../toy_assembly/scaffold.fa --outdir prokka_toy
+prokka ../toy_assembly/scaffold.fa --outdir prokka_toy --prefix toy
 ```
-This means you're invoking prokka on your toy dataset assembly, and you're putting it in a new directory called `prokka_toy.`
+This means you're invoking prokka on your toy dataset assembly, and you're putting it in a new directory called `prokka_toy.` The prefix sets it up so that all of the files will start with `toy'.
 
 #### 21. View output in FASTA format
-You should see a directory called `prokka_toy`. Use `cd` to go into that folder, then use the program `less` to look at `PROKKA_01252021.faa` (or something like that-- adjust according the date). You should see a fasta file with amino acid sequences. Each amino acid sequence is an open reading frame (ORF), or a putative gene that has been identified from your assembly.
+You should see a directory called `prokka_toy`. Use `cd` to go into that folder, then use the program `less` to look at `toy.faa` (or something like that-- adjust according the date). You should see a fasta file with amino acid sequences. Each amino acid sequence is an open reading frame (ORF), or a putative gene that has been identified from your assembly.
 
 The cool thing is that Prokka has also annotated your genes with their putative function. You can see that in each sequence title, which provides the name of the sequence assigned by Prokka (e.g. KGLPOPID_00002) and the putative function (e.g. Proine/betaine transporter). A lot of them will say `hypothetical protein`, which simply means that Prokka couldn't find a good match for that protein in public databases.
 
@@ -244,7 +255,7 @@ Note that the file that ends in `.ffn` contains the same thing, except the ORF s
 Let's look at one last output format, which is in tab-separated columns, and therefore best visualized in a spreadsheet application like Excel. Use `scp` to copy this file from the server to your own computer. Remember, type this into a Terminal window that is NOT logged on to the server.
 
 ```
-scp username@baross.its.carleton.edu:~/toy_dataset_directory/ORF_finding/prokka_toy/PROKKA_09252020.tsv .
+scp username@baross.its.carleton.edu:~/toy_dataset_directory/ORF_finding/prokka_toy/toy.tsv .
 ```
 
 #### 23. Open tsv file
@@ -278,12 +289,12 @@ cd project_directory
 
 #### 25. Copy project dataset
 
-Next, copy your project dataset into that directory. Your assigned project dataset is listed in a Google Sheets file that is on Moodle.
+Next, copy your project dataset into that directory. Your assigned project dataset is listed in a Google Sheets file that is on Moodle. Some of you will have Tara Oceans samples, and some of you will have samples from the Arb-- note that they're located in different directories. This should be indicated on the spreadsheet.
 
 For example, if you have dataset `ERR590988` from the Arabian Sea, you would do this:
 
 ```bash
-cp /usr/local/data/Tara_datasets/Arabian_Sea/ERR598966_sample.fasta .
+cp /workspace/data/Genomics_Bioinformatics_shared/Tara_Oceans/reads/Arabian_Sea/ERR598966_sample.fasta .
 ```
 
 #### 26. Start assembly (except not really)
@@ -297,38 +308,45 @@ idba_ud -r ERR598966_sample.fasta -o ERR598966_assembly
 BUT DON'T DO IT!! Instead, I've pre-assembled your project datasets for you, because otherwise you'd be sitting here for hours. Copy them into your directory like this:
 
 ```bash
-cp -r /workspace/data/Genomics_Bioinformatics_shared/assemblies/[your assembly name] .
+cp -r /workspace/data/Genomics_Bioinformatics_shared/Tara_Oceans/Tara_assemblies/your-assembly-name .
 ```
+
+OR
+
+```bash
+cp -r /workspace/data/Genomics_Bioinformatics_shared/Arb_sequences/assemblies/your-assembly-name .
+```
+
 
 Look inside using `ls`. Inside, you will find the same files you saw with the toy dataset: contig-20, contig-40, contig-60, contig-80, and contig-100. However, the Tara Oceans folks provided single-end reads instead of paired-end reads, which means that your assemblies will NOT have scaffolds, because we couldn’t take advantage of the paired-end data to make scaffolds. So, your final assembly is just the final contig file from the longest kmer, called `contig-100.fa.`
 
 
-#### 27. Bookkeeping
-
-For the sake of future bookkeeping, you’ll need to modify your scaffold assembly file so that another software program we will use in the future (called `anvi’o`) is happy. Do this while you are inside the directory with your assembly files:
-
-
-project dataset (substitute your own assembly name):
-
-```
-cd ~/project_directory/[your assembly directory]
-anvi-script-reformat-fasta contig-100.fa -o ../ERR598966_assembly_reformatted.fa -l 0 --simplify-names
-```
-
 
 
 ## Annotate your own project datasets
-Now you're going to annotate your own project dataset assemblies using `Prokka`.
+Now you're going to annotate your own project dataset assemblies using `Prokka`. 
 
+#### 27. Run Prokka on your project dataset
 
-#### 28. Run Prokka on your project dataset
-
-If you aren't in your project directory right now, move into it and start `prokka`. You're should probably open a screen session, since this might take a while. Run the following, again, substituting your own project dataset name.
+Normally, I'd tell you to open a screen session and run Prokka on your project dataset, just like you did for your toy dataset. You would run something like this:
 
 ```
 screen -S prokka
-prokka ERR598966_assembly_reformatted.fa --outdir prokka_project
+prokka ERR598966_assembly_reformatted.fa --outdir prokka_project --prefix North_Pacific_prokka
 Ctrl+A d
+```
+
+BUT DON'T DO IT!! As before, I've pre-run Prokka for all of you so that you don't have to sit here for hours waiting for it to finish. As above, please copy the Prokka folder into your own directory. So for example, you can do:
+
+
+```bash
+cp -r /workspace/data/Genomics_Bioinformatics_shared/Tara_Oceans/Tara_assemblies/prokka/your-Prokka-name .
+```
+
+OR
+
+```bash
+cp -r /workspace/data/Genomics_Bioinformatics_shared/Arb_sequences/prokka/your-Prokka-name .
 ```
 
 
@@ -337,36 +355,27 @@ Congratulations! You now have annotations for your entire project dataset. This 
 
 We're almost done. But first we're going to see an example of how we might analyze this kind of data.
 
-#### 34. COG categories
+#### 28. COG categories
 First, there's a text file on the server that assigns every single COG in the COG database to a specific gene category, like `Translation, ribosomal structure, and biogenesis`. You can see it by typing this:
 
 ```
 less /usr/local/data/Python_scripts/COG_numbers_categories_annotations.txt
 ```
 
-#### 35. Getting COG categories of your genes
+#### 29. Getting COG categories of your genes
 Let's say you want to know how many of the genes in your dataset are responsible for translation, how many are for energy metabolism, how many are viruses, etc. Fortunately, there is a magic script available for you to do that on the server. Change directories into wherever your Prokka results are and type this:
 
 ```
-get_ORF_COG_categories.py [name of your Prokka tsv file]
+get_ORF_COG_categories.py name-of-your-Prokka-tsv-file
 ```
 Et voilà! You'll get a new file that ends in `_cog_categories.txt` with a list of all the different COG categories and the number of genes that fall into that category. Some of the COGs fall into multiple categories, denoted with, for example, `Signal_transduction_mechanisms/Transcription`. So now, you have a detailed list of all of the ORFs and their functions (the original Prokka .tsv file) AND a list of what general categories your ORFs fall into (the new 'cog_categories.txt' file). Imagine the possibilities!
 
 
-#### 36. Share your data
+#### 30. Share your data
 
 Please copy the data you generated today and put them into the folder that we'll be sharing as a class, substituting the placeholders below with the name of your own file. This will be the shared folder for all of the data that you generate as a class.
 
-Copy your assemblies to the shared class assemblies folder:
-```
-cp [name of your formatted, assembled file] /Accounts/Genomics_Bioinformatics_shared/assemblies
-```
-
-Copy your Prokka tsv and faa files to the shared class Prokka folder, and rename it with the name of your project dataset so it's recognizable. for example:
-```
-cp PROKKA_09222020.tsv /Accounts/Genomics_Bioinformatics_shared/PROKKA_results/ERR598995_ORFs.tsv
-cp PROKKA_09222020.faa /Accounts/Genomics_Bioinformatics_shared/PROKKA_results/ERR598995_ORFs.faa
-```
+You don't need to copy your assemblies and Prokka folders, since those were copied to begin with.
 
 Copy your COG categories file into the shared class Prokka folder, and change the name so it's easily recognizable. For example:
 ```
@@ -376,7 +385,7 @@ cp PROKKA_09222020_cog_categories.tsv /Accounts/Genomics_Bioinformatics_shared/P
 Obviously, please substitute the names of your own files for the ones listed above.
 
 
-#### 37. Exit
+#### 31. Exit
 
 If you haven't killed your screen yet, you should do so. As you did above, while in your screen session, type:
 `Ctrl A` and then `k`. The the computer will say: `Really kill this window [y/n]`. You type: `y`.
@@ -392,16 +401,16 @@ exit
 
 Write a mini research question based on your ORF annotations. If you like, you can compare your sample to someone else's. This doesn't have to be overly in-depth: ask a simple question that can be answered by the files you and/or your classmates have generated today.
 
-For example, you might ask, "Is there a difference in the number of genes related to the mobilome/prophage in the surface ocean compared to the mesopelagic zone?"
+For example, you might ask, "Is there a difference in the percent of genes related to the mobilome/prophage in the surface ocean compared to the mesopelagic zone?"
 
-Or for example, you might ask "What genes are present in the mesopelagic zones that are missing from the surface ocean?"
+Or for example, you might ask "What genes are present in Lyman Lakes that are missing from the Cannon River?"
 
-Or, "Are there more genes labeled as "hypothetical" genes in the Antarctic Ocean compared to the North Pacific?"
+Or, "Is there a higher percentage of genes labeled as "hypothetical" in the Antarctic Ocean compared to Lyman Lakes?"
 
 Or, "Within a single sample, are there more genes related to energy metabolism or replication/recombination/repair?"
 
 Make a plot or table that illustrates the answer to your question. In a paragraph or so, explain your results and speculate as to why your results look they way they do, and what else you might want to investigate related to this idea in the future.
 
-Submit this plus your "check for understanding" questions above (in a single document) on the class Moodle page by lab time next week. (Note: your "check for understanding" questions come from group discussion; your mini research question should be done independently, but you're free to talk to each other for ideas or help troubleshooting. The final product should represent your own work.)
+Submit this on the class Moodle page by lab time next week. 
 
  **I prefer to grade these blind, so please put your student ID number, rather than your name, on your assignment. (This applies to all future assignments as well.)**

@@ -37,6 +37,7 @@ A nice way to write Markdown and see it rendered into a formatted documnt is to 
 
 1. Install sphinx: `pip install sphinx`
 2. Install the markdown extension: `pip install recommonmark`
+    Update in 2023: recommonmark is now deprecated, use myst-parser instead and add it to the extensions in the conf.py file. Use pip3 instead of pip.
 3. Install the ReadTheDocs Sphinx theme: `pip install sphinx_rtd_theme`
 
 > Note: `pip` commands are run at the command line / in Terminal.
