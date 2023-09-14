@@ -29,6 +29,7 @@ You can even write $\LaTeX$ in Markdown, by enclosing your Latex stuff in `$`.
 
 A nice way to write Markdown and see it rendered into a formatted documnt is to use the [Atom](https://atom.io/) text editor, with the fantastic extension [Markdown Preview Enhanced](https://shd101wyy.github.io/markdown-preview-enhanced/#/).
 
+UPDATE 2023: Atom is no longer supported, use VisualStudioCode instead.
 
 
 ### Step 2: Sphinx
