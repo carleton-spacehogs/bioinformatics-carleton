@@ -24,6 +24,7 @@ You can even write $\LaTeX$ in Markdown, by enclosing your Latex stuff in `$`.
 
 > For syntax reference: see [commonmark.org/help](http://commonmark.org/help/). (Though keep in mind some Markdown rendering "engines", like the one on GitHub, support slightly different syntax, beyond and even different than the syntax specified by CommonMark.)
 
+UPDATE 2023: commonmark doesn't seem to be supportd anymore, use myst-parser instead.
 
 #### Using Markdown
 
