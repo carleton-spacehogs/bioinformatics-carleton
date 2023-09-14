@@ -16,7 +16,7 @@ You should be able to follow the directions below.
 
 **IF YOU ARE WORKING ON A PERSONAL COMPUTER THAT IS OPERATING WINDOWS OR ANOTHER OS:**
 You will need to find a way to connect to a remote server. Some Windows machines have a native Terminal now. If you don't have one, I recommend installing a [Ubuntu terminal.](https://ubuntu.com/tutorials/ubuntu-on-windows#1-overview)
-If that doesn't work, you can use [PuTTY.](https://www.howtogeek.com/311287/how-to-connect-to-an-ssh-server-from-windows-macos-or-linux/). 
+If that doesn't work, you can use [PuTTY](https://www.howtogeek.com/311287/how-to-connect-to-an-ssh-server-from-windows-macos-or-linux/). 
 
 #### 2. Opening Terminal
 If you're on a Mac, find and open the Terminal application (it should be in "Applications" in the folder called "Utilities"). If you're on a PC or other OS, open the window you'll use to ssh into a remote server (like Ubuntu or PuTTY or something similar).
@@ -287,14 +287,20 @@ mkdir project_directory
 cd project_directory
 ```
 
-#### 25. Copy project dataset
+#### 25. Copy project dataset reads
 
-Next, copy your project dataset into that directory. Your assigned project dataset is listed in a Google Sheets file that is on Moodle. Some of you will have Tara Oceans samples, and some of you will have samples from the Arb-- note that they're located in different directories. This should be indicated on the spreadsheet.
+Next, copy your project dataset reads into that directory. Your assigned project dataset is listed in a Google Sheets file that is on Moodle. Some of you will have Tara Oceans samples, and some of you will have samples from the Arb-- note that they're located in different directories. This should be indicated on the spreadsheet.
 
 For example, if you have dataset `ERR590988` from the Arabian Sea, you would do this:
 
 ```bash
 cp /workspace/data/Genomics_Bioinformatics_shared/Tara_Oceans/reads/Arabian_Sea/ERR598966_sample.fasta .
+```
+
+or if you have an Arb dataset from sample 1A, you'd do this:
+
+```bash
+cp /workspace/data/Genomics_Bioinformatics_shared/Arb_sequences/reads/Arb_seqs_BIOL338_2023_GB_Fall2022_1A_merged.fa_randomsubset.fasta .
 ```
 
 #### 26. Start assembly (except not really)
@@ -308,19 +314,16 @@ idba_ud -r ERR598966_sample.fasta -o ERR598966_assembly
 BUT DON'T DO IT!! Instead, I've pre-assembled your project datasets for you, because otherwise you'd be sitting here for hours. Copy them into your directory like this:
 
 ```bash
-cp -r /workspace/data/Genomics_Bioinformatics_shared/Tara_Oceans/Tara_assemblies/your-assembly-name .
+cp /workspace/data/Genomics_Bioinformatics_shared/Tara_Oceans/Tara_assemblies/your-assembly-name .
 ```
 
 OR
 
 ```bash
-cp -r /workspace/data/Genomics_Bioinformatics_shared/Arb_sequences/assemblies/your-assembly-name .
+cp /workspace/data/Genomics_Bioinformatics_shared/Arb_sequences/assemblies/your-assembly-name .
 ```
 
-
-Look inside using `ls`. Inside, you will find the same files you saw with the toy dataset: contig-20, contig-40, contig-60, contig-80, and contig-100. However, the Tara Oceans folks provided single-end reads instead of paired-end reads, which means that your assemblies will NOT have scaffolds, because we couldn’t take advantage of the paired-end data to make scaffolds. So, your final assembly is just the final contig file from the longest kmer, called `contig-100.fa.`
-
-
+Now you have some pre-made assemblies ready for you to use.
 
 
 ## Annotate your own project datasets
