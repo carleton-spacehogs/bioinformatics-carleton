@@ -416,4 +416,6 @@ Make a plot or table that illustrates the answer to your question. In a paragrap
 
 Submit this on the class Moodle page by lab time next week. 
 
+:o)
+
  **I prefer to grade these blind, so please put your student ID number, rather than your name, on your assignment. (This applies to all future assignments as well.)**
